@@ -37,9 +37,7 @@ const Esg = () => {
                 
                 {/* HEADER TITLE */}
                 <div className="text-center mb-20 md:mb-28">
-                    <span className="inline-block py-1 px-4 mb-4 text-xs font-semibold tracking-widest text-emerald-800 uppercase bg-emerald-100/60 rounded-full border border-emerald-200/50">
-                        ESG Framework
-                    </span>
+                    
                     <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-slate-900">
                         Sustainability & Responsibility
                     </h1>

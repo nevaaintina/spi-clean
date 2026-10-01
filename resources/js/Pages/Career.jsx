@@ -100,8 +100,8 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
 
   // Data Statis Budaya Perusahaan
   const cultureList = [
-    { title: "Integritas", description: "Selalu bertindak jujur, transparan, dan profesional dalam setiap pekerjaan demi membangun kepercayaan." },
-    { title: "Safety First", description: "Penerapan standar K3 yang ketat untuk menciptakan lingkungan kerja yang aman, sehat, dan bebas dari kecelakaan." },
+    { title: "Integritas", description: "Selalu bertindak jujur, transparan dan profesional dalam setiap pekerjaan demi membangun kepercayaan." },
+    { title: "Safety First", description: "Penerapan standar K3 yang ketat untuk menciptakan lingkungan kerja yang aman, sehat dan bebas dari kecelakaan." },
     { title: "Innovation", description: "Mendorong ide kreatif dan penggunaan teknologi terbaru untuk memberikan solusi terbaik dan nilai tambah bagi pelanggan." },
   ];
 
@@ -147,7 +147,7 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
                 </h1>
 
                 <p className="mt-7 max-w-xl text-sm md:text-base leading-7 text-slate-600">
-                  Temukan kesempatan untuk berkembang, berkolaborasi, dan membangun karier bersama perusahaan penyedia layanan alat berat terkemuka di Indonesia.
+                  Temukan kesempatan untuk berkembang, berkolaborasi dan membangun karier bersama perusahaan penyedia layanan alat berat terkemuka di Indonesia.
                 </p>
 
                 <div className="flex flex-wrap gap-4 mt-9">
@@ -236,7 +236,7 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
                 <div className="w-10 h-[2px] bg-[#dca500] mt-7 mb-6" />
 
                 <p className="max-w-[430px] text-[13px] md:text-[14px] text-[#536782] leading-[1.9]">
-                  Di SPI, kami percaya bahwa kesuksesan perusahaan dibangun oleh manusia yang bertumbuh bersama. Budaya kerja kami mencerminkan komitmen terhadap integritas, keselamatan, kolaborasi, dan inovasi berkelanjutan dalam setiap langkah.
+                  Di SPI, kami percaya bahwa kesuksesan perusahaan dibangun oleh manusia yang bertumbuh bersama. Budaya kerja kami mencerminkan komitmen terhadap integritas, keselamatan, kolaborasi dan inovasi berkelanjutan dalam setiap langkah.
                 </p>
 
                 <div className="absolute left-[-48px] right-[-30px] bottom-[-55px] h-[320px] pointer-events-none overflow-hidden">

@@ -9,7 +9,7 @@ export default function ShowFeatured() {
   const servicesMap = {
     "pelatihan-operator": {
       title: "Pelatihan Operator",
-      description: "Kami memberikan pelatihan khusus kepada operator Anda untuk unit XCMG pertambangan dan konstruksi guna memastikan pengoperasian alat berat yang aman, efisien, dan berstandar operasional tinggi.",
+      description: "Kami memberikan pelatihan khusus kepada operator Anda untuk unit XCMG pertambangan dan konstruksi guna memastikan pengoperasian alat berat yang aman, efisien dan berstandar operasional tinggi.",
       content: `
         <p>PT Servistama Pro Indonesia menyediakan program pelatihan intensif bagi operator alat berat di lapangan. Program ini dirancang langsung oleh instruktur berpengalaman untuk meningkatkan keahlian teknis serta pemahaman mendalam mengenai unit XCMG.</p>
         <p>Dengan pelatihan yang tepat, perusahaan Anda dapat menekan risiko kecelakaan kerja, mengoptimalkan produktivitas unit, serta mengurangi tingkat keausan mesin akibat kesalahan operasional.</p>
@@ -22,7 +22,7 @@ export default function ShowFeatured() {
     },
     "layanan-maintenance": {
       title: "Heavy Equipment Maintenance & Overhaul",
-      description: "Layanan pemeliharaan menyeluruh dan overhaul komponen alat berat XCMG untuk memastikan performa mesin selalu optimal, tangguh, dan dapat diandalkan di setiap medan proyek pertambangan maupun konstruksi.",
+      description: "Layanan pemeliharaan menyeluruh dan overhaul komponen alat berat XCMG untuk memastikan performa mesin selalu optimal, tangguh dan dapat diandalkan di setiap medan proyek pertambangan maupun konstruksi.",
       content: `
         <p>PT Servistama Pro Indonesia menyediakan solusi perawatan preventif dan korektif komprehensif yang dikerjakan oleh tim mekanik berpengalaman dan tersertifikasi.</p>
         <p>Kami menggunakan suku cadang original (genuine parts) serta prosedur uji diagnostik berstandar global guna meminimalkan risiko downtime serta memperpanjang masa pakai unit alat berat Anda.</p>
@@ -40,7 +40,7 @@ export default function ShowFeatured() {
         <p>Sebagai mitra terpercaya, kami menyediakan berbagai kebutuhan suku cadang asli (genuine parts) untuk seluruh lini produk alat berat XCMG.</p>
         <p>Pengadaan komponen yang cepat dan tepat sasaran menjadi komitmen kami agar proyek konstruksi dan pertambangan Anda tetap berjalan tanpa hambatan berarti.</p>
       `,
-      image_path: "/images/featured-service3.jpg",
+      image_path: "/images/featured-service3.png",
       photos: [
         "/images/suplai1.jpg",
         "/images/suplai2.jpg"

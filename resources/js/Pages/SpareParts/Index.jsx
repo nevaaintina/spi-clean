@@ -216,7 +216,7 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
             <div className="mt-7 w-16 h-[3px] bg-[#ffc107]" />
 
             <p className="mt-7 text-sm md:text-base leading-7 text-slate-100 max-w-2xl font-normal drop-shadow">
-              Temukan berbagai komponen dan suku cadang original untuk menjaga performa, keandalan, dan produktivitas alat berat Anda.
+              Temukan berbagai komponen dan suku cadang original untuk menjaga performa, keandalan dan produktivitas alat berat Anda.
             </p>
 
             <div className="mt-9 flex flex-wrap gap-3">

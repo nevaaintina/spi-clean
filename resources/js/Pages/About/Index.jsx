@@ -6,12 +6,13 @@ import VisionMission from "./VisionMission";
 import Management from "./Management";
 import OurCustomers from "./OurCustomers";
 
-// Komponen Counter Angka Otomatis saat di-scroll (Durasi Santai 3500ms / 3.5 Detik)
+// Komponen Counter Angka Otomatis saat di-scroll (Dilindungi dari Translate Browser)
 function CounterNumber({ value }) {
   const [count, setCount] = useState(0);
   const elementRef = useRef(null);
   const [hasAnimated, setHasAnimated] = useState(false);
 
+  // Pastikan angka target diambil murni dari prop asli (tidak terpengaruh translate browser)
   const numericTarget = parseInt(String(value).replace(/[^0-9]/g, ""), 10) || 0;
   const suffix = String(value).replace(/[0-9]/g, "");
 
@@ -49,7 +50,7 @@ function CounterNumber({ value }) {
   }, [numericTarget, hasAnimated]);
 
   return (
-    <span ref={elementRef}>
+    <span ref={elementRef} translate="no" className="notranslate">
       {count}
       {suffix}
     </span>
@@ -312,10 +313,10 @@ export default function Index({ milestones = [], managementTeam = [], customers 
   ];
 
   const governancePrinciples = [
-    { icon: IconEye, title: "Transparency", desc: "Menjamin keterbukaan informasi teknis, biaya, dan ketersediaan suku cadang secara jujur kepada klien." },
+    { icon: IconEye, title: "Transparency", desc: "Menjamin keterbukaan informasi teknis, biaya dan ketersediaan suku cadang secara jujur kepada klien." },
     { icon: IconCheckBadge, title: "Accountability", desc: "Menjaga integritas dan tanggung jawab penuh atas keselamatan kerja (Safety First) serta keandalan servis di lapangan." },
     { icon: IconMountain, title: "Responsibility", desc: "Tangguh dan konsisten menjaga standar operasional tinggi demi menjawab tantangan medan pertambangan." },
-    { icon: IconUsers, title: "Fairness", desc: "Menghormati dan memperlakukan seluruh klien, mitra, serta tenaga ahli secara adil, profesional, dan terbuka." },
+    { icon: IconUsers, title: "Fairness", desc: "Menghormati dan memperlakukan seluruh klien, mitra, serta tenaga ahli secara adil, profesional dan terbuka." },
   ];
 
   useEffect(() => {
@@ -339,11 +340,11 @@ export default function Index({ milestones = [], managementTeam = [], customers 
       <section
         className="relative flex min-h-[600px] w-full items-center overflow-hidden md:min-h-[700px]"
         style={{  
-          backgroundImage: `linear-gradient(180deg, rgba(11,18,32,0.100) 0%, rgba(15,43,92,0.100) 50%, rgba(11,18,32,0.100) 100%), url('/images/about-hero.png')`,
+          backgroundImage: `linear-gradient(180deg, rgba(7,27,56,0.15) 0%, rgba(7,27,56,0.30) 50%, rgba(7,27,56,0.20) 100%), url('/images/about-hero.png')`,
           backgroundSize: "cover",
           backgroundPosition: "center 40%",
           backgroundRepeat: "no-repeat",
-        }}  
+        }}
       >
         <div className="mx-auto flex w-full max-w-7xl flex-col justify-center px-4 py-20 sm:px-6 lg:px-8">
           <div className="flex flex-col justify-center">
@@ -365,11 +366,11 @@ export default function Index({ milestones = [], managementTeam = [], customers 
             </h1>
 
             <p 
-              className={`mt-5 max-w-lg text-sm leading-relaxed text-white/75 md:text-base transition-all duration-[2000ms] delay-500 ease-[cubic-bezier(0.12,1,0.2,1)] ${
+              className={`mt-5 max-w-lg text-sm leading-relaxed text-white/95 md:text-base transition-all duration-[2000ms] delay-500 ease-[cubic-bezier(0.12,1,0.2,1)] ${
                 isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >
-              PT Servistama Pro Indonesia is committed to delivering reliable, innovative, and high-quality heavy equipment services to support Indonesia's industrial growth.
+              PT Servistama Pro Indonesia is committed to delivering reliable, innovative and high-quality heavy equipment services to support Indonesia's industrial growth.
             </p> 
 
             <div 
@@ -395,7 +396,7 @@ export default function Index({ milestones = [], managementTeam = [], customers 
 
             {/* STATISTIK DI HERO BANNER */}
             <div 
-              className={`mt-12 grid grid-cols-2 gap-6 border-t border-white/15 pt-8 sm:grid-cols-4 transition-all duration-[2200ms] delay-[900ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${
+              className={`mt-12 grid grid-cols-2 gap-6 border-t border-white/20 pt-8 sm:grid-cols-4 transition-all duration-[2200ms] delay-[900ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${
                 isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
               }`}
             >
@@ -411,7 +412,7 @@ export default function Index({ milestones = [], managementTeam = [], customers 
                     <p className="mt-2 text-2xl font-extrabold text-white sm:text-3xl">
                       <CounterNumber value={s.value} />
                     </p>
-                    <p className="text-xs font-medium text-white/75 transition-colors group-hover:text-white sm:text-sm">
+                    <p className="text-xs font-medium text-white/90 transition-colors group-hover:text-white sm:text-sm" translate="no">
                       {s.label}
                     </p>
                   </a>
@@ -464,7 +465,7 @@ export default function Index({ milestones = [], managementTeam = [], customers 
                         <p className="mt-2 text-xl font-extrabold text-[#0F2B5C] sm:text-2xl">
                           <CounterNumber value={s.value} />
                         </p>
-                        <p className="text-xs text-[#64748B]">{s.label}</p>
+                        <p className="text-xs text-[#64748B]" translate="no">{s.label}</p>
                       </div>
                     );
                   })}
@@ -591,7 +592,7 @@ export default function Index({ milestones = [], managementTeam = [], customers 
                     <p className="mt-3 text-3xl font-extrabold text-white md:text-4xl text-[#FFC107]">
                       <CounterNumber value={s.value} />
                     </p>
-                    <p className="mt-2 text-xs font-bold text-white">{s.label}</p>
+                    <p className="mt-2 text-xs font-bold text-white" translate="no">{s.label}</p>
                   </div>
                 </Reveal>
               );

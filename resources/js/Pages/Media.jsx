@@ -344,7 +344,7 @@ export default function Media({ mediaGalleries = [] }) {
             <span className="mt-6 block h-1 w-14 bg-[#F5B800]" />
 
             <p className="mt-6 max-w-lg text-sm leading-relaxed text-white/80 sm:text-base">
-              Jelajahi dokumentasi aktivitas PT. Servistama Pro Indonesia dalam menghadirkan layanan heavy equipment, maintenance, customer support, training, dan smart service solution.
+              Jelajahi dokumentasi aktivitas PT. Servistama Pro Indonesia dalam menghadirkan layanan heavy equipment, maintenance, customer support, training dan smart service solution.
             </p>
           </div>
         </section>

@@ -3,7 +3,7 @@ import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
 import { Head, Link } from '@inertiajs/react';
 
-// Komponen Helper untuk Counter yang Berputar Ulang Setiap Kali di-Scroll ke Layar
+// Komponen Helper untuk Counter yang Berputar Ulang Setiap Kali di-Scroll ke Layar (Dilindungi dari Translate Browser)
 function AnimatedCounter({ targetNumber, suffix = "" }) {
   const [count, setCount] = useState(0);
   const counterRef = useRef(null);
@@ -54,7 +54,11 @@ function AnimatedCounter({ targetNumber, suffix = "" }) {
     };
   }, [targetNumber]);
 
-  return <span ref={counterRef}>{count}{suffix}</span>;
+  return (
+    <span ref={counterRef} translate="no" className="notranslate">
+      {count}{suffix}
+    </span>
+  );
 }
 
 // Komponen Helper Khusus Slider Testimoni (Dinamis dari Database)
@@ -228,10 +232,10 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
                 .addTo(mapInstance)
                 .bindPopup(`
                   <div style="font-family: inherit; padding: 6px; min-width: 190px; color: #0b2348;">
-                    <span style="font-size: 9px; font-weight: 900; text-transform: uppercase; color: #b27b00; letter-spacing: 0.1em; display: block; margin-bottom: 2px;">
+                    <span style="font-size: 9px; font-weight: 900; text-transform: uppercase; color: #b27b00; letter-spacing: 0.1em; display: block; margin-bottom: 2px;" translate="no">
                       ${b.category}
                     </span>
-                    <h4 style="font-weight: 900; color: #0b2348; margin-bottom: 4px; font-size: 13px;">
+                    <h4 style="font-weight: 900; color: #0b2348; margin-bottom: 4px; font-size: 13px;" translate="no">
                       ${b.name} (${b.city})
                     </h4>
                     <p style="font-size: 11px; color: #475569; line-height: 1.4; margin-bottom: 8px;">
@@ -300,7 +304,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
             <div className="lg:col-span-6 flex flex-col justify-center">
               <div className="mb-4">
-                <span className="text-[11px] font-bold text-slate-700 bg-slate-200/80 px-3.5 py-1.5 rounded-full border border-slate-300 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-slate-700 bg-slate-200/80 px-3.5 py-1.5 rounded-full border border-slate-300 uppercase tracking-wider" translate="no">
                   LAYANAN KAMI
                 </span>
               </div>
@@ -432,10 +436,10 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             
             <div className="flex flex-col items-center text-center group">
               <div className="relative w-44 h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-300">
-                <div className="text-3xl sm:text-4xl font-black text-white leading-none mb-1.5">
+                <div className="text-3xl sm:text-4xl font-black text-white leading-none mb-1.5" translate="no">
                   100%
                 </div>
-                <div className="text-xs font-bold text-[#ffc107] px-2 text-center">Dukungan Teknis</div>
+                <div className="text-xs font-bold text-[#ffc107] px-2 text-center" translate="no">Dukungan Teknis</div>
               </div>
               <p className="text-white text-xs leading-relaxed mt-4 max-w-[200px]">
                 Komitmen memberikan layanan teknis untuk setiap kebutuhan pelanggan.
@@ -447,7 +451,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
                 <div className="text-3xl sm:text-4xl font-black text-white leading-none mb-1.5 flex items-center">
                   <AnimatedCounter targetNumber={4} suffix="+" />
                 </div>
-                <div className="text-xs font-bold text-[#ffc107] px-2 text-center">Tahun Pengalaman</div>
+                <div className="text-xs font-bold text-[#ffc107] px-2 text-center" translate="no">Tahun Pengalaman</div>
               </div>
               <p className="text-white text-xs leading-relaxed mt-4 max-w-[200px]">
                 Berpengalaman dalam memberikan solusi terbaik di bidangnya.
@@ -459,7 +463,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
                 <div className="text-3xl sm:text-4xl font-black text-white leading-none mb-1.5 flex items-center">
                   <AnimatedCounter targetNumber={99} suffix="%" />
                 </div>
-                <div className="text-xs font-bold text-[#ffc107] px-2 text-center">Kepuasan Pelanggan</div>
+                <div className="text-xs font-bold text-[#ffc107] px-2 text-center" translate="no">Kepuasan Pelanggan</div>
               </div>
               <p className="text-white text-xs leading-relaxed mt-4 max-w-[200px]">
                 Siap memberikan dukungan teknis kapan pun dibutuhkan.
@@ -468,10 +472,10 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
 
             <div className="flex flex-col items-center text-center group">
               <div className="relative w-44 h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-300">
-                <div className="text-3xl sm:text-4xl font-black text-white leading-none mb-1.5">
+                <div className="text-3xl sm:text-4xl font-black text-white leading-none mb-1.5" translate="no">
                   100%
                 </div>
-                <div className="text-xs font-bold text-[#ffc107] px-2 text-center">Layanan Terpercaya</div>
+                <div className="text-xs font-bold text-[#ffc107] px-2 text-center" translate="no">Layanan Terpercaya</div>
               </div>
               <p className="text-white text-xs leading-relaxed mt-4 max-w-[200px]">
                 Memberikan layanan dengan mengutamakan profesionalisme dan tanggung jawab.
@@ -483,7 +487,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
           <div className="flex flex-wrap justify-center items-center gap-4">
             {["Terpercaya & Profesional", "Layanan Cepat & Tepat", "Mitra Jangka Panjang"].map((text, i) => (
               <div key={i} className="px-5 py-2.5 bg-[#0f2b5c]/50 backdrop-blur-md border border-white/20 rounded-full flex items-center shadow-sm">
-                <span className="text-xs font-bold text-white">{text}</span>
+                <span className="text-xs font-bold text-white" translate="no">{text}</span>
               </div>
             ))}
           </div>
@@ -496,14 +500,14 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
           <div className="text-center max-w-3xl mx-auto mb-16">
             <div className="flex items-center justify-center gap-3 mb-3">
               <span className="w-8 h-[2px] bg-[#ffc107]"></span>
-              <span className="text-[11px] font-black tracking-widest text-[#ffc107] uppercase">COMPANY STRENGTH</span>
+              <span className="text-[11px] font-black tracking-widest text-[#ffc107] uppercase" translate="no">COMPANY STRENGTH</span>
               <span className="w-8 h-[2px] bg-[#ffc107]"></span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#0f2b5c] tracking-tight leading-tight">
               Kekuatan Kami, <span className="text-[#ffc107]">Komitmen Kami</span>
             </h2>
             <p className="text-slate-600 text-xs md:text-sm mt-4 font-normal leading-relaxed max-w-xl mx-auto">
-              Dengan pengalaman, sumber daya, dan dedikasi tinggi, kami siap menjadi mitra terbaik dalam setiap proyek Anda.
+              Dengan pengalaman, sumber daya dan dedikasi tinggi, kami siap menjadi mitra terbaik dalam setiap proyek Anda.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-16">
@@ -549,7 +553,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
           <div className="text-center max-w-3xl mx-auto mb-16">
             <div className="flex items-center justify-center gap-3 mb-3">
               <span className="w-8 h-[2px] bg-[#ffc107]"></span>
-              <span className="text-[11px] font-black tracking-widest text-[#ffc107] uppercase">OUR SERVICES</span>
+              <span className="text-[11px] font-black tracking-widest text-[#ffc107] uppercase" translate="no">OUR SERVICES</span>
               <span className="w-8 h-[2px] bg-[#ffc107]"></span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
@@ -594,7 +598,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
               <div key={srv.id} className="group relative h-[360px] w-full rounded-2xl overflow-hidden shadow-lg border border-slate-200/40 bg-slate-900 transition-all duration-500 hover:-translate-y-2">
                 <img src={srv.image_path} alt={srv.title} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 text-white bg-[#0f2b5c]/90 backdrop-blur-sm translate-y-full transition-transform duration-500 group-hover:translate-y-0">
-                  <span className="inline-block text-[10px] font-black uppercase tracking-widest text-[#ffc107] mb-1">LAYANAN UNGGULAN</span>
+                  <span className="inline-block text-[10px] font-black uppercase tracking-widest text-[#ffc107] mb-1" translate="no">LAYANAN UNGGULAN</span>
                   <h3 className="text-base font-extrabold text-white leading-snug mb-2">{srv.title}</h3>
                   <div className="w-8 h-[2px] bg-[#ffc107] mb-3 rounded-full" />
                   <p className="text-slate-200 text-xs leading-relaxed mb-5 line-clamp-3">{srv.description}</p>
@@ -612,7 +616,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
           <div className="mx-auto max-w-3xl text-center mb-16">
             <div className="mb-4 flex items-center justify-center gap-4">
               <span className="h-[2px] w-8 bg-[#ffc107]"></span>
-              <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#ffc107]">CUSTOMER TESTIMONIALS</span>
+              <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#ffc107]" translate="no">CUSTOMER TESTIMONIALS</span>
               <span className="h-[2px] w-8 bg-[#ffc107]"></span>
             </div>
             <h2 className="text-3xl font-black leading-tight tracking-tight text-[#0f2b5c] sm:text-4xl md:text-5xl">
@@ -688,7 +692,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
           <div className="text-center max-w-3xl mx-auto mb-12">
             <div className="flex items-center justify-center gap-3 mb-3">
               <span className="w-8 h-[2px] bg-[#ffc107]"></span>
-              <span className="text-[11px] font-black tracking-widest text-[#ffc107] uppercase">LATEST NEWS</span>
+              <span className="text-[11px] font-black tracking-widest text-[#ffc107] uppercase" translate="no">LATEST NEWS</span>
               <span className="w-8 h-[2px] bg-[#ffc107]"></span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#0f2b5c] tracking-tight leading-tight">
@@ -696,7 +700,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             </h2>
             <div className="w-12 h-1 bg-[#ffc107] mx-auto my-4 rounded-full"></div>
             <p className="text-slate-600 text-xs md:text-sm font-normal leading-relaxed max-w-xl mx-auto">
-              Dapatkan informasi terbaru seputar kegiatan perusahaan, proyek, inovasi, dan berbagai update lainnya.
+              Dapatkan informasi terbaru seputar kegiatan perusahaan, proyek, inovasi dan berbagai update lainnya.
             </p>
           </div>
 
@@ -775,7 +779,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
           <div className="text-center max-w-3xl mx-auto mb-16">
             <div className="flex items-center justify-center gap-3 mb-3">
               <span className="w-8 h-[2px] bg-[#ffc107]"></span>
-              <span className="text-[11px] font-black tracking-widest text-[#ffc107] uppercase">GET IN TOUCH</span>
+              <span className="text-[11px] font-black tracking-widest text-[#ffc107] uppercase" translate="no">GET IN TOUCH</span>
               <span className="w-8 h-[2px] bg-[#ffc107]"></span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
@@ -838,7 +842,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             <div className="max-w-[720px]">
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-10 h-[2px] bg-[#ffc107]" />
-                <span className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.25em] text-[#b27b00]">BRANCH OFFICE & NETWORK</span>
+                <span className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.25em] text-[#b27b00]" translate="no">BRANCH OFFICE & NETWORK</span>
               </div>
               <h2 className="text-4xl sm:text-5xl lg:text-[54px] font-black tracking-tight leading-[1.05] text-[#0b2348]">
                 Operational Area<br />
