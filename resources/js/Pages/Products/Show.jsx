@@ -170,15 +170,10 @@ export default function ProductShow({ product }) {
     "Video",
   ];
 
-  // Menggabungkan foto utama dan foto-foto tambahan (galeri) menjadi satu array galeri
-  const galleryImages = [
-    ...(product.image ? [`/${product.image.replace(/^\//, '')}`] : []),
-    ...(Array.isArray(product.gallery) ? product.gallery.map(img => `/${img.replace(/^\//, '')}`) : [])
-  ];
-
-  if (galleryImages.length === 0) {
-    galleryImages.push("https://via.placeholder.com/600");
-  }
+  // Hanya mengambil foto galeri
+  const galleryImages = Array.isArray(product.gallery) && product.gallery.length > 0
+    ? product.gallery.map(img => `/${img.replace(/^\//, '')}`)
+    : (product.image ? [`/${product.image.replace(/^\//, '')}`] : ["https://via.placeholder.com/600"]);
 
   const prevImage = () => {
     setActiveImage((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
@@ -206,7 +201,6 @@ export default function ProductShow({ product }) {
 
   const videoSource = getVideoUrl(product.video_path);
 
-  // Fungsi untuk mendownload/mencetak semua foto menjadi 1 file PDF gabungan
   const handleDownloadPdf = () => {
     const printWindow = window.open('', '_blank');
     if (!printWindow) {
@@ -280,92 +274,85 @@ export default function ProductShow({ product }) {
         </div>
 
         {/* =====================================================
-            HERO PRODUCT
+            PRODUCT HERO SECTION
         ===================================================== */}
         <section className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 xl:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-10 items-stretch">
+          <div className="space-y-6">
             
-            {/* LEFT - PRODUCT IMAGE, CAROUSEL CONTROLS & THUMBNAILS */}
-            <div className="lg:col-span-7 space-y-4 flex flex-col justify-between">
-              <div>
-                <div className="relative overflow-hidden rounded-[28px] bg-slate-100 border border-slate-200 shadow-sm group">
-                  <div className="relative h-[390px] sm:h-[470px] lg:h-[500px] overflow-hidden flex items-center justify-center p-6">
-                    <img
-                      src={galleryImages[activeImage] || galleryImages[0]}
-                      alt={product.name}
-                      className="max-h-full max-w-full object-contain transition-all duration-500 drop-shadow-md"
-                    />
-                    <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#071b38]/80 to-transparent pointer-events-none" />
+            {/* 1. KATEGORI BADGE DI ATAS */}
+            <div>
+              <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#fff4ce] border border-[#ffc107]/50 text-[11px] font-black text-[#0f2b5c] uppercase tracking-wide">
+                {product.category}
+              </span>
+            </div>
 
-                    {/* Counter Badge */}
-                    <div className="absolute top-5 left-5">
-                      <div className="px-4 py-2 rounded-full bg-white/95 backdrop-blur-md text-[#0f2b5c] text-xs font-black shadow-md">
-                        {String(activeImage + 1).padStart(2, "0")} / {String(galleryImages.length).padStart(2, "0")}
-                      </div>
-                    </div>
+            {/* 2. NAMA PRODUK */}
+            <h1 className="text-[32px] sm:text-[44px] md:text-[52px] leading-[1.1] font-black tracking-[-0.03em] text-[#0f2b5c]">
+              {product.name}
+            </h1>
 
-                    {/* Tombol Geser Kiri / Kanan (Carousel Navigation) */}
-                    {galleryImages.length > 1 && (
-                      <>
-                        <button 
-                          onClick={prevImage}
-                          className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-[#0f2b5c] flex items-center justify-center shadow-lg opacity-80 group-hover:opacity-100 transition cursor-pointer"
-                          aria-label="Previous Image"
-                        >
-                          <Icon type="chevron-left" className="w-5 h-5" />
-                        </button>
-                        <button 
-                          onClick={nextImage}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-[#0f2b5c] flex items-center justify-center shadow-lg opacity-80 group-hover:opacity-100 transition cursor-pointer"
-                          aria-label="Next Image"
-                        >
-                          <Icon type="chevron-right" className="w-5 h-5" />
-                        </button>
-                      </>
-                    )}
+            {/* 3. SLIDER FOTO UTAMA */}
+            <div className="relative overflow-hidden rounded-[28px] bg-slate-900 border border-slate-200 shadow-lg group">
+              <div className="relative h-[420px] sm:h-[550px] lg:h-[640px] w-full overflow-hidden flex items-center justify-center bg-slate-900">
+                <img
+                  src={galleryImages[activeImage] || galleryImages[0]}
+                  alt={product.name}
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                />
+
+                {/* Counter Badge */}
+                <div className="absolute top-5 left-5 z-20">
+                  <div className="px-4 py-2 rounded-full bg-white/95 backdrop-blur-md text-[#0f2b5c] text-xs font-black shadow-md">
+                    {String(activeImage + 1).padStart(2, "0")} / {String(galleryImages.length).padStart(2, "0")}
                   </div>
                 </div>
 
-                {/* THUMBNAIL FOTO TAMBAHAN / UTAMA */}
+                {/* Tombol Geser Kiri / Kanan */}
                 {galleryImages.length > 1 && (
-                  <div className="flex gap-3 overflow-x-auto pb-2 mt-4">
-                    {galleryImages.map((img, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setActiveImage(idx)}
-                        className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 bg-slate-50 shrink-0 transition cursor-pointer ${activeImage === idx ? 'border-[#ffc107] shadow-md scale-105' : 'border-slate-200 opacity-70 hover:opacity-100'}`}
-                      >
-                        <img src={img} alt="" className="w-full h-full object-contain p-1" />
-                      </button>
-                    ))}
-                  </div>
+                  <>
+                    <button 
+                      onClick={prevImage}
+                      className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white text-[#0f2b5c] flex items-center justify-center shadow-xl opacity-80 group-hover:opacity-100 transition cursor-pointer z-20"
+                      aria-label="Previous Image"
+                    >
+                      <Icon type="chevron-left" className="w-5 h-5" />
+                    </button>
+                    <button 
+                      onClick={nextImage}
+                      className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white text-[#0f2b5c] flex items-center justify-center shadow-xl opacity-80 group-hover:opacity-100 transition cursor-pointer z-20"
+                      aria-label="Next Image"
+                    >
+                      <Icon type="chevron-right" className="w-5 h-5" />
+                    </button>
+                  </>
                 )}
               </div>
             </div>
 
-            {/* RIGHT - PRODUCT INFORMATION & KONSULTASI BUTTON */}
-            <div className="lg:col-span-5 flex flex-col justify-between">
-              <div>
-                <span className="inline-flex items-center px-4 py-2 rounded-full bg-[#fff4ce] border border-[#ffc107]/50 text-[11px] font-black text-[#0f2b5c] uppercase tracking-wide">
-                  {product.category}
-                </span>
+            {/* 4. BAGIAN BAWAH */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pt-2">
+              {/* Thumbnail Galeri di Kiri */}
+              {galleryImages.length > 1 ? (
+                <div className="flex gap-3 overflow-x-auto pb-2">
+                  {galleryImages.map((img, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveImage(idx)}
+                      className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 bg-slate-900 shrink-0 transition cursor-pointer ${activeImage === idx ? 'border-[#ffc107] shadow-md scale-105' : 'border-slate-200 opacity-70 hover:opacity-100'}`}
+                    >
+                      <img src={img} alt="" className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              ) : <div />}
 
-                <h1 className="mt-4 text-[38px] sm:text-[48px] xl:text-[52px] leading-[0.98] font-black tracking-[-0.035em]">
-                  {product.name}
-                </h1>
-
-                <p className="mt-5 text-sm sm:text-[15px] leading-7 text-slate-600 max-w-2xl">
-                  {product.overview || product.description}
-                </p>
-              </div>
-
-              {/* ACTION BUTTON (KONSULTASI PRODUK) */}
-              <div className="pt-6">
+              {/* Tombol Konsultasi Produk di Kanan */}
+              <div className="w-full lg:w-auto shrink-0">
                 <a
                   href={`https://wa.me/6281122233344?text=Halo%20SPI,%20saya%20ingin%20berkonsultasi%20mengenai%20produk%20${encodeURIComponent(product.name)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full min-h-[58px] rounded-xl bg-[#ffc107] hover:bg-[#eaae00] text-[#0f2b5c] font-black text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer"
+                  className="w-full sm:w-[340px] h-[58px] rounded-2xl bg-[#ffc107] hover:bg-[#eaae00] text-[#0f2b5c] font-black text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer"
                 >
                   <Icon type="chat" className="w-5 h-5" />
                   Konsultasi Produk
@@ -380,7 +367,7 @@ export default function ProductShow({ product }) {
         {/* =====================================================
             TABS NAVIGATION
         ===================================================== */}
-        <section className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 xl:px-16 mt-12">
+        <section className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 xl:px-16 mt-14">
           <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-x-auto">
             <div className="flex min-w-max">
               {tabs.map((tab) => (
@@ -468,6 +455,7 @@ export default function ProductShow({ product }) {
             </div>
           )}
 
+          {/* TAB FITUR UNGGULAN: Tanda # Telah Dihapus */}
           {activeTab === "Fitur Unggulan" && (
             <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
               <h2 className="text-xl font-black text-[#0f2b5c] mb-6 flex items-center gap-3">
@@ -482,7 +470,8 @@ export default function ProductShow({ product }) {
                         {idx + 1}
                       </div>
                       <div>
-                        <h3 className="font-bold text-[#0f2b5c] text-base mb-1">Keunggulan #{idx + 1}</h3>
+                        {/* Menghilangkan tanda # */}
+                        <h3 className="font-bold text-[#0f2b5c] text-base mb-1">Keunggulan {idx + 1}</h3>
                         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{feature}</p>
                       </div>
                     </div>
@@ -507,7 +496,7 @@ export default function ProductShow({ product }) {
                     onClick={() => setActiveImage(index)} 
                     className={`relative group cursor-pointer overflow-hidden rounded-xl border-2 aspect-[4/3] bg-slate-100 transition ${activeImage === index ? 'border-[#ffc107] shadow-md' : 'border-slate-200'}`}
                   >
-                    <img src={imgUrl} alt="Gallery" className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300" />
+                    <img src={imgUrl} alt="Gallery" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   </div>
                 ))}
               </div>
@@ -546,7 +535,7 @@ export default function ProductShow({ product }) {
             <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
               <h2 className="text-xl font-black text-[#0f2b5c] mb-6 flex items-center gap-3">
                 <span className="w-1.5 h-6 bg-[#ffc107] rounded-full" />
-                Video Produk
+                Video Produk & Dokumentasi
               </h2>
               {videoSource ? (
                 <div className="max-w-3xl mx-auto aspect-video rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 shadow-md">

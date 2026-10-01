@@ -12,96 +12,6 @@ const IconWrench = (props) => (
     </svg>
 );
 
-const IconExcavator = (props) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M3 18h7" />
-        <circle cx="6" cy="19.5" r="1.3" />
-        <circle cx="10.5" cy="19.5" r="1.3" />
-        <path d="M11 15h6l3-3" />
-        <path d="M14 15V9l4-2" />
-        <path d="M18 7l3 1-1.5 3" />
-        <path d="M3 15V9h6l2 3v3" />
-    </svg>
-);
-
-const IconRadarTower = (props) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M12 21V10" />
-        <path d="M8 21h8" />
-        <circle cx="12" cy="6" r="4" />
-        <path d="M12 4v4l2.5 1.5" />
-    </svg>
-);
-
-const IconDroplet = (props) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M12 3s6 6.6 6 10.5a6 6 0 1 1-12 0C6 9.6 12 3 12 3z" />
-    </svg>
-);
-
-const IconGear = (props) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <circle cx="12" cy="12" r="3.2" />
-        <path d="M12 3v2.2M12 18.8V21M21 12h-2.2M5.2 12H3M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6M18.4 18.4l-1.6-1.6M7.2 7.2 5.6 5.6" />
-    </svg>
-);
-
-const IconOilCan = (props) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M4 10h9l6-3v2l-3 1" />
-        <path d="M4 10v8a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-8" />
-        <path d="M8 6.5V10" />
-        <path d="M6.5 6.5h3L9 4H7z" />
-    </svg>
-);
-
-const IconActivity = (props) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M2 12h4l2 7 4-14 2 7h8" />
-    </svg>
-);
-
-const IconAlertTriangle = (props) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-        <line x1="12" y1="9" x2="12" y2="13" />
-        <line x1="12" y1="17" x2="12.01" y2="17" />
-    </svg>
-);
-
-const IconShieldCheck = (props) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        <polyline points="9 12 11 14 15 10" />
-    </svg>
-);
-
-const IconUserCheck = (props) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-        <circle cx="8.5" cy="7" r="4" />
-        <polyline points="17 11 19 13 23 9" />
-    </svg>
-);
-
-const IconFileText = (props) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="16" y1="13" x2="8" y2="13" />
-        <line x1="16" y1="17" x2="8" y2="17" />
-        <polyline points="10 9 9 9 8 9" />
-    </svg>
-);
-
-const IconDocument = (props) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" />
-        <path d="M14 3v4h4" />
-        <path d="M9 12h6M9 15.5h6M9 9h2" />
-    </svg>
-);
-
 const IconClock = (props) => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
         <circle cx="12" cy="12" r="9" />
@@ -122,9 +32,18 @@ const IconArrowRight = (props) => (
     </svg>
 );
 
-const IconChevronRight = (props) => (
+const IconDocument = (props) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" />
+        <path d="M14 3v4h4" />
+        <path d="M9 12h6M9 15.5h6M9 9h2" />
+    </svg>
+);
+
+const IconSearch = (props) => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M9 6l6 6-6 6" />
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
     </svg>
 );
 
@@ -136,23 +55,9 @@ const InstagramIcon = (props) => (
     </svg>
 );
 
-/* Mapping Icon untuk 11 Kategori */
-const categoryIcons = {
-    'maintenance-tips': { icon: IconWrench, bgColor: 'bg-amber-50', iconColor: 'text-amber-500' },
-    'heavy-equipment-knowledge': { icon: IconExcavator, bgColor: 'bg-blue-50', iconColor: 'text-blue-500' },
-    'mining-technology': { icon: IconRadarTower, bgColor: 'bg-purple-50', iconColor: 'text-purple-500' },
-    'hydraulic-system': { icon: IconDroplet, bgColor: 'bg-emerald-50', iconColor: 'text-emerald-500' },
-    'engine-maintenance': { icon: IconGear, bgColor: 'bg-orange-50', iconColor: 'text-orange-500' },
-    'lubrication-guide': { icon: IconOilCan, bgColor: 'bg-yellow-50', iconColor: 'text-yellow-500' },
-    'predictive-maintenance': { icon: IconActivity, bgColor: 'bg-sky-50', iconColor: 'text-sky-500' },
-    'failure-analysis': { icon: IconAlertTriangle, bgColor: 'bg-red-50', iconColor: 'text-red-500' },
-    'safety': { icon: IconShieldCheck, bgColor: 'bg-teal-50', iconColor: 'text-teal-500' },
-    'operator-tips': { icon: IconUserCheck, bgColor: 'bg-indigo-50', iconColor: 'text-indigo-500' },
-    'technical-bulletin': { icon: IconFileText, bgColor: 'bg-rose-50', iconColor: 'text-rose-500' },
-};
-
 export default function Index({ articles = [], featuredArticle = null, filters = {} }) {
     const [activeCategory, setActiveCategory] = useState(filters?.category || '');
+    const [searchQuery, setSearchQuery] = useState('');
 
     // 11 Kategori Topik Sesuai Permintaan
     const categories = [
@@ -169,20 +74,22 @@ export default function Index({ articles = [], featuredArticle = null, filters =
         "Technical Bulletin"
     ];
 
-    // Filter artikel berdasarkan kategori aktif
-    const filteredArticles = activeCategory 
-        ? articles.filter(art => art.category?.toLowerCase() === activeCategory.toLowerCase())
-        : articles;
+    // Filter artikel berdasarkan kategori aktif dan kata kunci pencarian
+    const filteredArticles = articles.filter(art => {
+        const matchesCategory = activeCategory 
+            ? art.category?.toLowerCase() === activeCategory.toLowerCase() 
+            : true;
+        const matchesSearch = searchQuery.trim() !== ''
+            ? art.title?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+              art.content?.toLowerCase().includes(searchQuery.toLowerCase())
+            : true;
+        return matchesCategory && matchesSearch;
+    });
 
     const handleCategoryClick = (cat) => {
         const newCat = activeCategory === cat ? '' : cat;
         setActiveCategory(newCat);
         router.get('/knowledge', { category: newCat }, { preserveState: true, replace: true });
-    };
-
-    const getCategoryConfig = (catName) => {
-        const key = catName?.toLowerCase().replace(/\s+/g, '-');
-        return categoryIcons[key] || { icon: IconWrench, bgColor: 'bg-amber-50', iconColor: 'text-amber-500' };
     };
 
     return (  
@@ -229,53 +136,7 @@ export default function Index({ articles = [], featuredArticle = null, filters =
                     </div>
                 </section>
 
-                {/* ================= CATEGORY NAVIGATION ================= */}
-                <section className="relative bg-[#F1F5F9] py-16 border-y border-slate-200/80">
-                    <div className="relative mx-auto max-w-[1440px] px-6 sm:px-10 lg:px-16">
-                        <div className="mb-10 text-center">
-                            <span className="text-xs font-bold tracking-[0.2em] text-[#FFC107]">EXPLORE TOPICS</span>
-                            <h2 className="mt-1 text-2xl font-black text-[#0F2B5C] sm:text-3xl">Popular Topics</h2>
-                            <div className="mx-auto mt-2.5 h-1 w-12 rounded-full bg-[#FFC107]"></div>
-                        </div>
-
-                        {/* Grid kategori responsif dengan 11 item */}
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-4">
-                            {categories.map((cat, index) => {
-                                const config = getCategoryConfig(cat);
-                                const IconComponent = config.icon;
-                                const isSelected = activeCategory === cat;
-
-                                return (
-                                    <div
-                                        key={index}
-                                        onClick={() => handleCategoryClick(cat)}
-                                        className={`group relative flex h-full cursor-pointer flex-col justify-between overflow-hidden rounded-2xl bg-white p-4 text-left border border-slate-200/80 shadow-lg shadow-slate-200/50 transition-all duration-300 hover:-translate-y-2 hover:border-[#FFC107] hover:shadow-2xl hover:shadow-amber-500/20 ${
-                                            isSelected ? 'ring-2 ring-[#FFC107] border-[#FFC107]' : ''
-                                        }`}
-                                    >
-                                        <div>
-                                            <div className={`mb-3 flex h-11 w-11 items-center justify-center rounded-xl ${config.bgColor}`}>
-                                                <IconComponent className={`h-5 w-5 ${config.iconColor} stroke-[1.75]`} />
-                                            </div>
-
-                                            <h3 className="text-xs font-bold leading-snug text-slate-800 group-hover:text-[#0F2B5C]">
-                                                {cat}
-                                            </h3>
-                                        </div>
-
-                                        <div className="mt-4 flex justify-end">
-                                            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-50 transition-colors group-hover:bg-[#FFC107]/20">
-                                                <IconChevronRight className={`h-3.5 w-3.5 ${config.iconColor} transition-transform duration-200 group-hover:translate-x-0.5`} />
-                                            </span>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </section>
-
-                {/* ================= FEATURED ARTICLE (DIPINDAHKAN TEPAT DI BAWAH KATEGORI & SELALU MUNCUL) ================= */}
+                {/* ================= 1. FEATURED ARTICLE (MAINTENANCE TIPS DI ATAS) ================= */}
                 {featuredArticle && (
                     <section className="bg-white px-6 py-16 sm:px-10 lg:px-16">
                         <div className="mx-auto max-w-[1440px]">
@@ -339,7 +200,61 @@ export default function Index({ articles = [], featuredArticle = null, filters =
                     </section>
                 )}
 
-                {/* ================= ARTICLE GRID ================= */}
+                {/* ================= 2. CATEGORY NAVIGATION BAR (DI BAWAH FEATURED ARTICLE) ================= */}
+                <section className="sticky top-20 z-30 w-full bg-[#0F2B5C] shadow-md border-b-2 border-[#FFC107]">
+                    <div className="mx-auto flex max-w-[1440px] items-center justify-between px-4 sm:px-8">
+                        {/* List Menu Bar Kategori Horizontal */}
+                        <div className="flex items-center overflow-x-auto scrollbar-none whitespace-nowrap py-0">
+                            {/* Tombol Beranda / Semua Topik */}
+                            <button
+                                type="button"
+                                onClick={() => handleCategoryClick('')}
+                                className={`flex h-[52px] items-center px-5 text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                                    activeCategory === ''
+                                        ? 'bg-[#FFC107] text-[#0F2B5C] shadow-inner font-extrabold'
+                                        : 'text-white/85 hover:bg-white/10 hover:text-white'
+                                }`}
+                            >
+                                Semua Topik
+                            </button>
+
+                            {/* Daftar Kategori Berita/Artikel */}
+                            {categories.map((cat, index) => {
+                                const isSelected = activeCategory === cat;
+                                return (
+                                    <button
+                                        key={index}
+                                        type="button"
+                                        onClick={() => handleCategoryClick(cat)}
+                                        className={`flex h-[52px] items-center px-4 text-xs font-semibold tracking-wide transition-all duration-200 border-l border-white/10 cursor-pointer ${
+                                            isSelected
+                                                ? 'bg-[#FFC107] text-[#0F2B5C] font-extrabold shadow-inner'
+                                                : 'text-white/90 hover:bg-white/10 hover:text-[#FFC107]'
+                                        }`}
+                                    >
+                                        {cat}
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        {/* Search Icon / Quick Filter Box di Sisi Kanan */}
+                        <div className="hidden lg:flex items-center pl-4">
+                            <div className="relative flex items-center">
+                                <input
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    placeholder="Cari artikel..."
+                                    className="h-8 w-44 rounded-md bg-white/10 pl-8 pr-3 text-xs text-white placeholder-white/50 border border-white/20 focus:border-[#FFC107] focus:bg-white/20 focus:outline-none focus:ring-0 transition"
+                                />
+                                <IconSearch className="absolute left-2.5 h-3.5 w-3.5 text-white/60 pointer-events-none" />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* ================= 3. ARTICLE GRID ================= */}
                 <section className="bg-[#F8FAFC] px-6 py-16 sm:px-10 lg:px-16">
                     <div className="mx-auto max-w-[1440px]">
                         <div className="mb-10 flex items-end justify-between">
@@ -349,9 +264,13 @@ export default function Index({ articles = [], featuredArticle = null, filters =
                                     {activeCategory ? `Kategori: ${activeCategory}` : "Technical Insight Terbaru"}
                                 </h2>
                             </div>
-                            {activeCategory && (
+                            {(activeCategory || searchQuery) && (
                                 <button
-                                    onClick={() => handleCategoryClick(activeCategory)}
+                                    onClick={() => {
+                                        setActiveCategory('');
+                                        setSearchQuery('');
+                                        router.get('/knowledge', {}, { preserveState: true, replace: true });
+                                    }}
                                     className="text-xs font-bold text-blue-600 hover:underline cursor-pointer"
                                 >
                                     Reset Filter
@@ -367,7 +286,7 @@ export default function Index({ articles = [], featuredArticle = null, filters =
                             </div>
                         ) : (
                             <div className="py-12 text-center text-slate-500">
-                                Belum ada artikel untuk kategori ini.
+                                Belum ada artikel untuk kategori atau pencarian ini.
                             </div>
                         )}
                     </div>
@@ -376,7 +295,7 @@ export default function Index({ articles = [], featuredArticle = null, filters =
                 {/* ================= CTA TECHNICAL SUPPORT ================= */}
                 <section className="relative overflow-hidden px-6 py-20 sm:px-10 lg:px-16">
                     <img
-                        src="/images/cta.png"
+                        src="/images/cta-know.PNG"
                         alt="Technical Support Background"
                         className="absolute inset-0 h-full w-full object-cover object-center"
                     />

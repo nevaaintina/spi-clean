@@ -1,667 +1,374 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Head } from '@inertiajs/react';
 import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
-import { 
-    Megaphone, 
-    ShieldCheck, 
-    Sparkles, 
-    Clock, 
-    Award, 
-    Activity, 
-    AlertTriangle, 
-    FileText, 
-    CheckCircle2, 
-    Send, 
-    Search,
-    PhoneCall,
-    Ambulance,
-    Flame,
-    Siren,
-    MapPin,
-    Phone
-} from 'lucide-react';
+
+// 1. KOMPONEN HERO BANNER (DURASI MASUK LAMA & TEGAS)
+function AnimatedHeroBanner() {
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsVisible(true);
+        }, 150);
+        return () => clearTimeout(timer);
+    }, []);
+
+    return (
+        <section className="relative h-screen w-full flex items-center justify-start overflow-hidden border-b-2 border-slate-300">
+            {/* Background Zoom-Out Halus */}
+            <img 
+                src="/images/hero-esg.png" 
+                alt="Hero HSE Background"
+                className={`absolute inset-0 w-full h-full object-cover transition-transform duration-[2500ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${
+                    isVisible ? 'scale-100' : 'scale-115'
+                }`}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/60 to-transparent" />
+            
+            <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 w-full pt-16">
+                <div 
+                    className={`transition-all duration-[2000ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${
+                        isVisible 
+                            ? 'opacity-100 translate-y-0 scale-100' 
+                            : 'opacity-0 translate-y-24 scale-95'
+                    }`}
+                >
+                    <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight drop-shadow-2xl leading-tight text-[#0284c7]">
+                        Safety First
+                    </h1>
+                </div>
+
+                <div 
+                    className={`transition-all duration-[2200ms] delay-300 ease-[cubic-bezier(0.12,1,0.2,1)] ${
+                        isVisible 
+                            ? 'opacity-100 translate-y-0' 
+                            : 'opacity-0 translate-y-20'
+                    }`}
+                >
+                    <p className="mt-4 text-base sm:text-xl text-slate-100 max-w-2xl font-light leading-relaxed drop-shadow">
+                        Prioritas utama PT Servistama Pro Indonesia adalah keselamatan setiap pekerja, kepatuhan regulasi lingkungan, dan kesehatan operasional tanpa kompromi.
+                    </p>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+// 2. KOMPONEN 8 SECTION PROGRAM (DURASI MASUK 2 DETIK LEBIH - SANGAT KELIHATAN & TEGAS)
+function AnimatedHseSection({ program, isEven }) {
+    const sectionRef = useRef(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                }
+            },
+            {
+                threshold: 0.15,
+            }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => {
+            if (sectionRef.current) {
+                observer.unobserve(sectionRef.current);
+            }
+        };
+    }, []);
+
+    return (
+        <section 
+            ref={sectionRef}
+            className="relative min-h-screen w-full flex items-center justify-center py-20 px-6 sm:px-12 lg:px-16 overflow-hidden"
+        >
+            {/* 1. Background Image Full Screen */}
+            <img 
+                src={program.bgImage} 
+                alt={`Background ${program.heading}`}
+                className="absolute inset-0 w-full h-full object-cover z-0"
+            />
+
+            {/* 2. White Overlay Tipis */}
+            <div className="absolute inset-0 bg-white/80 backdrop-blur-[1px] z-[1]" />
+
+            {/* 3. Gradient Blend Seamless Antar Section */}
+            <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white z-[2] pointer-events-none opacity-90" />
+
+            {/* 4. Konten dengan Durasi Masuk 2000ms - 2200ms */}
+            <div className="relative z-10 max-w-7xl mx-auto w-full">
+                <div className={`flex flex-col lg:items-center gap-12 lg:gap-20 ${
+                    isEven ? 'lg:flex-row-reverse' : 'lg:flex-row'
+                }`}>
+                    
+                    {/* ANIMASI FOTO: Durasi 2000ms, Meluncur Jauh */}
+                    <div 
+                        className={`w-full lg:w-1/2 flex justify-center transition-all duration-[2000ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${
+                            isVisible 
+                                ? 'opacity-100 translate-x-0 scale-100' 
+                                : isEven 
+                                    ? 'opacity-0 translate-x-36 scale-90' 
+                                    : 'opacity-0 -translate-x-36 scale-90'
+                        }`}
+                    >
+                        <div className="relative w-full max-w-[500px] p-6 sm:p-8">
+                            {/* Garis Aksen Kuning Di Luar Foto */}
+                            <svg 
+                                className={`absolute -top-1 -bottom-1 ${isEven ? '-right-1 -left-3' : '-left-1 -right-3'} h-[calc(100%+8px)] w-[calc(100%+16px)] pointer-events-none transition-transform duration-1000 ease-in-out ${
+                                    isVisible ? 'scale-100 opacity-100' : 'scale-90 opacity-0'
+                                }`}
+                                viewBox="0 0 530 430" 
+                                fill="none" 
+                                xmlns="http://www.w3.org/2000/svg"
+                                preserveAspectRatio="none"
+                            >
+                                <path 
+                                    d="M 40 16 C 16 16 16 40 16 70 V 350 C 16 380 40 404 70 404 H 460 C 490 404 514 380 514 350 V 70 C 514 40 490 16 460 16 H 120" 
+                                    stroke="#ffc107" 
+                                    strokeWidth="4" 
+                                    strokeLinecap="round" 
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+
+                            {/* Kotak Foto Utama */}
+                            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] bg-slate-200 group z-10">
+                                <img 
+                                    src={program.image} 
+                                    alt={program.heading}
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* ANIMASI TEKS: Durasi 2200ms, Naik Perlahan */}
+                    <div 
+                        className={`w-full lg:w-1/2 flex flex-col justify-center transition-all duration-[2200ms] delay-200 ease-[cubic-bezier(0.12,1,0.2,1)] ${
+                            isVisible 
+                                ? 'opacity-100 translate-y-0' 
+                                : 'opacity-0 translate-y-28'
+                        }`}
+                    >
+                        <h2 className="text-2xl sm:text-4xl lg:text-4xl xl:text-5xl font-black text-[#0f2b5c] leading-tight mb-6">
+                            {program.heading}
+                        </h2>
+
+                        <p className="text-sm sm:text-base lg:text-lg text-slate-700 leading-relaxed font-normal text-justify">
+                            {program.desc}
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    );
+}
+
+// 3. KOMPONEN GALLERY BERSIH (TANPA KETERANGAN), SUDUT LANCIP, & PREVIEW MODAL FULL LAYAR
+function HseGallerySection() {
+    const galleryScrollRef = useRef(null);
+    const [selectedImage, setSelectedImage] = useState(null);
+
+    // 6 Foto Galeri
+    const galleryImages = [
+        "/images/galleryhse1.jpeg",
+        "/images/galleryhse2.jpeg",
+        "/images/galleryhse3.jpeg",
+        "/images/galleryhse4.jpeg",
+        "/images/galleryhse5.jpeg",
+        "/images/galleryhse6.jpeg"
+    ];
+
+    const scroll = (direction) => {
+        if (galleryScrollRef.current) {
+            const cardWidth = galleryScrollRef.current.clientWidth / 3;
+            galleryScrollRef.current.scrollBy({
+                left: direction === 'left' ? -cardWidth * 1.5 : cardWidth * 1.5,
+                behavior: 'smooth'
+            });
+        }
+    };
+
+    return (
+        <section className="relative w-full bg-white py-20 px-6 sm:px-12 lg:px-16 border-t border-slate-200">
+            <div className="max-w-7xl mx-auto w-full">
+                
+                {/* Header Galeri & Tombol Navigasi Scroll */}
+                <div className="flex items-center justify-between mb-8">
+                    <div>
+                        <span className="text-xs font-black tracking-widest text-[#0284c7] uppercase bg-sky-50 px-3 py-1 rounded-none border-l-4 border-[#0284c7] inline-block mb-2">
+                            Dokumentasi
+                        </span>
+                        <h2 className="text-2xl sm:text-4xl font-black text-[#0f2b5c] tracking-tight">
+                            Galeri HSE
+                        </h2>
+                    </div>
+
+                    {/* Tombol Panah Kiri dan Kanan (Sudut Lancip) */}
+                    <div className="flex items-center gap-3">
+                        <button 
+                            onClick={() => scroll('left')}
+                            aria-label="Scroll Sebelumnya"
+                            className="w-11 h-11 bg-white text-[#0f2b5c] border-2 border-slate-300 hover:border-[#0f2b5c] hover:bg-[#0f2b5c] hover:text-white rounded-none flex items-center justify-center transition-all duration-300 shadow-sm active:scale-95 cursor-pointer"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button 
+                            onClick={() => scroll('right')}
+                            aria-label="Scroll Selanjutnya"
+                            className="w-11 h-11 bg-white text-[#0f2b5c] border-2 border-slate-300 hover:border-[#0f2b5c] hover:bg-[#0f2b5c] hover:text-white rounded-none flex items-center justify-center transition-all duration-300 shadow-sm active:scale-95 cursor-pointer"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Baris Foto Bersih (Tampil 3 Foto di Layar Desktop, Total 6 Foto, Sudut Lancip) */}
+                <div 
+                    ref={galleryScrollRef}
+                    className="flex overflow-x-auto gap-6 scroll-smooth snap-x snap-mandatory pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                >
+                    {galleryImages.map((imgSrc, idx) => (
+                        <div 
+                            key={idx}
+                            onClick={() => setSelectedImage(imgSrc)}
+                            className="flex-shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-start group cursor-pointer"
+                        >
+                            {/* Kotak Foto Polos, Sudut Lancip (rounded-none), Border Persegi */}
+                            <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden rounded-none border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300">
+                                <img 
+                                    src={imgSrc} 
+                                    alt={`Dokumentasi HSE ${idx + 1}`} 
+                                    className="w-full h-full object-cover rounded-none transition-transform duration-700 ease-out group-hover:scale-105"
+                                />
+
+                                {/* Aksen Garis Kuning Lancip Saat Hover */}
+                                <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#ffc107] transition-colors duration-300 pointer-events-none rounded-none" />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+            </div>
+
+            {/* MODAL LIGHTBOX FULL LAYAR SAAT FOTO DIKLIK */}
+            {selectedImage && (
+                <div 
+                    className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8 animate-fadeIn"
+                    onClick={() => setSelectedImage(null)}
+                >
+                    {/* Tombol Tutup (X) */}
+                    <button 
+                        onClick={() => setSelectedImage(null)}
+                        aria-label="Tutup Tampilan Penuh"
+                        className="absolute top-6 right-6 text-white hover:text-[#ffc107] bg-white/10 hover:bg-white/20 w-12 h-12 rounded-none flex items-center justify-center transition-all duration-200 border border-white/20 cursor-pointer z-50"
+                    >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    {/* Foto Ukuran Besar (Full Layar Max) */}
+                    <div 
+                        className="relative max-w-6xl max-h-[90vh] flex items-center justify-center rounded-none shadow-2xl overflow-hidden border-2 border-white/20"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <img 
+                            src={selectedImage} 
+                            alt="Full View" 
+                            className="max-w-full max-h-[90vh] object-contain rounded-none select-none"
+                        />
+                    </div>
+                </div>
+            )}
+        </section>
+    );
+}
 
 export default function Hse() {
-    // 1. Safety Policy
-    const safetyPolicies = [
+    const hsePrograms = [
         {
-            title: "Zero Accident Culture",
-            desc: "Menerapkan standar prosedur keselamatan kerja yang ketat di seluruh lini operasional bengkel, lapangan, maupun proyek klien untuk mencapai nihil kecelakaan kerja."
+            heading: "General Safety Talk (GST): Membangun Budaya K3 Secara Berkelanjutan",
+            desc: "General Safety Talk (GST) merupakan forum pertemuan berkala antara pihak pengawas dan seluruh karyawan guna menegaskan kembali pentingnya Keselamatan dan Kesehatan Kerja (K3) di lingkungan operasional. Sebagai mitra kerja BSS yang berkomitmen terhadap keselamatan kerja, kami secara rutin menghadiri agenda ini setiap awal bulan sebagai langkah strategis dalam memitigasi risiko kerja.",
+            image: "/images/hseprog1.jpeg",
+            bgImage: "/images/HSE-01.png"
         },
         {
-            title: "Environmental Protection",
-            desc: "Pengelolaan limbah B3 (bahan berbahaya dan beracun) secara profesional, pencegahan tumpahan oli/pelumas, serta penghematan sumber daya alam di area kerja."
+            heading: "Komite Keselamatan Pertambangan (KKP): Sinergi & Koordinasi Antar Mitra",
+            desc: "Pertemuan rutin Komite Keselamatan Pertambangan (KKP) diselenggarakan setiap bulan bersama seluruh mitra kerja BSS. Forum ini menjadi sarana diskusi strategis dalam membahas isu-isu keselamatan di area operasional pertambangan, sekaligus wadah pemantauan dan evaluasi progres program kerja HSE dari masing-masing mitra kerja demi terciptanya standardisasi operasional yang unggul.",
+            image: "/images/hseprog2.jpeg",
+            bgImage: "/images/HSE-02.jpeg"
         },
         {
-            title: "Health & Safety Compliance",
-            desc: "Mematuhi seluruh regulasi K3 nasional (SMK3 PP No. 50/2012) serta standar internasional demi memberikan jaminan perlindungan maksimal bagi seluruh tenaga kerja dan mitra."
+            heading: "Pertemuan 5 Menit (P5M): Pengarahan Singkat untuk Keselamatan Kerja",
+            desc: "P5M (Pertemuan / Pembicaraan 5 Menit) adalah sesi briefing harian yang wajib dilaksanakan sebelum seluruh aktivitas pekerjaan dimulai. Melalui sesi singkat ini, pengawas memberikan instruksi kerja teknis serta mengingatkan kembali kepatuhan terhadap standar keselamatan dan kesehatan kerja (K3), memastikan setiap personil memulai pekerjaan dalam kondisi siap dan sadar bahaya.",
+            image: "/images/hseprog3.jpeg",
+            bgImage: "/images/HSE-03.png"
+        },
+        {
+            heading: "Sosialisasi Kebijakan K3: Penyelarasan Standar Keselamatan Operasional",
+            desc: "Kegiatan sosialisasi kebijakan keselamatan diselenggarakan secara berkelanjutan guna memastikan seluruh personil memahami dan mematuhi regulasi K3 yang ditetapkan oleh BSS. Langkah ini merupakan perwujudan komitmen nyata dalam menyelaraskan visi keselamatan perusahaan dengan implementasi praktis di lapangan.",
+            image: "/images/hseprog4.jpeg",
+            bgImage: "/images/HSE-04.png"
+        },
+        {
+            heading: "Pemeriksaan & Pengecekan Harian (P2H): Kesiapan Unit Menjelang Operasi",
+            desc: "P2H merupakan prosedur inspeksi wajib yang dilaksanakan oleh setiap pengemudi atau operator sebelum mengoperasikan unit armada, khususnya unit Light Vehicle (LV) operasional. Pengecekan berkala ini bertujuan memastikan seluruh sarana mobilisasi berada dalam kondisi prima, layak operasi, serta aman digunakan dalam aktivitas kerja sehari-hari.",
+            image: "/images/hseprog5.jpeg",
+            bgImage: "/images/HSE-05.jpeg"
+        },
+        {
+            heading: "Pelatihan Berkala: Penguatan Kapasitas dan Kompetensi Personel",
+            desc: "Kami senantiasa berpartisipasi aktif dalam rangkaian kegiatan training dan pembekalan keselamatan yang diselenggarakan oleh pihak site. Program ini berfokus pada peningkatan keahlian, penyegaran pemahaman prosedur darurat, serta penanaman standar profesionalisme kerja demi mendukung keselamatan tanpa kompromi.",
+            image: "/images/hseprog6.jpeg",
+            bgImage: "/images/HSE-06.png"
+        },
+        {
+            heading: "Fatigue Test: Menjaga Kebugaran Fisik dan Fokus Kerja Personel",
+            desc: "Fatigue test merupakan prosedur pengujian kesehatan harian untuk memonitor tingkat kelelahan fisik maupun kesiapan mental tenaga kerja sebelum bertugas. Melalui pemeriksaan tekanan darah menggunakan tensimeter serta pemantauan kondisi fisik, program ini memastikan seluruh pekerja beroperasi dalam kondisi fit dan bebas dari risiko kelelahan ekstrem di area kerja.",
+            image: "/images/hseprog7.jpeg",
+            bgImage: "/images/HSE-07.png"
+        },
+        {
+            heading: "Alcohol Test: Disiplin dan Kesiapan Penuh Tanpa Kompromi",
+            desc: "Pemeriksaan skrining alkohol dilakukan secara berkala dan ketat untuk memastikan tidak ada personil yang bekerja di bawah pengaruh alkohol maupun zat terlarang. Pengujian ini merupakan langkah protektif fundamental dalam menjamin kewaspadaan penuh serta menekan potensi insiden kerja hingga tingkat zero accident.",
+            image: "/images/hseprog8.jpeg",
+            bgImage: "/images/HSE-08.jpeg"
         }
-    ];
-
-    // 2. Safety Campaign
-    const safetyCampaigns = [
-        {
-            icon: Megaphone,
-            tag: "RUTIN HARIAN",
-            title: "Toolbox Meeting 10 Menit",
-            desc: "Briefing keselamatan harian sebelum shift dimulai untuk mengidentifikasi bahaya area kerja, memeriksa kondisi teknisi, dan review SOP pekerjaan."
-        },
-        {
-            icon: ShieldCheck,
-            tag: "STANDAR WAJIB",
-            title: "100% Mandatory APD",
-            desc: "Kampanye disiplin penggunaan Alat Pelindung Diri lengkap (Helm Sertifikasi, Kacamata Safety, Sepatu Steel-Toe, Rompi Reflektif, & Sarung Tangan) tanpa toleransi."
-        },
-        {
-            icon: Sparkles,
-            tag: "BUDAYA WORKSHOP",
-            title: "Penerapan Budaya 5S",
-            desc: "Menggalakkan Seiri, Seiton, Seiso, Seiketsu, Shitsuke di area bengkel untuk mencegah kecelakaan tersandung, terpeleset, atau tertimpa perkakas."
-        }
-    ];
-
-    // 3. Near Miss Workflow
-    const nearMissSteps = [
-        {
-            number: "01",
-            icon: AlertTriangle,
-            title: "Temukan Bahaya / Incident",
-            desc: "Identifikasi kondisi tidak aman (Unsafe Condition) atau tindakan tidak aman (Unsafe Act) yang berpotensi menimbulkan kecelakaan."
-        },
-        {
-            number: "02",
-            icon: Send,
-            title: "Laporkan Segera",
-            desc: "Isi formulir Near Miss Report secara digital atau fisik kepada tim Safety Officer/P2K3 dalam kurun waktu kurang dari 24 jam."
-        },
-        {
-            number: "03",
-            icon: Search,
-            title: "Investigasi & Analisa",
-            desc: "Tim K3 menganalisis akar penyebab masalah (Root Cause Analysis) dan merumuskan tindakan perbaikan yang tepat."
-        },
-        {
-            number: "04",
-            icon: CheckCircle2,
-            title: "Tindakan Korektif (CAPA)",
-            desc: "Eksekusi tindakan pencegahan agar insiden serupa tidak terulang kembali di masa depan demi menjaga operasional aman."
-        }
-    ];
-
-    // 4. Safety Training & Certification
-    const safetyTrainings = [
-        {
-            title: "Sertifikasi K3 Umum & Spesialis",
-            type: "Wajib / Lisensi Kemnaker",
-            desc: "Pelatihan resmi untuk Ahli K3 Umum, K3 Listrik, dan K3 LOTO demi memastikan kepatuhan regulasi di area operasional.",
-            schedules: ["Tiap Kuartal", "Durasi: 12 Hari", "Sertifikat Kemnaker"]
-        },
-        {
-            title: "Operator Alat Berat & Rigging",
-            type: "Kompetensi Operasional",
-            desc: "Sertifikasi SIO (Surat Izin Operasi) untuk operator forklift, crane, dan teknisi rigging guna meminimalisir risiko kerja fatal.",
-            schedules: ["Berkala / Sesuai Proyek", "Durasi: 3-5 Hari", "SIO Aktif"]
-        },
-        {
-            title: "First Aid & Fire Fighting",
-            type: "Tanggap Darurat",
-            desc: "Pelatihan penanganan P3K, evakuasi medis, serta penggunaan APAR dan instalasi pemadam bagi seluruh tim ERT.",
-            schedules: ["6 Bulan Sekali", "Simulasi Lapangan", "Sertifikat Internal/External"]
-        }
-    ];
-
-    // 5. Emergency Contacts & Team
-    const emergencyExternal = [
-        { name: "Pemadam Kebakaran (Damkar)", number: "113 / 112", icon: Flame, color: "bg-red-500 text-white" },
-        { name: "Ambulans / Medis Darurat", number: "118 / 119", icon: Ambulance, color: "bg-emerald-600 text-white" },
-        { name: "Kepolisian (Polri)", number: "110", icon: Siren, color: "bg-blue-600 text-white" },
-        { name: "Basarnas (SAR)", number: "115", icon: ShieldCheck, color: "bg-amber-600 text-white" },
-    ];
-
-    const emergencyInternal = [
-        { role: "Commander Tanggap Darurat", name: "Bpk. Rahmat Hidayat", phone: "+62 812-3456-7890" },
-        { role: "Safety Officer / P2K3", name: "Ibu Anita Wijaya", phone: "+62 813-9876-5432" },
-        { role: "Tim First Aid (P3K) Workshop", name: "Bpk. Hendra Kurniawan", phone: "+62 811-2233-4455" },
-        { role: "Tim Penanggulangan Kebakaran", name: "Bpk. Dimas Pratama", phone: "+62 815-6677-8899" },
-    ];
-
-    // 6. Emergency Evacuation Steps
-    const evacuationSteps = [
-        { title: "Tetap Tenang & Hentikan Pekerjaan", desc: "Matikan mesin, alat berat, dan sumber listrik utama. Jangan panik." },
-        { title: "Dengar Suara Sirine Darurat", desc: "Jika sirine berbunyi panjang, segera tinggalkan peralatan kerja Anda." },
-        { title: "Ikuti Jalur Evakuasi (Evacuation Route)", desc: "Berjalan cepat ikuti petunjuk arah hijau. Jangan berlari atau menggunakan lift." },
-        { title: "Berkumpul di Titik Kumpul (Assembly Point)", desc: "Segera menuju Assembly Point di halaman utama. Lakukan absensi/presensi dengan tim K3." }
     ];
 
     return (
-        <div className="min-h-screen bg-slate-50 text-[#0f2b5c] font-sans selection:bg-[#ffc107] selection:text-[#0f2b5c]">
+        <div className="min-h-screen bg-white text-[#0f2b5c] font-sans selection:bg-[#ffc107] selection:text-[#0f2b5c] overflow-x-hidden">
             <Head title="Health, Safety & Environment (HSE) - PT Servistama Pro Indonesia" />
             <Navbar />
 
-           {/* HERO BANNER */}
-            <section className="relative bg-[#0f2b5c] text-white pt-32 pb-20 overflow-hidden">
-                <div className="absolute inset-0 opacity-15 bg-cover bg-center" style={{ backgroundImage: "url('/images/internship.png')" }} />
-                <div className="relative max-w-7xl mx-auto px-6 md:px-10">
-                    <div className="flex items-center gap-3 mb-4">
-                        <span className="w-8 h-[3px] bg-[#ffc107]" />
-                        <span className="text-xs font-black tracking-widest text-[#ffc107] uppercase">SAFETY FIRST POLICY</span>
-                    </div>
-                    <h1 className="text-4xl md:text-5xl font-black tracking-tight max-w-3xl">
-                        Health, Safety & Environment <span className="text-[#ffc107]">(HSE)</span>
-                    </h1>
-                    <p className="mt-4 text-sm md:text-base text-slate-300 max-w-2xl font-light leading-relaxed">
-                        Prioritas utama kami adalah keselamatan setiap pekerja, perlindungan lingkungan kerja, serta standar kesehatan operasional bertaraf internasional.
-                    </p>
-                </div>
-            </section>
+            {/* HERO BANNER SECTION */}
+            <AnimatedHeroBanner />
 
-            {/* MAIN CONTENT */}
-            <section className="py-20 max-w-7xl mx-auto px-6 md:px-10">
-                {/* OVERVIEW SECTION */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-20">
-                    <div className="lg:col-span-6 relative">
-                        <div className="absolute -inset-3 bg-gradient-to-r from-[#ffc107] to-[#0f2b5c] rounded-[2.5rem] blur-xl opacity-20 -z-10" />
-                        <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/3] group">
-                            <img 
-                                src="/images/internship.png" 
-                                alt="HSE PT Servistama Pro Indonesia" 
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#0f2b5c]/80 via-transparent to-transparent opacity-60" />
-                        </div>
-                    </div>
-                    <div className="lg:col-span-6 space-y-6">
-                        <span className="text-xs font-black tracking-widest text-slate-400 uppercase">
-                            STANDAR KERJA TINGGI
-                        </span>
-                        <h2 className="text-3xl font-black text-[#0f2b5c]">Standar Keselamatan Tanpa Kompromi</h2>
-                        <p className="text-sm text-slate-600 leading-relaxed">
-                            Operasional pemeliharaan alat berat, perbaikan komponen mesin, dan rekayasa teknik di PT Servistama Pro Indonesia selalu berpedoman pada regulasi Sistem Manajemen Keselamatan dan Kesehatan Kerja (SMK3) yang ketat.
-                        </p>
-                        <p className="text-sm text-slate-600 leading-relaxed">
-                            Setiap personil dibekali Alat Pelindung Diri (APD) lengkap dan diwajibkan mematuhi prosedur mitigasi risiko sebelum memulai tugas pemeliharaan di lokasi pertambangan maupun proyek konstruksi.
-                        </p>
-                    </div>
-                </div>
+            {/* LIST 8 SECTION PROGRAM HSE */}
+            <div className="flex flex-col w-full">
+                {hsePrograms.map((program, index) => (
+                    <AnimatedHseSection 
+                        key={index}
+                        program={program}
+                        isEven={index % 2 === 1}
+                    />
+                ))}
+            </div>
 
-                {/* SAFETY POLICY SECTION */}
-                <div className="pt-12 border-t border-slate-200 mb-24">
-                    <div className="max-w-3xl mb-12">
-                        <span className="text-xs font-black tracking-widest text-emerald-800 uppercase bg-emerald-100 px-3.5 py-1.5 rounded-lg inline-block mb-3 border border-emerald-200">
-                            Kebijakan Utama
-                        </span>
-                        <h3 className="text-2xl md:text-3xl font-black text-[#0f2b5c]">
-                            Safety Policy & Komitmen K3
-                        </h3>
-                        <p className="text-xs md:text-sm text-slate-600 mt-2">
-                            Tiga pilar utama kebijakan keselamatan dan kelestarian lingkungan yang menjadi pedoman kerja seluruh tim kami.
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {safetyPolicies.map((item, idx) => (
-                            <div 
-                                key={idx} 
-                                className="relative bg-white p-8 rounded-[2.5rem] border-2 border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between overflow-hidden group"
-                            >
-                                <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-[#ffc107]/10 rounded-full blur-2xl group-hover:bg-[#ffc107]/20 transition-all" />
-                                
-                                <div>
-                                    <div className="flex items-center justify-between mb-8">
-                                        <div className="w-14 h-14 rounded-2xl bg-[#0f2b5c] text-[#ffc107] flex items-center justify-center font-black text-xl shadow-lg shadow-[#0f2b5c]/20 group-hover:scale-110 transition-transform">
-                                            0{idx + 1}
-                                        </div>
-                                        <span className="text-xs font-black text-slate-300 tracking-widest uppercase">
-                                            SPI POLICY
-                                        </span>
-                                    </div>
-
-                                    <h4 className="text-xl font-black text-[#0f2b5c] mb-3 group-hover:text-amber-600 transition-colors">
-                                        {item.title}
-                                    </h4>
-                                    <p className="text-xs md:text-sm text-slate-600 leading-relaxed relative z-10">
-                                        {item.desc}
-                                    </p>
-                                </div>
-
-                                <div className="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between">
-                                    <span className="text-[11px] font-black tracking-wider text-[#0f2b5c] uppercase">
-                                        Pilar K3 #{idx + 1}
-                                    </span>
-                                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* SAFETY CAMPAIGN SECTION */}
-                <div className="pt-12 border-t border-slate-200">
-                    <div className="max-w-3xl mb-12">
-                        <span className="text-xs font-black tracking-widest text-sky-800 uppercase bg-sky-100 px-3.5 py-1.5 rounded-lg inline-block mb-3 border border-sky-200">
-                            Budaya Keselamatan
-                        </span>
-                        <h3 className="text-2xl md:text-3xl font-black text-[#0f2b5c]">
-                            Safety Campaign (Kampanye K3)
-                        </h3>
-                        <p className="text-xs md:text-sm text-slate-600 mt-2">
-                            Inisiatif harian dan sosialisasi berkala untuk meningkatkan kesadaran keselamatan kerja seluruh personil.
-                        </p>
-                    </div>
-
-                    <div className="space-y-6">
-                        {safetyCampaigns.map((campaign, idx) => {
-                            const IconComponent = campaign.icon;
-                            return (
-                                <div 
-                                    key={idx} 
-                                    className="relative bg-[#0f2b5c] text-white rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 overflow-hidden border border-slate-800 hover:border-[#ffc107] transition-all group"
-                                >
-                                    <div className="absolute left-0 top-0 bottom-0 w-3 bg-[#ffc107]" />
-
-                                    <div className="flex items-start md:items-center gap-6 pl-4">
-                                        <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-[#ffc107] shrink-0 group-hover:scale-110 group-hover:bg-[#ffc107] group-hover:text-[#0f2b5c] transition-all">
-                                            <IconComponent className="w-8 h-8" />
-                                        </div>
-
-                                        <div className="space-y-1">
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-[10px] font-black tracking-wider text-[#ffc107] uppercase bg-[#ffc107]/10 px-2.5 py-0.5 rounded border border-[#ffc107]/20">
-                                                    {campaign.tag}
-                                                </span>
-                                                <span className="text-xs text-slate-400 font-medium">Langkah 0{idx + 1}</span>
-                                            </div>
-                                            <h4 className="text-xl font-black text-white group-hover:text-[#ffc107] transition-colors">
-                                                {campaign.title}
-                                            </h4>
-                                            <p className="text-xs md:text-sm text-slate-300 max-w-2xl leading-relaxed font-light">
-                                                {campaign.desc}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="pl-4 md:pl-0 border-l md:border-l-0 border-slate-800 shrink-0">
-                                        <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-bold text-slate-200">
-                                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                                            Program Aktif
-                                        </span>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-
-                {/* STATISTICS SECTION */}
-                <div className="pt-16 border-t border-slate-200 mt-20">
-                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-                        <div className="max-w-2xl">
-                            <span className="text-xs font-black tracking-widest text-amber-900 uppercase bg-amber-100 px-3.5 py-1.5 rounded-lg inline-block mb-3 border border-amber-200">
-                                Pencapaian Keselamatan
-                            </span>
-                            <h3 className="text-2xl md:text-3xl font-black text-[#0f2b5c]">
-                                Lost Time Injury (LTI) & Safety Metrics
-                            </h3>
-                            <p className="text-xs md:text-sm text-slate-600 mt-2">
-                                Rekam jejak performa keselamatan kerja dan akumulasi jam kerja selamat tanpa kecelakaan fatal (*Zero LTI*).
-                            </p>
-                        </div>
-
-                        <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold shrink-0">
-                            <span className="relative flex h-3 w-3">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                            </span>
-                            Status Operasional: Safe Condition
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div className="relative bg-[#0f2b5c] text-white p-6 rounded-3xl border border-slate-800 shadow-xl overflow-hidden group">
-                            <div className="absolute -right-6 -bottom-6 w-28 h-28 bg-[#ffc107]/10 rounded-full blur-xl group-hover:bg-[#ffc107]/20 transition-all" />
-                            <div className="flex items-center justify-between mb-6">
-                                <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center text-[#ffc107]">
-                                    <Clock className="w-6 h-6" />
-                                </div>
-                                <span className="text-[10px] font-black tracking-wider text-[#ffc107] uppercase bg-[#ffc107]/10 px-2 py-1 rounded border border-[#ffc107]/20">
-                                    AKUMULASI
-                                </span>
-                            </div>
-                            <div className="space-y-1">
-                                <h4 className="text-3xl font-black text-[#ffc107] tracking-tight">
-                                    1.250.000+
-                                </h4>
-                                <p className="text-xs font-bold uppercase tracking-wider text-slate-300">
-                                    Safe Working Hours
-                                </p>
-                            </div>
-                            <p className="text-[11px] text-slate-400 mt-4 pt-3 border-t border-white/10 font-light">
-                                Total jam kerja tanpa adanya kecelakaan kerja yang menghilangkan waktu kerja.
-                            </p>
-                        </div>
-
-                        <div className="relative bg-white p-6 rounded-3xl border-2 border-slate-100 shadow-sm hover:shadow-md transition-all group">
-                            <div className="flex items-center justify-between mb-6">
-                                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600">
-                                    <ShieldCheck className="w-6 h-6" />
-                                </div>
-                                <span className="text-[10px] font-black tracking-wider text-emerald-700 uppercase bg-emerald-100 px-2 py-1 rounded border border-emerald-200">
-                                    TARGET PENCAPAIAN
-                                </span>
-                            </div>
-                            <div className="space-y-1">
-                                <h4 className="text-3xl font-black text-[#0f2b5c] tracking-tight">
-                                    0 <span className="text-sm font-semibold text-slate-400">Kasus</span>
-                                </h4>
-                                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                                    Zero LTI Record
-                                </p>
-                            </div>
-                            <p className="text-[11px] text-slate-500 mt-4 pt-3 border-t border-slate-100 font-light">
-                                Mempertahankan rekor *Zero Accident* di seluruh workshop dan area proyek teknis.
-                            </p>
-                        </div>
-
-                        <div className="relative bg-white p-6 rounded-3xl border-2 border-slate-100 shadow-sm hover:shadow-md transition-all group">
-                            <div className="flex items-center justify-between mb-6">
-                                <div className="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-600">
-                                    <Activity className="w-6 h-6" />
-                                </div>
-                                <span className="text-[10px] font-black tracking-wider text-sky-700 uppercase bg-sky-100 px-2 py-1 rounded border border-sky-200">
-                                    STANDAR K3
-                                </span>
-                            </div>
-                            <div className="space-y-1">
-                                <h4 className="text-3xl font-black text-[#0f2b5c] tracking-tight">
-                                    0.00
-                                </h4>
-                                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                                    LTIFR Rate
-                                </p>
-                            </div>
-                            <p className="text-[11px] text-slate-500 mt-4 pt-3 border-t border-slate-100 font-light">
-                                *Lost Time Injury Frequency Rate* dihitung berdasarkan 1.000.000 jam kerja.
-                            </p>
-                        </div>
-
-                        <div className="relative bg-white p-6 rounded-3xl border-2 border-slate-100 shadow-sm hover:shadow-md transition-all group">
-                            <div className="flex items-center justify-between mb-6">
-                                <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-600">
-                                    <Award className="w-6 h-6" />
-                                </div>
-                                <span className="text-[10px] font-black tracking-wider text-amber-800 uppercase bg-amber-100 px-2 py-1 rounded border border-amber-200">
-                                    AUDIT K3
-                                </span>
-                            </div>
-                            <div className="space-y-1">
-                                <h4 className="text-3xl font-black text-[#0f2b5c] tracking-tight">
-                                    100%
-                                </h4>
-                                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                                    Kepatuhan SMK3
-                                </p>
-                            </div>
-                            <p className="text-[11px] text-slate-500 mt-4 pt-3 border-t border-slate-100 font-light">
-                                Kepatuhan penuh pada audit Sistem Manajemen K3 (SMK3) & regulasi Kemnaker RI.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* NEAR MISS REPORT SECTION */}
-                <div id="near-miss-form" className="pt-16 border-t border-slate-200 mt-20">
-                    <div className="max-w-3xl mb-12">
-                        <span className="text-xs font-black tracking-widest text-rose-800 uppercase bg-rose-100 px-3.5 py-1.5 rounded-lg inline-block mb-3 border border-rose-200">
-                            Pencegahan Proaktif
-                        </span>
-                        <h3 className="text-2xl md:text-3xl font-black text-[#0f2b5c]">
-                            Near Miss Report (Pelaporan Hampir Celaka)
-                        </h3>
-                        <p className="text-xs md:text-sm text-slate-600 mt-2">
-                            Membangun kesadaran insiden tanpa rasa takut (*No Blame Culture*). Pelaporan kejadian hampir celaka membantu kita mencegah kecelakaan fatal sebelum terjadi.
-                        </p>
-                    </div>
-
-                    <div className="bg-gradient-to-br from-[#0f2b5c] to-slate-900 text-white p-8 md:p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden mb-12">
-                        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-[#ffc107]/10 blur-3xl pointer-events-none" />
-                        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-                            <div className="space-y-3 max-w-2xl">
-                                <div className="inline-flex items-center gap-2 text-rose-400 text-xs font-bold">
-                                    <AlertTriangle className="w-4 h-4 animate-bounce" />
-                                    <span>Mengapa Harus Melapor?</span>
-                                </div>
-                                <h4 className="text-2xl font-black text-white">
-                                    Setiap Laporan Anda Menyelamatkan Nyawa Rekan Kerja
-                                </h4>
-                                <p className="text-xs md:text-sm text-slate-300 leading-relaxed font-light">
-                                    *Near Miss* adalah kejadian tak terduga yang tidak menyebabkan cedera atau kerusakan harta benda, namun berpotensi fatal jika diabaikan. Laporkan segera hal sekecil apa pun di workshop atau lokasi kerja.
-                                </p>
-                            </div>
-                            <div className="shrink-0">
-                                <a 
-                                    href="#near-miss-form" 
-                                    className="inline-flex items-center gap-2 bg-[#ffc107] hover:bg-amber-400 text-[#0f2b5c] font-black text-xs uppercase tracking-wider px-6 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                                >
-                                    <FileText className="w-4 h-4" />
-                                    Buat Laporan Near Miss
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h4 className="text-lg font-black text-[#0f2b5c] mb-6 flex items-center gap-2">
-                        <span className="w-3 h-3 rounded-full bg-[#ffc107]" />
-                        Prosedur & Alur Pelaporan Near Miss
-                    </h4>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {nearMissSteps.map((step, idx) => {
-                            const IconComp = step.icon;
-                            return (
-                                <div 
-                                    key={idx} 
-                                    className="bg-white p-6 rounded-3xl border-2 border-slate-100 shadow-sm hover:border-[#0f2b5c] transition-all relative flex flex-col justify-between group"
-                                >
-                                    <div>
-                                        <div className="flex items-center justify-between mb-6">
-                                            <div className="w-12 h-12 rounded-2xl bg-slate-100 group-hover:bg-[#0f2b5c] group-hover:text-[#ffc107] text-[#0f2b5c] flex items-center justify-center transition-all">
-                                                <IconComp className="w-6 h-6" />
-                                            </div>
-                                            <span className="text-2xl font-black text-slate-200 group-hover:text-[#ffc107] transition-colors">
-                                                {step.number}
-                                            </span>
-                                        </div>
-                                        <h5 className="text-base font-black text-[#0f2b5c] mb-2">
-                                            {step.title}
-                                        </h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">
-                                            {step.desc}
-                                        </p>
-                                    </div>
-                                    <div className="mt-6 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                                        <span>SOP Langkah</span> #{idx + 1}
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-
-                {/* SAFETY TRAINING & CERTIFICATION SECTION */}
-                <div className="pt-16 border-t border-slate-200 mt-20">
-                    <div className="max-w-3xl mb-12">
-                        <span className="text-xs font-black tracking-widest text-indigo-800 uppercase bg-indigo-100 px-3.5 py-1.5 rounded-lg inline-block mb-3 border border-indigo-200">
-                            Pengembangan Kompetensi
-                        </span>
-                        <h3 className="text-2xl md:text-3xl font-black text-[#0f2b5c]">
-                            Safety Training & Sertifikasi K3
-                        </h3>
-                        <p className="text-xs md:text-sm text-slate-600 mt-2">
-                            Program pelatihan berkelanjutan untuk memastikan seluruh teknisi dan personel memiliki lisensi resmi serta kompetensi tanggap bahaya yang tinggi.
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {safetyTrainings.map((item, idx) => (
-                            <div 
-                                key={idx} 
-                                className="bg-white p-8 rounded-[2.5rem] border-2 border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
-                            >
-                                <div>
-                                    <div className="flex items-center justify-between mb-6">
-                                        <span className="text-[10px] font-black text-indigo-700 uppercase tracking-wider bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
-                                            {item.type}
-                                        </span>
-                                        <span className="text-xs font-black text-slate-300">
-                                            0{idx + 1}
-                                        </span>
-                                    </div>
-
-                                    <h4 className="text-xl font-black text-[#0f2b5c] mb-3">
-                                        {item.title}
-                                    </h4>
-                                    <p className="text-xs text-slate-600 leading-relaxed mb-6 font-light">
-                                        {item.desc}
-                                    </p>
-                                </div>
-
-                                <div className="pt-4 border-t border-slate-100 space-y-2">
-                                    {item.schedules.map((sch, sIdx) => (
-                                        <div key={sIdx} className="flex items-center gap-2 text-xs font-bold text-slate-500">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-                                            <span>{sch}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* EMERGENCY RESPONSE SECTION */}
-                <div className="pt-16 border-t border-slate-200 mt-20">
-                    <div className="max-w-3xl mb-12">
-                        <span className="text-xs font-black tracking-widest text-red-800 uppercase bg-red-100 px-3.5 py-1.5 rounded-lg inline-block mb-3 border border-red-200">
-                            Penanganan Cepat 24/7
-                        </span>
-                        <h3 className="text-2xl md:text-3xl font-black text-[#0f2b5c]">
-                            Emergency Response & Evacuation
-                        </h3>
-                        <p className="text-xs md:text-sm text-slate-600 mt-2">
-                            Kesiapsiagaan penuh dalam menghadapi situasi kritis, bencana alam, kebakaran, serta darurat medis di area kerja.
-                        </p>
-                    </div>
-
-                    <div className="space-y-8">
-                        {/* BAGIAN ATAS: 2 KOLOM LEBAR */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-                            
-                            {/* KOTAK 1: Darurat Nasional (24 Jam) */}
-                            <div className="bg-white p-8 md:p-10 rounded-[2.5rem] border-2 border-slate-100 shadow-sm flex flex-col justify-between">
-                                <div>
-                                    <h4 className="text-xl font-black text-[#0f2b5c] mb-8 flex items-center gap-3">
-                                        <PhoneCall className="w-6 h-6 text-red-600" />
-                                        Darurat Nasional (24 Jam)
-                                    </h4>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        {emergencyExternal.map((ext, idx) => {
-                                            const ExtIcon = ext.icon;
-                                            return (
-                                                <div key={idx} className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between hover:border-red-400 transition-colors">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${ext.color}`}>
-                                                            <ExtIcon className="w-5 h-5" />
-                                                        </div>
-                                                        <p className="text-xs font-bold text-slate-700 leading-tight">{ext.name}</p>
-                                                    </div>
-                                                    <a href={`tel:${ext.number}`} className="text-sm font-black text-[#0f2b5c] hover:text-red-600 transition-colors shrink-0 ml-2">
-                                                        {ext.number}
-                                                    </a>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                                <div className="mt-8 pt-4 border-t border-slate-100">
-                                    <p className="text-xs text-slate-400 font-medium">
-                                        *Gunakan nomor di atas untuk panggilan darurat di luar area workshop.
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* KOTAK 2: Tim ERT Internal SPI */}
-                            <div className="bg-[#0f2b5c] text-white p-8 md:p-10 rounded-[2.5rem] border border-slate-800 relative overflow-hidden flex flex-col justify-between">
-                                <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-red-500/10 rounded-full blur-2xl pointer-events-none" />
-                                <div>
-                                    <h4 className="text-xl font-black text-white mb-8 flex items-center gap-3">
-                                        <Siren className="w-6 h-6 text-[#ffc107]" />
-                                        Tim ERT Internal SPI
-                                    </h4>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        {emergencyInternal.map((team, idx) => (
-                                            <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col justify-between gap-2">
-                                                <span className="text-[10px] font-black text-[#ffc107] uppercase tracking-wider">{team.role}</span>
-                                                <div className="space-y-1">
-                                                    <h5 className="text-xs font-bold text-white">{team.name}</h5>
-                                                    <a 
-                                                        href={`tel:${team.phone}`} 
-                                                        className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-300 hover:text-[#ffc107] transition-colors"
-                                                    >
-                                                        <Phone className="w-3.5 h-3.5 text-[#ffc107]" />
-                                                        {team.phone}
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                                <div className="mt-8 pt-4 border-t border-white/10">
-                                    <span className="inline-flex items-center gap-2 text-xs text-emerald-400 font-bold">
-                                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                                        Tim Siaga On-Site 24/7
-                                    </span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        {/* BAGIAN BAWAH: FULL WIDTH PROSEDUR EVAKUASI */}
-                        <div className="bg-white p-8 md:p-10 rounded-[2.5rem] border-2 border-slate-100 shadow-sm">
-                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-                                <div>
-                                    <span className="text-[10px] font-black tracking-widest text-emerald-800 uppercase bg-emerald-100 px-3 py-1 rounded-md border border-emerald-200">
-                                        STANDARD OPERATING PROCEDURE
-                                    </span>
-                                    <h4 className="text-xl font-black text-[#0f2b5c] flex items-center gap-2 mt-2">
-                                        <MapPin className="w-6 h-6 text-emerald-600" />
-                                        Prosedur Evakuasi Darurat
-                                    </h4>
-                                </div>
-                                <div className="bg-amber-50 px-4 py-3 rounded-2xl border border-amber-200 text-xs font-bold text-amber-900 flex items-center gap-2 shrink-0">
-                                    <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-                                    <span>Assembly Point Utama: Halaman Depan Workshop A</span>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                {evacuationSteps.map((step, idx) => (
-                                    <div key={idx} className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
-                                        <div>
-                                            <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 font-black text-xs flex items-center justify-center border border-emerald-200 mb-4">
-                                                0{idx + 1}
-                                            </div>
-                                            <h5 className="text-xs font-black text-[#0f2b5c] uppercase leading-snug mb-2">{step.title}</h5>
-                                            <p className="text-xs text-slate-600 leading-relaxed font-light">{step.desc}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </section>
+            {/* SECTION GALLERY BERSIH (SUDUT LANCIP & KLIK PREVIEW FULL LAYAR) */}
+            <HseGallerySection />
 
             <Footer />
         </div>

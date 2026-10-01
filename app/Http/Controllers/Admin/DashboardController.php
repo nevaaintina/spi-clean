@@ -18,12 +18,17 @@ use App\Models\Milestone;
 use App\Models\TeamMember;
 use App\Models\Customer;
 use App\Models\JobVacancy;
-use App\Models\Service; // 👈 Model Service diimpor di sini
+use App\Models\Service;
+use App\Models\Setting; // 👈 Model Setting diimpor untuk membaca path PDF katalog utama
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        // Mengambil path file PDF katalog produk dan spare part secara permanen dari database
+        $productCatalog = Setting::where('key', 'product_catalog_pdf')->first();
+        $sparePartCatalog = Setting::where('key', 'spare_part_catalog_pdf')->first();
+
         return Inertia::render('Admin/Dashboard', [
             'homeSetting'          => HomeSetting::first(),
             'projects'             => Project::latest()->get(),
@@ -39,10 +44,13 @@ class DashboardController extends Controller
             'teamMembers'          => TeamMember::all(),
             'customers'            => Customer::all(),
             'jobVacancies'         => JobVacancy::latest()->get(),
-            'services'             => Service::latest()->get(), // 👈 Memuat data sub-layanan untuk Admin Dashboard
+            'services'             => Service::latest()->get(),
             
-            // Variabel untuk menyelaraskan status fail PDF katalog utama pada dashboard admin
-            'catalogPdfUrl'        => session('spare_part_catalog_pdf'),
+            // Menyediakan data katalog PDF utama secara terpisah untuk Produk dan Spare Part
+            'productCatalogPdf'    => $productCatalog ? $productCatalog->value : null,
+            'sparePartCatalogPdf'  => $sparePartCatalog ? $sparePartCatalog->value : null,
+            
+            // Variabel pendukung lainnya
             'explodedImagesMap'    => session('spare_part_exploded_images', []),
             'explodedPartsDataMap' => session('spare_part_exploded_parts_data', []),
         ]);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from '@inertiajs/react';
 
 export default function Footer() {
   return (
@@ -6,8 +7,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           
+          {/* LOGO & INFORMASI PERUSAHAAN */}
           <div className="lg:col-span-2">
-            {/* LOGO FOOTER */}
             <div className="flex items-center space-x-3 mb-4">
               <div className="h-10 md:h-12 flex items-center">
                 <img 
@@ -18,59 +19,160 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-slate-500 text-xs leading-relaxed mb-4 max-w-sm">
-              Authorized Dealer Service & Warranty Heavy Equipment - XCMG Brand. Penyedia Digital Service Platform terintegrasi untuk alat berat pertambangan dan konstruksi.
+              Authorized Dealer Service & Warranty Heavy Equipment - XCMG Brand. Penyedia Digital Service Platform Terintegrasi untuk Alat Berat Pertambangan dan Konstruksi.
             </p>
             <div className="space-y-2 text-xs text-slate-600">
               <p>Foresta Business Loft 7, Unit 6-7, Jl. BSD Boulevard Utara, Pagedangan, Kab. Tangerang, Banten 15331</p>
-              <p>Hotline: +62 811-XXXX-XXXX | Emergency Call 24/7</p>
-              <p>Email: info@servistamapro.co.id</p>
+              <p>Hotline: +62 822-5801-3177</p>
+              <p>Email: info@servistamapro.com</p>
             </div>
           </div>
 
+          {/* 1. LAYANAN PURNA JUAL */}
           <div>
             <h4 className="text-slate-900 font-bold text-sm mb-4 border-b border-slate-200 pb-2 uppercase tracking-wider">
               Layanan Purna Jual
             </h4>
-            <ul className="space-y-2">
-              <li><a href="#preventive" className="hover:text-amber-600 transition">Preventive Maintenance</a></li>
-              <li><a href="#corrective" className="hover:text-amber-600 transition">Corrective Maintenance</a></li>
-              <li><a href="#breakdown" className="hover:text-amber-600 transition">Breakdown Service</a></li>
-              <li><a href="#overhaul" className="hover:text-amber-600 transition">Overhaul & Rebuild</a></li>
-              <li><a href="#oil-analysis" className="hover:text-amber-600 transition">Oil Analysis Laboratory</a></li>
-              <li><a href="#warranty" className="hover:text-amber-600 transition">Warranty Management</a></li>
+            <ul className="space-y-2.5">
+              <li>
+                <Link href="/services" className="hover:text-amber-600 transition">
+                  Maintenance & Repair
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="hover:text-amber-600 transition">
+                  Installation & Commissioning
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="hover:text-amber-600 transition">
+                  Overhaul & Rebuild
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="hover:text-amber-600 transition">
+                  Inspection & Testing
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="hover:text-amber-600 transition">
+                  Contract & Consulting
+                </Link>
+              </li>
             </ul>
           </div>
 
+          {/* 2. PRODUK XCMG (DIARAHKAN KE HALAMAN PRODUCTS) */}
           <div>
             <h4 className="text-slate-900 font-bold text-sm mb-4 border-b border-slate-200 pb-2 uppercase tracking-wider">
-              Produk XCMG
+              XCMG Products
             </h4>
             <ul className="space-y-2">
-              <li><a href="#excavator" className="hover:text-amber-600 transition">Mining Excavator</a></li>
-              <li><a href="#wheel-loader" className="hover:text-amber-600 transition">Wheel Loader</a></li>
-              <li><a href="#motor-grader" className="hover:text-amber-600 transition">Motor Grader</a></li>
-              <li><a href="#dump-truck" className="hover:text-amber-600 transition">Mining Dump Truck</a></li>
-              <li><a href="#crane" className="hover:text-amber-600 transition">Heavy Duty Crane</a></li>
-              <li><a href="#road" className="hover:text-amber-600 transition">Road Machinery</a></li>
+              <li>
+                <Link href="/products" className="hover:text-amber-600 transition">
+                  GR 3005T-Pro
+                </Link>
+              </li>
+              <li>
+                <Link href="/products" className="hover:text-amber-600 transition">
+                  XDA 45
+                </Link>
+              </li>
+              <li>
+                <Link href="/products" className="hover:text-amber-600 transition">
+                  XDE130
+                </Link>
+              </li>
+              <li>
+                <Link href="/products" className="hover:text-amber-600 transition">
+                  XDR 80T-AT
+                </Link>
+              </li>
+              <li>
+                <Link href="/products" className="hover:text-amber-600 transition">
+                  XE1250
+                </Link>
+              </li>
+              <li>
+                <Link href="/products" className="hover:text-amber-600 transition">
+                  XE2000
+                </Link>
+              </li>
+              <li>
+                <Link href="/products" className="hover:text-amber-600 transition">
+                  XGA 105
+                </Link>
+              </li>
+              <li>
+                <Link href="/products" className="hover:text-amber-600 transition">
+                  XGA 4251 D2WC
+                </Link>
+              </li>
             </ul>
           </div>
 
+          {/* 3. PORTAL CENTER (DIARAHKAN KE SECTION ID YANG SESUAI DENGAN NAVBAR DROPDOWN) */}
           <div>
             <h4 className="text-slate-900 font-bold text-sm mb-4 border-b border-slate-200 pb-2 uppercase tracking-wider">
-              Pusat Portal
+              Portal Center
             </h4>
             <ul className="space-y-2">
-              <li><a href="#portal" className="text-amber-600 font-semibold hover:underline">Customer Service Portal</a></li>
-              <li><a href="#online-request" className="hover:text-amber-600 transition">Online Service Request</a></li>
-              <li><a href="#parts-catalog" className="hover:text-amber-600 transition">Genuine Spare Parts</a></li>
-              <li><a href="#training" className="hover:text-amber-600 transition">Training Center</a></li>
-              <li><a href="#hse" className="hover:text-amber-600 transition">HSE & Safety Policy</a></li>
-              <li><a href="#career" className="hover:text-amber-600 transition">Karir & Lowongan</a></li>
+              <li>
+                <Link href="/" className="hover:text-amber-600 transition">
+                  Top of Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/#about" className="hover:text-amber-600 transition">
+                  Company Introduction
+                </Link>
+              </li>
+              <li>
+                <Link href="/#statistics" className="hover:text-amber-600 transition">
+                  Company Statistics
+                </Link>
+              </li>
+              <li>
+                <Link href="/#strength" className="hover:text-amber-600 transition">
+                  Company Strength
+                </Link>
+              </li>
+              <li>
+                <Link href="/#featured-services" className="hover:text-amber-600 transition">
+                  Featured Services
+                </Link>
+              </li>
+              <li>
+                <Link href="/#testimonials" className="hover:text-amber-600 transition">
+                  Customer Testimonials
+                </Link>
+              </li>
+              <li>
+                <Link href="/#projects" className="hover:text-amber-600 transition">
+                  Project Gallery
+                </Link>
+              </li>
+              <li>
+                <Link href="/#news" className="hover:text-amber-600 transition">
+                  Latest News
+                </Link>
+              </li>
+              <li>
+                <Link href="/#contact" className="hover:text-amber-600 transition">
+                  Contact Information
+                </Link>
+              </li>
+              <li>
+                <Link href="/#operational-area" className="hover:text-amber-600 transition">
+                  Branch Office
+                </Link>
+              </li>
             </ul>
           </div>
 
         </div>
 
+        {/* COPYRIGHT */}
         <div className="border-t border-slate-200 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center text-slate-500 text-[11px]">
           <p>© 2026 PT. Servistama Pro Indonesia. All rights reserved.</p>
           <p className="mt-2 md:mt-0">The Future of Smart Heavy Equipment Service</p>

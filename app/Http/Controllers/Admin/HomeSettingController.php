@@ -84,7 +84,7 @@ class HomeSettingController extends Controller
     public function storePoster(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:10048',
         ]);
 
         if ($request->hasFile('image')) {

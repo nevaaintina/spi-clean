@@ -52,6 +52,63 @@ class ArticleController extends Controller
     }
 
     /**
+     * Memperbarui artikel Knowledge / Berita yang sudah ada (Fitur Edit)
+     */
+    public function update(Request $request, Article $article)
+    {
+        $request->validate([
+            'title'          => 'required|string|max:255',
+            'category'       => 'required|string|max:255',
+            'read_time'      => 'nullable|string|max:255',
+            'excerpt'        => 'nullable|string',
+            'content'        => 'required|string',
+            'instagram_link' => 'nullable|url|max:255',
+            'thumbnail'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10048',
+            'is_featured'    => 'nullable|boolean',
+        ]);
+
+        $thumbnailPath = $article->thumbnail;
+
+        // Jika ada permintaan untuk menghapus thumbnail lama
+        if ($request->boolean('remove_thumbnail')) {
+            if ($article->thumbnail && File::exists(public_path($article->thumbnail))) {
+                File::delete(public_path($article->thumbnail));
+            }
+            $thumbnailPath = null;
+        } 
+        // Jika ada file thumbnail baru yang di-upload
+        elseif ($request->hasFile('thumbnail')) {
+            if ($article->thumbnail && File::exists(public_path($article->thumbnail))) {
+                File::delete(public_path($article->thumbnail));
+            }
+            
+            $file = $request->file('thumbnail');
+            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $destinationPath = public_path('images/articles');
+            
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true, true);
+            }
+            
+            $file->move($destinationPath, $filename);
+            $thumbnailPath = 'images/articles/' . $filename;
+        }
+
+        $article->update([
+            'title'          => $request->title,
+            'category'       => $request->category,
+            'read_time'      => $request->read_time ?? '5 Menit',
+            'excerpt'        => $request->excerpt,
+            'content'        => $request->content,
+            'instagram_link' => $request->instagram_link,
+            'thumbnail'      => $thumbnailPath,
+            'is_featured'    => $request->boolean('is_featured'),
+        ]);
+
+        return redirect()->to('/admin?tab=news')->with('success', 'Artikel Knowledge berhasil diperbarui!');
+    }
+
+    /**
      * Menghapus artikel knowledge dan file thumbnail terkait
      */
     public function destroy(Article $article)

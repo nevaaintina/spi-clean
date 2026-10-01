@@ -15,10 +15,11 @@ export default function AdminDashboard({
   mediaGalleries = [], 
   testimonials = [],
   jobVacancies = [],
-  services = [], // 👈 Data layanan dari database
-  catalogPdfUrl = null,         
-  explodedImagesMap = {},       
-  explodedPartsDataMap = {}     
+  services = [],
+  productCatalogPdf = null,       // 👈 Katalog Produk Utama
+  sparePartCatalogPdf = null,     // 👈 Katalog Spare Part Utama
+  explodedImagesMap = {},      
+  explodedPartsDataMap = {}    
 }) {
   const [activeTab, setActiveTab] = useState(() => {
     const params = new URLSearchParams(window.location.search);
@@ -29,6 +30,35 @@ export default function AdminDashboard({
 
   const [specRows, setSpecRows] = useState([{ label: "", value: "" }]);
   const [featureRows, setFeatureRows] = useState([""]);
+
+  // STATE UNTUK MODAL EDIT PRODUK & FORM EDITNYA
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [editSpecRows, setEditSpecRows] = useState([{ label: "", value: "" }]);
+  const [editFeatureRows, setEditFeatureRows] = useState([""]);
+
+  // STATE UNTUK MODAL EDIT SUB-LAYANAN & FORM EDITNYA
+  const [editingService, setEditingService] = useState(null);
+  const editServiceForm = useForm({
+    category: "Maintenance & Repair",
+    title: "",
+    description: "",
+    what_we_do: "",
+    key_benefits: "",
+  });
+
+  // STATE UNTUK MODAL EDIT ARTIKEL KNOWLEDGE & FORM EDITNYA
+  const [editingArticle, setEditingArticle] = useState(null);
+  const editArticleForm = useForm({
+    title: "",
+    category: "Maintenance Tips",
+    read_time: "5 Menit",
+    excerpt: "",
+    content: "",
+    instagram_link: "",
+    thumbnail: null,
+    is_featured: false,
+    remove_thumbnail: false,
+  });
 
   const heroForm = useForm({
     youtube_url: homeSetting?.youtube_url || "",
@@ -88,8 +118,18 @@ export default function AdminDashboard({
     brochure: null,
     video_file: null, 
     gallery_images: [], 
-    overview: "",
     description: "",
+  });
+
+  const editProductForm = useForm({
+    category: "Excavator",
+    name: "",
+    image: null,
+    video_file: null,
+    gallery_images: [],
+    description: "",
+    remove_image: false, 
+    remove_video: false,
   });
 
   const sparePartForm = useForm({
@@ -119,7 +159,6 @@ export default function AdminDashboard({
     is_featured: false,
   });
 
-  // Form Media Gallery
   const mediaForm = useForm({
     title: "",
     category: "Photo Gallery",
@@ -128,7 +167,6 @@ export default function AdminDashboard({
     description: "",
   });
 
-  // Form Job Vacancy (Lowongan Pekerjaan)
   const jobVacancyForm = useForm({
     title: "",
     department: "",
@@ -140,7 +178,6 @@ export default function AdminDashboard({
     requirements: "",
   });
 
-  // Form Testimonial (Customer, Employee, Intern)
   const testimonialForm = useForm({
     name: "",
     role: "",
@@ -149,13 +186,24 @@ export default function AdminDashboard({
     image: null,
   });
 
-  // Form Service / Layanan Utama & Sub-Layanan
   const serviceForm = useForm({
     category: "Maintenance & Repair",
     title: "",
     description: "",
     what_we_do: "",
     key_benefits: "",
+  });
+
+  // 1. FORM KATALOG UTAMA PRODUK
+  const productCatalogForm = useForm({
+    type: "product",
+    catalog_pdf: null,
+  });
+
+  // 2. FORM KATALOG UTAMA SPARE PART
+  const sparePartCatalogForm = useForm({
+    type: "spare_part",
+    catalog_pdf: null,
   });
 
   const mapRef = useRef(null);
@@ -285,11 +333,11 @@ export default function AdminDashboard({
     formData.append("title", projectForm.data.title);
     formData.append("location", projectForm.data.location);
     formData.append("year", projectForm.data.year);
-    
+     
     if (projectForm.data.image) {
       formData.append("image", projectForm.data.image);
     }
-    
+     
     formData.append("description", projectForm.data.description || "");
 
     router.post("/admin/projects", formData, {
@@ -379,7 +427,7 @@ export default function AdminDashboard({
 
   const handleMilestoneSubmit = (e) => {
     e.preventDefault();
-    
+     
     const formData = new FormData();
     formData.append("year", milestoneForm.data.year);
     formData.append("title", milestoneForm.data.title);
@@ -413,7 +461,7 @@ export default function AdminDashboard({
 
   const handleTeamSubmit = (e) => {
     e.preventDefault();
-    
+     
     const formData = new FormData();
     formData.append("name", teamForm.data.name);
     formData.append("role", teamForm.data.role);
@@ -448,7 +496,7 @@ export default function AdminDashboard({
 
   const handleCustomerSubmit = (e) => {
     e.preventDefault();
-    
+     
     const formData = new FormData();
     formData.append("name", customerForm.data.name);
     formData.append("region", customerForm.data.region);
@@ -485,7 +533,6 @@ export default function AdminDashboard({
     }
   };
 
-  // Handler Submit Service / Layanan
   const handleServiceSubmit = (e) => {
     e.preventDefault();
     serviceForm.post("/admin/services", {
@@ -514,11 +561,130 @@ export default function AdminDashboard({
     }
   };
 
+  const handleOpenEditService = (srv) => {
+    setEditingService(srv);
+    editServiceForm.setData({
+      category: srv.category || "Maintenance & Repair",
+      title: srv.title || "",
+      description: srv.description || "",
+      what_we_do: Array.isArray(srv.what_we_do) ? srv.what_we_do.join("\n") : (srv.what_we_do || ""),
+      key_benefits: Array.isArray(srv.key_benefits) ? srv.key_benefits.join("\n") : (srv.key_benefits || ""),
+    });
+  };
+
+  const handleUpdateService = (e) => {
+    e.preventDefault();
+    if (!editingService) return;
+
+    editServiceForm.put(`/admin/services/${editingService.id}`, {
+      preserveState: false,
+      onSuccess: () => {
+        alert("Sub-layanan berhasil diperbarui!");
+        setEditingService(null);
+        router.reload();
+      },
+      onError: (errors) => {
+        console.error("Gagal memperbarui sub-layanan:", errors);
+        alert("Gagal memperbarui sub-layanan. Periksa kembali form.");
+      }
+    });
+  };
+
+  const handleOpenEditArticle = (art) => {
+    setEditingArticle(art);
+    editArticleForm.setData({
+      title: art.title || "",
+      category: art.category || "Maintenance Tips",
+      read_time: art.read_time || "5 Menit",
+      excerpt: art.excerpt || "",
+      content: art.content || "",
+      instagram_link: art.instagram_link || "",
+      thumbnail: null,
+      is_featured: !!art.is_featured,
+      remove_thumbnail: false,
+    });
+  };
+
+  const handleUpdateArticle = (e) => {
+    e.preventDefault();
+    if (!editingArticle) return;
+
+    const formData = new FormData();
+    formData.append("_method", "PUT");
+    formData.append("title", editArticleForm.data.title);
+    formData.append("category", editArticleForm.data.category);
+    formData.append("read_time", editArticleForm.data.read_time);
+    formData.append("excerpt", editArticleForm.data.excerpt || "");
+    formData.append("content", editArticleForm.data.content);
+    formData.append("instagram_link", editArticleForm.data.instagram_link || "");
+    formData.append("is_featured", editArticleForm.data.is_featured ? 1 : 0);
+    formData.append("remove_thumbnail", editArticleForm.data.remove_thumbnail ? 1 : 0);
+
+    if (editArticleForm.data.thumbnail) {
+      formData.append("thumbnail", editArticleForm.data.thumbnail);
+    }
+
+    router.post(`/admin/articles/${editingArticle.id}`, formData, {
+      forceFormData: true,
+      preserveState: false,
+      onSuccess: () => {
+        alert("Artikel Knowledge berhasil diperbarui!");
+        setEditingArticle(null);
+        router.reload();
+      },
+      onError: (errors) => {
+        console.error("Gagal memperbarui artikel:", errors);
+        alert("Gagal memperbarui artikel. Periksa kembali form.");
+      },
+    });
+  };
+
+  // HANDLER SUBMIT KATALOG UTAMA (PRODUK / SPARE PART)
+  const handleCatalogUpdate = (formInstance, typeName) => {
+    formInstance.post("/admin/catalogs/update", {
+      forceFormData: true,
+      preserveState: false,
+      onSuccess: () => {
+        alert(`${typeName} berhasil diperbarui dan disimpan secara permanen!`);
+        formInstance.reset("catalog_pdf");
+        router.reload();
+      },
+      onError: (errors) => {
+        console.error(`Gagal menyimpan ${typeName}:`, errors);
+        alert(`Gagal menyimpan ${typeName}. Pastikan file berupa PDF berukuran maksimal 25MB.`);
+      }
+    });
+  };
+
+  // HANDLER HAPUS KATALOG UTAMA
+  const handleCatalogDelete = (type, typeName) => {
+    if (confirm(`Apakah Anda yakin ingin menghapus ${typeName}?`)) {
+      router.delete("/admin/catalogs/delete", {
+        data: { type: type },
+        preserveState: false,
+        onSuccess: () => {
+          alert(`${typeName} berhasil dihapus!`);
+          router.reload();
+        },
+        onError: (errors) => {
+          console.error(`Gagal menghapus ${typeName}:`, errors);
+          alert(`Gagal menghapus ${typeName}.`);
+        }
+      });
+    }
+  };
+
   const handleAddSpecRow = () => setSpecRows([...specRows, { label: "", value: "" }]);
   const handleRemoveSpecRow = (index) => setSpecRows(specRows.filter((_, i) => i !== index));
 
   const handleAddFeatureRow = () => setFeatureRows([...featureRows, ""]);
   const handleRemoveFeatureRow = (index) => setFeatureRows(featureRows.filter((_, i) => i !== index));
+
+  const handleAddEditSpecRow = () => setEditSpecRows([...editSpecRows, { label: "", value: "" }]);
+  const handleRemoveEditSpecRow = (index) => setEditSpecRows(editSpecRows.filter((_, i) => i !== index));
+
+  const handleAddEditFeatureRow = () => setEditFeatureRows([...editFeatureRows, ""]);
+  const handleRemoveEditFeatureRow = (index) => setEditFeatureRows(editFeatureRows.filter((_, i) => i !== index));
 
   const handleProductSubmit = (e) => {
     e.preventDefault();
@@ -541,25 +707,24 @@ export default function AdminDashboard({
     const formData = new FormData();
     formData.append("category", activeProductCategory);
     formData.append("name", productForm.data.name);
-    
+     
     if (productForm.data.image) formData.append("image", productForm.data.image);
     if (productForm.data.brochure) formData.append("brochure", productForm.data.brochure);
-    
+     
     if (productForm.data.video_file) {
       formData.append("video_file", productForm.data.video_file);
     }
-    
+     
     if (productForm.data.gallery_images) {
       for (let i = 0; i < productForm.data.gallery_images.length; i++) {
         formData.append("gallery_images[]", productForm.data.gallery_images[i]);
       }
     }
-    
-    formData.append("overview", productForm.data.overview || "");
+     
     formData.append("description", productForm.data.description || "");
-    
     formData.append("specifications", JSON.stringify(specRows));
     formData.append("features", JSON.stringify(featureRows));
+
     router.post("/admin/products", formData, {
       forceFormData: true,
       preserveState: false,
@@ -573,6 +738,86 @@ export default function AdminDashboard({
       onError: (errors) => {
         console.error("Gagal menyimpan produk:", errors);
         alert("Gagal menyimpan produk. Pastikan format file sesuai dan ukuran tidak melebihi batas maksimal.");
+      },
+    });
+  };
+
+  const handleOpenEditProduct = (prod) => {
+    setEditingProduct(prod);
+    editProductForm.setData({
+      category: prod.category || activeProductCategory,
+      name: prod.name || "",
+      image: null,
+      video_file: null,
+      gallery_images: [],
+      description: prod.description || "",
+      remove_image: false,
+      remove_video: false,
+    });
+
+    try {
+      let parsedSpecs = typeof prod.specifications === 'string' ? JSON.parse(prod.specifications) : prod.specifications;
+      if (Array.isArray(parsedSpecs) && parsedSpecs.length > 0) {
+        setEditSpecRows(parsedSpecs);
+      } else {
+        setEditSpecRows([{ label: "", value: "" }]);
+      }
+    } catch (e) {
+      setEditSpecRows([{ label: "", value: "" }]);
+    }
+
+    try {
+      let parsedFeats = typeof prod.features === 'string' ? JSON.parse(prod.features) : prod.features;
+      if (Array.isArray(parsedFeats) && parsedFeats.length > 0) {
+        setEditFeatureRows(parsedFeats);
+      } else {
+        setEditFeatureRows([""]);
+      }
+    } catch (e) {
+      setEditFeatureRows([""]);
+    }
+  };
+
+  const handleUpdateProduct = (e) => {
+    e.preventDefault();
+    if (!editingProduct) return;
+
+    const formData = new FormData();
+    formData.append("_method", "PUT");
+    formData.append("category", editProductForm.data.category);
+    formData.append("name", editProductForm.data.name);
+     
+    if (editProductForm.data.image) {
+      formData.append("image", editProductForm.data.image);
+    }
+    if (editProductForm.data.video_file) {
+      formData.append("video_file", editProductForm.data.video_file);
+    }
+
+    formData.append("remove_image", editProductForm.data.remove_image ? 1 : 0);
+    formData.append("remove_video", editProductForm.data.remove_video ? 1 : 0);
+
+    if (editProductForm.data.gallery_images && editProductForm.data.gallery_images.length > 0) {
+      for (let i = 0; i < editProductForm.data.gallery_images.length; i++) {
+        formData.append("gallery_images[]", editProductForm.data.gallery_images[i]);
+      }
+    }
+
+    formData.append("description", editProductForm.data.description || "");
+    formData.append("specifications", JSON.stringify(editSpecRows));
+    formData.append("features", JSON.stringify(editFeatureRows));
+
+    router.post(`/admin/products/${editingProduct.id}`, formData, {
+      forceFormData: true,
+      preserveState: false,
+      onSuccess: () => {
+        alert("Produk berhasil diperbarui!");
+        setEditingProduct(null);
+        router.reload();
+      },
+      onError: (errors) => {
+        console.error("Gagal memperbarui produk:", errors);
+        alert("Gagal memperbarui produk. Periksa kembali form.");
       },
     });
   };
@@ -596,17 +841,16 @@ export default function AdminDashboard({
     formData.append("part_number", sparePartForm.data.part_number);
     formData.append("name", sparePartForm.data.name);
     formData.append("brand", sparePartForm.data.brand);
-    
+     
     if (sparePartForm.data.image) formData.append("image", sparePartForm.data.image);
-    
+     
     if (sparePartForm.data.gallery_images) {
       for (let i = 0; i < sparePartForm.data.gallery_images.length; i++) {
         formData.append("gallery_images[]", sparePartForm.data.gallery_images[i]);
       }
     }
-    
+     
     formData.append("description", sparePartForm.data.description || "");
-    
     formData.append("delivery_time", sparePartForm.data.delivery_time || "");
     formData.append("supply_capacity", sparePartForm.data.supply_capacity || "");
     formData.append("product_origin", sparePartForm.data.product_origin || "");
@@ -840,7 +1084,7 @@ export default function AdminDashboard({
             { id: "media", label: "6. Media Gallery" },
             { id: "jobvacancy", label: "7. Job Vacancy (Lowongan Kerja)" },
             { id: "testimonials", label: "8. Testimoni (Client, Karir, Magang)" },
-            { id: "services", label: "9. Services (Layanan & Sub-Layanan)" }, // 👈 Tab Menu Services Ditambahkan
+            { id: "services", label: "9. Services (Layanan & Sub-Layanan)" },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -921,7 +1165,7 @@ export default function AdminDashboard({
 
               <div className="bg-slate-50/70 p-6 md:p-8 rounded-[24px] border border-slate-200/60 mb-8">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-[#071b38] mb-4">+ Tambah Proyek Baru ke Galeri</h3>
-                
+                 
                 <form onSubmit={handleProjectSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -1114,7 +1358,7 @@ export default function AdminDashboard({
               <h3 className="text-xs font-bold uppercase tracking-wider text-[#071b38] mb-4">
                 Daftar Cabang / Area Operasional Tersimpan ({branches.length})
               </h3>
-              
+               
               {branches.length === 0 ? (
                 <p className="text-xs text-slate-400">Belum ada cabang atau area operasional yang ditambahkan.</p>
               ) : (
@@ -1204,7 +1448,7 @@ export default function AdminDashboard({
 
               <form onSubmit={handleMilestoneSubmit} className="bg-slate-50 p-6 md:p-8 rounded-[24px] border border-slate-200/80 space-y-4">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-[#071b38] mb-2">+ Tambah Milestone Baru</h3>
-                
+                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 mb-1">Tahun / Periode</label>
@@ -1306,7 +1550,7 @@ export default function AdminDashboard({
 
               <form onSubmit={handleTeamSubmit} className="bg-slate-50 p-6 md:p-8 rounded-[24px] border border-slate-200/80 space-y-4">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-[#071b38] mb-2">+ Tambah Anggota Tim Baru</h3>
-                
+                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 mb-1">Nama Lengkap</label>
@@ -1385,7 +1629,7 @@ export default function AdminDashboard({
                   <p className="text-xs text-slate-400 italic">Belum ada data anggota tim yang ditambahkan.</p>
                 ) : (
                   <div className="space-y-6">
-                    
+                     
                     {/* Level 1: CEO */}
                     {ceoList.length > 0 && (
                       <div className="space-y-3">
@@ -1460,7 +1704,7 @@ export default function AdminDashboard({
             {/* 3. KELOLA CUSTOMERS / PARTNERS */}
             <div className="bg-white p-8 rounded-[30px] border border-slate-200 shadow-sm">
               <h2 className="text-xl font-black text-[#071b38] mb-6">Kelola Nationwide Customers & Partners</h2>
-              
+               
               <form onSubmit={handleCustomerSubmit} className="space-y-4 mb-8 bg-slate-50 p-6 rounded-2xl">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -1577,55 +1821,61 @@ export default function AdminDashboard({
         {activeTab === "products" && (
           <div className="space-y-8">
             
-            {/* SECTION 1: KELOLA & UPLOAD KATALOG UTAMA (BARU & TERPISAH) */}
+            {/* SECTION 1: KELOLA & UPLOAD KATALOG UTAMA PRODUK */}
             <div className="bg-white p-8 rounded-[30px] border border-slate-200 shadow-sm space-y-6">
               <div>
-                <h2 className="text-xl font-black text-[#0f2b5c] mb-1">Kelola & Upload File Katalog Utama (.PDF)</h2>
-                <p className="text-xs text-slate-500">Unggah file PDF katalog utama yang nantinya akan tampil dan bisa di-download melalui Hero Banner halaman publik produk.</p>
+                <h2 className="text-xl font-black text-[#0f2b5c] mb-1">Kelola & Upload File Katalog Produk Utama (.PDF)</h2>
+                <p className="text-xs text-slate-500">Unggah file PDF katalog utama produk yang nantinya akan tampil dan bisa di-download melalui halaman publik produk.</p>
               </div>
 
               <div className="bg-slate-50 p-6 md:p-8 rounded-[24px] border border-slate-200/80 space-y-4">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                  <div>
-                    <span className="text-[11px] font-bold text-slate-600 block mb-1">Status File Katalog PDF Utama Aktif:</span>
-                    {catalogPdfUrl ? (
+                <div>
+                  <span className="text-[11px] font-bold text-slate-600 block mb-1">Status File Katalog PDF Produk Aktif:</span>
+                  {productCatalogPdf ? (
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
                       <a 
-                        href={`/${catalogPdfUrl.replace(/^\//, '')}`} 
+                        href={`/${productCatalogPdf.replace(/^\//, '')}`} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-xs font-bold text-emerald-600 hover:underline mb-3 block"
+                        className="inline-flex items-center gap-2 text-xs font-bold text-emerald-600 hover:underline"
                       >
-                        📥 Download / Lihat Katalog PDF Utama yang Aktif
+                        📥 Download / Lihat Katalog PDF Produk yang Aktif
                       </a>
-                    ) : (
-                      <span className="text-xs text-slate-400 italic block mb-3">Belum ada file PDF katalog utama yang diunggah.</span>
-                    )}
-                  </div>
+                      <button
+                        type="button"
+                        onClick={() => handleCatalogDelete('product', 'Katalog Produk')}
+                        className="px-3.5 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[11px] font-bold transition shadow-sm cursor-pointer self-start sm:self-auto"
+                      >
+                        🗑️ Hapus Katalog Produk
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="text-xs text-slate-400 italic block mb-3">Belum ada file PDF katalog produk yang diunggah.</span>
+                  )}
                 </div>
 
-                {/* Form Upload Katalog Utama */}
-                <form onSubmit={handleCatalogSubmit} className="space-y-4 pt-3 border-t border-slate-200">
+                <form onSubmit={(e) => { e.preventDefault(); handleCatalogUpdate(productCatalogForm, 'Katalog Produk'); }} className="space-y-4 pt-3 border-t border-slate-200">
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Upload / Ganti File Katalog Utama (.PDF)</label>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Upload / Ganti File Katalog Produk (.PDF)</label>
                     <input 
                       type="file" 
                       accept="application/pdf" 
-                      onChange={e => catalogForm.setData('catalog_pdf', e.target.files[0])} 
+                      onChange={e => productCatalogForm.setData('catalog_pdf', e.target.files[0])} 
                       className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
                     />
                   </div>
                   <button 
                     type="submit" 
-                    disabled={catalogForm.processing}
+                    disabled={productCatalogForm.processing}
                     className="px-6 py-3 bg-[#0f2b5c] hover:bg-[#071b38] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md cursor-pointer"
                   >
-                    {catalogForm.processing ? "Mengunggah..." : "Simpan / Perbarui Katalog Utama"}
+                    {productCatalogForm.processing ? "Mengunggah..." : "Simpan / Perbarui Katalog Produk"}
                   </button>
                 </form>
               </div>
             </div>
 
-            {/* SECTION 2: FORM TAMBAH PRODUK (INPUT BROSUR PDF SUDAH DIHAPUS) */}
+            {/* SECTION 2: FORM TAMBAH PRODUK */}
             <div className="bg-white p-8 rounded-[30px] border border-slate-200 shadow-sm space-y-6">
               <div>
                 <h2 className="text-xl font-black text-[#0f2b5c] mb-1">Tambah & Kelola Unit Produk Alat Berat</h2>
@@ -1657,7 +1907,7 @@ export default function AdminDashboard({
                 })}
               </div>
 
-              {/* Form Input Produk (Tanpa Input Brosur) */}
+              {/* Form Input Produk */}
               <form onSubmit={handleProductSubmit} className="bg-slate-50 p-6 md:p-8 rounded-[24px] border border-slate-200/80 space-y-6">
                 <div className="flex items-center justify-between border-b border-slate-200 pb-3">
                   <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#071b38]">
@@ -1688,7 +1938,7 @@ export default function AdminDashboard({
                         className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
                       />
                     </div>
-                    
+                     
                     <div>
                       <label className="block text-[11px] font-bold text-slate-600 mb-1">
                         Galeri Foto Tambahan <span className="text-amber-600 font-normal">(Bisa Pilih Banyak Sekaligus)</span>
@@ -1704,7 +1954,6 @@ export default function AdminDashboard({
                     </div>
                   </div>
 
-                  {/* NOTE: Input Brosur PDF di form produk sudah dihapus sesuai permintaan */}
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 mb-1">
                       Upload Video Produk (MP4 / WebM) <span className="text-amber-600 font-normal">(Maks: 50MB)</span>
@@ -1714,17 +1963,6 @@ export default function AdminDashboard({
                       accept="video/mp4,video/webm,video/mov" 
                       onChange={e => productForm.setData('video_file', e.target.files[0])} 
                       className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Overview Singkat</label>
-                    <textarea 
-                      rows="2" 
-                      placeholder="Ringkasan singkat produk..." 
-                      value={productForm.data.overview} 
-                      onChange={e => productForm.setData('overview', e.target.value)} 
-                      className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none focus:border-[#ffc107]" 
                     />
                   </div>
 
@@ -1797,7 +2035,20 @@ export default function AdminDashboard({
                           <p className="text-[11px] text-slate-500 line-clamp-2 mt-1">{prod.overview || prod.description}</p>
                         </div>
                         <div className="flex items-center gap-2 mt-4">
-                          <button type="button" onClick={() => handleDeleteProduct(prod.id)} className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer">Hapus Produk</button>
+                          <button 
+                            type="button" 
+                            onClick={() => handleOpenEditProduct(prod)} 
+                            className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer"
+                          >
+                            Edit Produk
+                          </button>
+                          <button 
+                            type="button" 
+                            onClick={() => handleDeleteProduct(prod.id)} 
+                            className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer"
+                          >
+                            Hapus
+                          </button>
                         </div>
                       </div>
                     ))}
@@ -1810,11 +2061,228 @@ export default function AdminDashboard({
           </div>
         )}
 
+        {/* ================= MODAL POPUP EDIT PRODUK ================= */}
+        {editingProduct && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div>
+                  <h3 className="text-lg font-black text-[#0f2b5c]">Edit Produk: {editingProduct.name}</h3>
+                  <p className="text-xs text-slate-500">Perbarui informasi, spesifikasi, dan galeri produk.</p>
+                </div>
+                <button 
+                  type="button" 
+                  onClick={() => setEditingProduct(null)} 
+                  className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleUpdateProduct} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori Produk</label>
+                    <select 
+                      value={editProductForm.data.category} 
+                      onChange={e => editProductForm.setData('category', e.target.value)} 
+                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs outline-none bg-white font-bold text-[#0f2b5c]"
+                    >
+                      {["Excavator", "Wheel Loader", "Motor Grader", "Crane", "Dump Truck", "Mining Equipment", "Road"].map(cat => (
+                        <option key={cat} value={cat}>{cat}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Nama Produk / Model</label>
+                    <input 
+                      type="text" 
+                      value={editProductForm.data.name} 
+                      onChange={e => editProductForm.setData('name', e.target.value)} 
+                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                      required 
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Utama (Opsional)</label>
+                    {editingProduct.image && (
+                      <div className="flex items-center gap-3 mb-2 p-2 bg-slate-50 rounded-xl border border-slate-200">
+                        <img src={`/${editingProduct.image}`} alt="Current Main" className="w-12 h-12 object-cover rounded-lg border bg-white" />
+                        <label className="flex items-center gap-2 text-xs text-red-600 font-bold cursor-pointer ml-auto">
+                          <input 
+                            type="checkbox" 
+                            checked={editProductForm.data.remove_image} 
+                            onChange={e => editProductForm.setData('remove_image', e.target.checked)} 
+                            className="w-4 h-4 rounded text-red-600 focus:ring-red-500 cursor-pointer"
+                          />
+                          Hapus Foto Ini
+                        </label>
+                      </div>
+                    )}
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={e => editProductForm.setData('image', e.target.files[0])} 
+                      className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Tambah Galeri Foto (Opsional)</label>
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      multiple 
+                      onChange={e => editProductForm.setData('gallery_images', e.target.files)} 
+                      className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Video Produk (Opsional)</label>
+                  {editingProduct.video_path && (
+                    <div className="flex items-center gap-3 mb-2 p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                      <span className="text-xs text-slate-700 font-medium truncate max-w-[280px]">🎬 {editingProduct.video_path}</span>
+                      <label className="flex items-center gap-2 text-xs text-red-600 font-bold cursor-pointer ml-auto">
+                        <input 
+                          type="checkbox" 
+                          checked={editProductForm.data.remove_video} 
+                          onChange={e => editProductForm.setData('remove_video', e.target.checked)} 
+                          className="w-4 h-4 rounded text-red-600 focus:ring-red-500 cursor-pointer"
+                        />
+                        Hapus Video Ini
+                      </label>
+                    </div>
+                  )}
+                  <input 
+                    type="file" 
+                    accept="video/mp4,video/webm" 
+                    onChange={e => editProductForm.setData('video_file', e.target.files[0])} 
+                    className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Lengkap Produk</label>
+                  <textarea 
+                    rows="4" 
+                    value={editProductForm.data.description} 
+                    onChange={e => editProductForm.setData('description', e.target.value)} 
+                    className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                  />
+                </div>
+
+                <div className="space-y-3 pt-3 border-t border-slate-200">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Spesifikasi Teknis</label>
+                    <button type="button" onClick={handleAddEditSpecRow} className="px-3 py-1 bg-emerald-600 text-white rounded-lg text-[10px] font-bold cursor-pointer">+ Tambah Baris</button>
+                  </div>
+                  {editSpecRows.map((spec, idx) => (
+                    <div key={idx} className="flex gap-2 items-center">
+                      <input type="text" placeholder="Label" value={spec.label} onChange={e => { const updated = [...editSpecRows]; updated[idx].label = e.target.value; setEditSpecRows(updated); }} className="flex-1 h-10 px-3 rounded-lg border border-slate-200 text-xs bg-white" />
+                      <input type="text" placeholder="Nilai" value={spec.value} onChange={e => { const updated = [...editSpecRows]; updated[idx].value = e.target.value; setEditSpecRows(updated); }} className="flex-1 h-10 px-3 rounded-lg border border-slate-200 text-xs bg-white" />
+                      {editSpecRows.length > 1 && <button type="button" onClick={() => handleRemoveEditSpecRow(idx)} className="px-3 py-2 bg-red-500 text-white rounded-lg text-xs cursor-pointer">✕</button>}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-3 pt-3 border-t border-slate-200">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Fitur Unggulan</label>
+                    <button type="button" onClick={handleAddEditFeatureRow} className="px-3 py-1 bg-emerald-600 text-white rounded-lg text-[10px] font-bold cursor-pointer">+ Tambah Poin</button>
+                  </div>
+                  {editFeatureRows.map((feat, idx) => (
+                    <div key={idx} className="flex gap-2 items-center">
+                      <input type="text" placeholder="Poin fitur..." value={feat} onChange={e => { const updated = [...editFeatureRows]; updated[idx] = e.target.value; setEditFeatureRows(updated); }} className="flex-1 h-10 px-3 rounded-lg border border-slate-200 text-xs bg-white" />
+                      {editFeatureRows.length > 1 && <button type="button" onClick={() => handleRemoveEditFeatureRow(idx)} className="px-3 py-2 bg-red-500 text-white rounded-lg text-xs cursor-pointer">✕</button>}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button 
+                    type="button" 
+                    onClick={() => setEditingProduct(null)} 
+                    className="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl cursor-pointer"
+                  >
+                    Batal
+                  </button>
+                  <button 
+                    type="submit" 
+                    disabled={editProductForm.processing}
+                    className="px-8 py-3 bg-[#071b38] hover:bg-[#0f2b5c] text-[#ffc107] font-extrabold text-xs uppercase tracking-wider rounded-xl shadow cursor-pointer"
+                  >
+                    {editProductForm.processing ? "Menyimpan..." : "Simpan Perubahan Produk"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
         {/* ================= TAB 4: SPARE PARTS KATALOG ================= */}
         {activeTab === "spareparts" && (
           <div className="space-y-8">
             
-            {/* FORM TAMBAH SPARE PART SATUAN (DENGAN FOTO UTAMA & GALERI) */}
+            {/* SECTION 1: KELOLA & UPLOAD KATALOG UTAMA SPARE PART */}
+            <div className="bg-white p-8 rounded-[30px] border border-slate-200 shadow-sm space-y-6">
+              <div>
+                <h2 className="text-xl font-black text-[#0f2b5c] mb-1">Kelola & Upload File Katalog Spare Part Utama (.PDF)</h2>
+                <p className="text-xs text-slate-500">Unggah file PDF katalog spare part utama yang nantinya akan tampil dan bisa di-download melalui halaman publik spare parts.</p>
+              </div>
+
+              <div className="bg-slate-50 p-6 md:p-8 rounded-[24px] border border-slate-200/80 space-y-4">
+                <div>
+                  <span className="text-[11px] font-bold text-slate-600 block mb-1">Status File Katalog PDF Spare Part Aktif:</span>
+                  {sparePartCatalogPdf ? (
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                      <a 
+                        href={`/${sparePartCatalogPdf.replace(/^\//, '')}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-xs font-bold text-emerald-600 hover:underline"
+                      >
+                        📥 Download / Lihat Katalog PDF Spare Part yang Aktif
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => handleCatalogDelete('spare_part', 'Katalog Spare Part')}
+                        className="px-3.5 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[11px] font-bold transition shadow-sm cursor-pointer self-start sm:self-auto"
+                      >
+                        🗑️ Hapus Katalog Spare Part
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="text-xs text-slate-400 italic block mb-3">Belum ada file PDF katalog spare part yang diunggah.</span>
+                  )}
+                </div>
+
+                <form onSubmit={(e) => { e.preventDefault(); handleCatalogUpdate(sparePartCatalogForm, 'Katalog Spare Part'); }} className="space-y-4 pt-3 border-t border-slate-200">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Upload / Ganti File Katalog Spare Part (.PDF)</label>
+                    <input 
+                      type="file" 
+                      accept="application/pdf" 
+                      onChange={e => sparePartCatalogForm.setData('catalog_pdf', e.target.files[0])} 
+                      className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
+                    />
+                  </div>
+                  <button 
+                    type="submit" 
+                    disabled={sparePartCatalogForm.processing}
+                    className="px-6 py-3 bg-[#0f2b5c] hover:bg-[#071b38] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md cursor-pointer"
+                  >
+                    {sparePartCatalogForm.processing ? "Mengunggah..." : "Simpan / Perbarui Katalog Spare Part"}
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            {/* FORM TAMBAH SPARE PART SATUAN */}
             <div className="bg-white p-8 rounded-[30px] border border-slate-200 shadow-sm space-y-6">
               <div>
                 <h2 className="text-xl font-black text-[#0f2b5c] mb-1">Tambah & Kelola Suku Cadang Satuan</h2>
@@ -1985,9 +2453,7 @@ export default function AdminDashboard({
                 </button>
               </form>
 
-              {/* -------------------------------------------------- */}
-              {/* FORM KONFIGURASI EXPLODED VIEW LENGKAP (TANPA INPUT PDF) */}
-              {/* -------------------------------------------------- */}
+              {/* FORM KONFIGURASI EXPLODED VIEW LENGKAP */}
               <div className="pt-6 border-t border-slate-200 space-y-4">
                 <div>
                   <h3 className="text-sm font-black text-[#0f2b5c] mb-1">Konfigurasi Diagram Exploded View</h3>
@@ -2235,7 +2701,7 @@ export default function AdminDashboard({
                 <button 
                   type="submit" 
                   disabled={articleForm.processing}
-                  className="w-full py-3.5 bg-[#071b38] hover:bg-[#0f2b5c] text-[#ffc107] font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md cursor-pointer"
+                  className="w-full py-3.5 bg-[#071b38] hover:bg-[#0f2b5c] text-[#ffc107] font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md transition cursor-pointer"
                 >
                   {articleForm.processing ? "Menyimpan Artikel..." : "Simpan Artikel"}
                 </button>
@@ -2264,14 +2730,170 @@ export default function AdminDashboard({
                             </a>
                           )}
                         </div>
-                        <button type="button" onClick={() => handleDeleteArticle(art.id)} className="mt-4 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start">
-                          Hapus Artikel
-                        </button>
+                        <div className="flex items-center gap-2 mt-4">
+                          <button type="button" onClick={() => handleOpenEditArticle(art)} className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">
+                            Edit
+                          </button>
+                          <button type="button" onClick={() => handleDeleteArticle(art.id)} className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start shadow-sm">
+                            Hapus
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
                 )}
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT ARTIKEL KNOWLEDGE ================= */}
+        {editingArticle && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div>
+                  <h3 className="text-lg font-black text-[#0f2b5c]">Edit Artikel: {editingArticle.title}</h3>
+                  <p className="text-xs text-slate-500">Perbarui konten artikel knowledge dan thumbnail.</p>
+                </div>
+                <button 
+                  type="button" 
+                  onClick={() => setEditingArticle(null)} 
+                  className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleUpdateArticle} className="space-y-4">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul Artikel</label>
+                  <input 
+                    type="text" 
+                    value={editArticleForm.data.title} 
+                    onChange={e => editArticleForm.setData('title', e.target.value)} 
+                    className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    required 
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori</label>
+                    <select 
+                      value={editArticleForm.data.category} 
+                      onChange={e => editArticleForm.setData('category', e.target.value)} 
+                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs outline-none bg-white font-medium"
+                    >
+                      <option value="Maintenance Tips">Maintenance Tips</option>
+                      <option value="Heavy Equipment Knowledge">Heavy Equipment Knowledge</option>
+                      <option value="Mining Technology">Mining Technology</option>
+                      <option value="Hydraulic System">Hydraulic System</option>
+                      <option value="Engine Maintenance">Engine Maintenance</option>
+                      <option value="Lubrication Guide">Lubrication Guide</option>
+                      <option value="Predictive Maintenance">Predictive Maintenance</option>
+                      <option value="Failure Analysis">Failure Analysis</option>
+                      <option value="Safety">Safety</option>
+                      <option value="Operator Tips">Operator Tips</option>
+                      <option value="Technical Bulletin">Technical Bulletin</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Estimasi Waktu Baca</label>
+                    <input 
+                      type="text" 
+                      value={editArticleForm.data.read_time} 
+                      onChange={e => editArticleForm.setData('read_time', e.target.value)} 
+                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Link Instagram (Opsional)</label>
+                  <input 
+                    type="url" 
+                    value={editArticleForm.data.instagram_link} 
+                    onChange={e => editArticleForm.setData('instagram_link', e.target.value)} 
+                    className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ringkasan (Excerpt)</label>
+                  <textarea 
+                    rows="3" 
+                    value={editArticleForm.data.excerpt} 
+                    onChange={e => editArticleForm.setData('excerpt', e.target.value)} 
+                    className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Isi Konten Lengkap</label>
+                  <textarea 
+                    rows="6" 
+                    value={editArticleForm.data.content} 
+                    onChange={e => editArticleForm.setData('content', e.target.value)} 
+                    className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    required 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Thumbnail (Opsional)</label>
+                  {editingArticle.thumbnail && (
+                    <div className="flex items-center gap-3 mb-2 p-2 bg-slate-50 rounded-xl border border-slate-200">
+                      <img src={`/${editingArticle.thumbnail}`} alt="" className="w-12 h-12 object-cover rounded-lg border bg-white" />
+                      <label className="flex items-center gap-2 text-xs text-red-600 font-bold cursor-pointer ml-auto">
+                        <input 
+                          type="checkbox" 
+                          checked={editArticleForm.data.remove_thumbnail} 
+                          onChange={e => editArticleForm.setData('remove_thumbnail', e.target.checked)} 
+                          className="w-4 h-4 rounded text-red-600 focus:ring-red-500 cursor-pointer"
+                        />
+                        Hapus Thumbnail Ini
+                      </label>
+                    </div>
+                  )}
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={e => editArticleForm.setData('thumbnail', e.target.files[0])} 
+                    className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
+                  />
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="checkbox" 
+                    id="edit_is_featured"
+                    checked={editArticleForm.data.is_featured}
+                    onChange={e => editArticleForm.setData('is_featured', e.target.checked)}
+                    className="w-4 h-4 text-[#0f2b5c] rounded border-slate-300 focus:ring-[#ffc107]"
+                  />
+                  <label htmlFor="edit_is_featured" className="text-xs font-bold text-slate-700 cursor-pointer">
+                    Jadikan Artikel Utama (Featured di Banner Besar)
+                  </label>
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button 
+                    type="button" 
+                    onClick={() => setEditingArticle(null)} 
+                    className="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl cursor-pointer"
+                  >
+                    Batal
+                  </button>
+                  <button 
+                    type="submit" 
+                    disabled={editArticleForm.processing}
+                    className="px-8 py-3 bg-[#071b38] hover:bg-[#0f2b5c] text-[#ffc107] font-extrabold text-xs uppercase tracking-wider rounded-xl shadow cursor-pointer"
+                  >
+                    {editArticleForm.processing ? "Menyimpan..." : "Simpan Perubahan Artikel"}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
@@ -2286,7 +2908,7 @@ export default function AdminDashboard({
               </div>
 
               <form onSubmit={handleMediaSubmit} className="bg-slate-50 p-6 md:p-8 rounded-[24px] border border-slate-200/80 space-y-6">
-                
+                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul / Keterangan</label>
@@ -2415,7 +3037,7 @@ export default function AdminDashboard({
               </div>
 
               <form onSubmit={handleJobVacancySubmit} className="bg-slate-50 p-6 md:p-8 rounded-[24px] border border-slate-200/80 space-y-6">
-                
+                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul Posisi</label>
@@ -2792,18 +3414,276 @@ export default function AdminDashboard({
                           <h4 className="font-extrabold text-xs text-[#0f2b5c]">{srv.title}</h4>
                           <p className="text-[11px] text-slate-500 mt-1 line-clamp-2">{srv.description || "-"}</p>
                         </div>
-                        <button 
-                          type="button" 
-                          onClick={() => handleDeleteService(srv.id)} 
-                          className="mt-4 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start shadow-sm"
-                        >
-                          Hapus Layanan
-                        </button>
+                        <div className="flex items-center gap-2 mt-4">
+                          <button 
+                            type="button" 
+                            onClick={() => handleOpenEditService(srv)} 
+                            className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm"
+                          >
+                            Edit
+                          </button>
+                          <button 
+                            type="button" 
+                            onClick={() => handleDeleteService(srv.id)} 
+                            className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start shadow-sm"
+                          >
+                            Hapus
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
                 )}
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT SUB-LAYANAN ================= */}
+        {editingService && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div>
+                  <h3 className="text-lg font-black text-[#0f2b5c]">Edit Sub-Layanan: {editingService.title}</h3>
+                  <p className="text-xs text-slate-500">Perbarui informasi sub-layanan, deskripsi, serta poin keunggulan.</p>
+                </div>
+                <button 
+                  type="button" 
+                  onClick={() => setEditingService(null)} 
+                  className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleUpdateService} className="space-y-4">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Pilih Kategori Layanan Utama</label>
+                  <select 
+                    value={editServiceForm.data.category} 
+                    onChange={e => editServiceForm.setData('category', e.target.value)} 
+                    className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs outline-none bg-white font-bold text-[#0f2b5c]"
+                  >
+                    <option value="Maintenance & Repair">Maintenance & Repair</option>
+                    <option value="Installation & Commissioning">Installation & Commissioning</option>
+                    <option value="Overhaul & Rebuild">Overhaul & Rebuild</option>
+                    <option value="Inspection & Testing">Inspection & Testing</option>
+                    <option value="Contract & Consulting">Contract & Consulting</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Nama Sub-Layanan</label>
+                  <input 
+                    type="text" 
+                    value={editServiceForm.data.title} 
+                    onChange={e => editServiceForm.setData('title', e.target.value)} 
+                    className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    required 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Lengkap Sub-Layanan</label>
+                  <textarea 
+                    rows="3" 
+                    value={editServiceForm.data.description} 
+                    onChange={e => editServiceForm.setData('description', e.target.value)} 
+                    className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    required 
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">What We Do (1 baris = 1 poin)</label>
+                    <textarea 
+                      rows="4" 
+                      value={editServiceForm.data.what_we_do} 
+                      onChange={e => editServiceForm.setData('what_we_do', e.target.value)} 
+                      className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Key Benefits (1 baris = 1 poin)</label>
+                    <textarea 
+                      rows="4" 
+                      value={editServiceForm.data.key_benefits} 
+                      onChange={e => editServiceForm.setData('key_benefits', e.target.value)} 
+                      className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button 
+                    type="button" 
+                    onClick={() => setEditingService(null)} 
+                    className="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl cursor-pointer"
+                  >
+                    Batal
+                  </button>
+                  <button 
+                    type="submit" 
+                    disabled={editServiceForm.processing}
+                    className="px-8 py-3 bg-[#071b38] hover:bg-[#0f2b5c] text-[#ffc107] font-extrabold text-xs uppercase tracking-wider rounded-xl shadow cursor-pointer"
+                  >
+                    {editServiceForm.processing ? "Menyimpan..." : "Simpan Perubahan"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT ARTIKEL KNOWLEDGE ================= */}
+        {editingArticle && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div>
+                  <h3 className="text-lg font-black text-[#0f2b5c]">Edit Artikel: {editingArticle.title}</h3>
+                  <p className="text-xs text-slate-500">Perbarui konten artikel knowledge dan thumbnail.</p>
+                </div>
+                <button 
+                  type="button" 
+                  onClick={() => setEditingArticle(null)} 
+                  className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleUpdateArticle} className="space-y-4">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul Artikel</label>
+                  <input 
+                    type="text" 
+                    value={editArticleForm.data.title} 
+                    onChange={e => editArticleForm.setData('title', e.target.value)} 
+                    className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    required 
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori</label>
+                    <select 
+                      value={editArticleForm.data.category} 
+                      onChange={e => editArticleForm.setData('category', e.target.value)} 
+                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs outline-none bg-white font-medium"
+                    >
+                      <option value="Maintenance Tips">Maintenance Tips</option>
+                      <option value="Heavy Equipment Knowledge">Heavy Equipment Knowledge</option>
+                      <option value="Mining Technology">Mining Technology</option>
+                      <option value="Hydraulic System">Hydraulic System</option>
+                      <option value="Engine Maintenance">Engine Maintenance</option>
+                      <option value="Lubrication Guide">Lubrication Guide</option>
+                      <option value="Predictive Maintenance">Predictive Maintenance</option>
+                      <option value="Failure Analysis">Failure Analysis</option>
+                      <option value="Safety">Safety</option>
+                      <option value="Operator Tips">Operator Tips</option>
+                      <option value="Technical Bulletin">Technical Bulletin</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Estimasi Waktu Baca</label>
+                    <input 
+                      type="text" 
+                      value={editArticleForm.data.read_time} 
+                      onChange={e => editArticleForm.setData('read_time', e.target.value)} 
+                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Link Instagram (Opsional)</label>
+                  <input 
+                    type="url" 
+                    value={editArticleForm.data.instagram_link} 
+                    onChange={e => editArticleForm.setData('instagram_link', e.target.value)} 
+                    className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ringkasan (Excerpt)</label>
+                  <textarea 
+                    rows="3" 
+                    value={editArticleForm.data.excerpt} 
+                    onChange={e => editArticleForm.setData('excerpt', e.target.value)} 
+                    className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Isi Konten Lengkap</label>
+                  <textarea 
+                    rows="6" 
+                    value={editArticleForm.data.content} 
+                    onChange={e => editArticleForm.setData('content', e.target.value)} 
+                    className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    required 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Thumbnail (Opsional)</label>
+                  {editingArticle.thumbnail && (
+                    <div className="flex items-center gap-3 mb-2 p-2 bg-slate-50 rounded-xl border border-slate-200">
+                      <img src={`/${editingArticle.thumbnail}`} alt="" className="w-12 h-12 object-cover rounded-lg border bg-white" />
+                      <label className="flex items-center gap-2 text-xs text-red-600 font-bold cursor-pointer ml-auto">
+                        <input 
+                          type="checkbox" 
+                          checked={editArticleForm.data.remove_thumbnail} 
+                          onChange={e => editArticleForm.setData('remove_thumbnail', e.target.checked)} 
+                          className="w-4 h-4 rounded text-red-600 focus:ring-red-500 cursor-pointer"
+                        />
+                        Hapus Thumbnail Ini
+                      </label>
+                    </div>
+                  )}
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={e => editArticleForm.setData('thumbnail', e.target.files[0])} 
+                    className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
+                  />
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="checkbox" 
+                    id="edit_is_featured"
+                    checked={editArticleForm.data.is_featured}
+                    onChange={e => editArticleForm.setData('is_featured', e.target.checked)}
+                    className="w-4 h-4 text-[#0f2b5c] rounded border-slate-300 focus:ring-[#ffc107]"
+                  />
+                  <label htmlFor="edit_is_featured" className="text-xs font-bold text-slate-700 cursor-pointer">
+                    Jadikan Artikel Utama (Featured di Banner Besar)
+                  </label>
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button 
+                    type="button" 
+                    onClick={() => setEditingArticle(null)} 
+                    className="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl cursor-pointer"
+                  >
+                    Batal
+                  </button>
+                  <button 
+                    type="submit" 
+                    disabled={editArticleForm.processing}
+                    className="px-8 py-3 bg-[#071b38] hover:bg-[#0f2b5c] text-[#ffc107] font-extrabold text-xs uppercase tracking-wider rounded-xl shadow cursor-pointer"
+                  >
+                    {editArticleForm.processing ? "Menyimpan..." : "Simpan Perubahan Artikel"}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}

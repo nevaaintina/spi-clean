@@ -16,6 +16,44 @@
         <!-- Leaflet JS CDN -->
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
+        <!-- CSS untuk Menyembunyikan Bar Atas Google Translate secara Total -->
+        <style>
+            html {
+                top: 0 !important;
+            }
+            body {
+                top: 0 !important;
+                position: static !important;
+            }
+            .goog-te-banner-frame, 
+            iframe.goog-te-banner-frame, 
+            .skiptranslate, 
+            #goog-gt-tt, 
+            .goog-te-balloon-frame {
+                display: none !important;
+                visibility: hidden !important;
+            }
+            .goog-text-highlight {
+                background-color: transparent !important;
+                box-shadow: none !important;
+            }
+        </style>
+
+        <!-- Elemen Wajib Google Translate (Disembunyikan dengan CSS) -->
+        <div id="google_translate_element" style="display: none;"></div>
+
+        <!-- Script Resmi Google Translate -->
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'id',
+                    includedLanguages: 'id,en',
+                    autoDisplay: false
+                }, 'google_translate_element');
+            }
+        </script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.jsx'])
         @inertiaHead

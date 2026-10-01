@@ -6,6 +6,7 @@ import VisionMission from "./VisionMission";
 import Management from "./Management";
 import OurCustomers from "./OurCustomers";
 
+// Komponen Counter Angka Otomatis saat di-scroll (Durasi Santai 3500ms / 3.5 Detik)
 function CounterNumber({ value }) {
   const [count, setCount] = useState(0);
   const elementRef = useRef(null);
@@ -21,8 +22,8 @@ function CounterNumber({ value }) {
           setHasAnimated(true);
 
           let start = 0;
-          const duration = 2000;
-          const steps = 60;
+          const duration = 3500; // Sangat santai dan halus
+          const steps = 90;
           const increment = numericTarget / steps;
           const stepTime = duration / steps;
 
@@ -37,7 +38,7 @@ function CounterNumber({ value }) {
           }, stepTime);
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     );
 
     if (elementRef.current) {
@@ -52,6 +53,55 @@ function CounterNumber({ value }) {
       {count}
       {suffix}
     </span>
+  );
+}
+
+// Komponen Pembantu Animasi Scroll Masuk (Durasi 2000ms - Sangat Lembut & Tenang)
+function Reveal({ children, className = "", delay = 0, direction = "up" }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.12 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) observer.unobserve(ref.current);
+    };
+  }, []);
+
+  const getDirectionClasses = () => {
+    if (direction === "left") {
+      return isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-20";
+    }
+    if (direction === "right") {
+      return isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-20";
+    }
+    if (direction === "scale") {
+      return isVisible ? "opacity-100 scale-100" : "opacity-0 scale-90";
+    }
+    // Default up
+    return isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20";
+  };
+
+  return (
+    <div
+      ref={ref}
+      style={{ transitionDelay: `${delay}ms` }}
+      className={`transition-all duration-[2000ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${getDirectionClasses()} ${className}`}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -201,14 +251,30 @@ const IconArrow = (props) => (
   </svg>
 );
 
+// Komponen OrgCard pembantu struktur organisasi
+function OrganizationCard({ children, className = "" }) {
+  return (
+    <div className={`absolute bg-white border border-slate-200 rounded-xl shadow-sm flex items-center justify-center p-2 text-center transition-all hover:border-[#FFC107] hover:shadow-md ${className}`}>
+      <span className="text-[11px] font-extrabold text-[#0F2B5C] leading-tight">{children}</span>
+    </div>
+  );
+}
+
 export default function Index({ milestones = [], managementTeam = [], customers = [] }) {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [isHeroLoaded, setIsHeroLoaded] = useState(false);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setIsHeroLoaded(true), 200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Data 4 Statistik yang sinkron
   const whoWeAreStats = [
-    { icon: IconCalendar, value: "15+", label: "Years Experience" },
-    { icon: IconUsers, value: "100+", label: "Professional Engineers" },
-    { icon: IconProject, value: "500+", label: "Projects Completed" },
-    { icon: IconCheckBadge, value: "100%", label: "Customer Commitment" },
+    { icon: IconCheckBadge, value: "100%", label: "Dukungan Teknis" },
+    { icon: IconCalendar, value: "4+", label: "Tahun Pengalaman" },
+    { icon: IconUsers, value: "99%", label: "Kepuasan Pelanggan" },
+    { icon: IconAward, value: "100%", label: "Layanan Terpercaya" },
   ];
 
   const companyProfile = [
@@ -230,10 +296,10 @@ export default function Index({ milestones = [], managementTeam = [], customers 
   ];
 
   const companyStats = [
-    { icon: IconCalendar, value: "15+", label: "Years Experience" },
-    { icon: IconProject, value: "500+", label: "Projects Completed" },
-    { icon: IconUsers, value: "100+", label: "Professional Engineers" },
-    { icon: IconCheckBadge, value: "98%", label: "Customer Satisfaction" },
+    { icon: IconCheckBadge, value: "100%", label: "Dukungan Teknis" },
+    { icon: IconCalendar, value: "4+", label: "Tahun Pengalaman" },
+    { icon: IconUsers, value: "99%", label: "Kepuasan Pelanggan" },
+    { icon: IconAward, value: "100%", label: "Layanan Terpercaya" },
   ];
 
   const cultureItems = [
@@ -269,11 +335,11 @@ export default function Index({ milestones = [], managementTeam = [], customers 
       <Head title="About Us - PT Servistama Pro Indonesia" />
       <Navbar />
 
-      {/* ============================== HERO ============================== */}
+      {/* ============================== HERO (DURASI SANTAI, PANJANG & MEWAH) ============================== */}
       <section
         className="relative flex min-h-[600px] w-full items-center overflow-hidden md:min-h-[700px]"
         style={{  
-          backgroundImage: `linear-gradient(180deg, rgba(11,18,32,0.100) 0%, rgba(15,43,92,0.100) 50%, rgba(11,18,32,0.100) 100%), url('/images/hero-about.jpeg')`,
+          backgroundImage: `linear-gradient(180deg, rgba(11,18,32,0.100) 0%, rgba(15,43,92,0.100) 50%, rgba(11,18,32,0.100) 100%), url('/images/about-hero.png')`,
           backgroundSize: "cover",
           backgroundPosition: "center 40%",
           backgroundRepeat: "no-repeat",
@@ -281,74 +347,131 @@ export default function Index({ milestones = [], managementTeam = [], customers 
       >
         <div className="mx-auto flex w-full max-w-7xl flex-col justify-center px-4 py-20 sm:px-6 lg:px-8">
           <div className="flex flex-col justify-center">
-            <span className="mb-4 inline-block w-fit text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+            
+            <span 
+              className={`mb-4 inline-block w-fit text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107] transition-all duration-[1800ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${
+                isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-6"
+              }`}
+            >
               About Us
             </span>
-            <h1 className="text-3xl font-extrabold leading-[1.15] text-white sm:text-4xl md:text-5xl">
+
+            <h1 
+              className={`text-3xl font-extrabold leading-[1.15] text-white sm:text-4xl md:text-5xl transition-all duration-[1900ms] delay-300 ease-[cubic-bezier(0.12,1,0.2,1)] ${
+                isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
+            >
               Building Trust Through Professional Heavy Equipment Services
             </h1>
-            <p className="mt-5 max-w-lg text-sm leading-relaxed text-white/75 md:text-base">
+
+            <p 
+              className={`mt-5 max-w-lg text-sm leading-relaxed text-white/75 md:text-base transition-all duration-[2000ms] delay-500 ease-[cubic-bezier(0.12,1,0.2,1)] ${
+                isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
+            >
               PT Servistama Pro Indonesia is committed to delivering reliable, innovative, and high-quality heavy equipment services to support Indonesia's industrial growth.
             </p> 
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div 
+              className={`mt-8 flex flex-wrap items-center gap-4 transition-all duration-[2000ms] delay-700 ease-[cubic-bezier(0.12,1,0.2,1)] ${
+                isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
+            >
               <a 
                 href="#company-profile"
-                className="group inline-flex items-center gap-2 rounded-md bg-[#FFC107] px-6 py-3 text-sm font-bold text-[#0B1220] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#e6ac00] hover:shadow-lg"
+                className="group inline-flex items-center gap-2 rounded-md bg-[#FFC107] px-6 py-3 text-sm font-bold text-[#0B1220] transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#e6ac00] hover:shadow-lg"
               >
                 Company Profile
-                <IconArrow className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                <IconArrow className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
               </a> 
               <Link
                 href="/services"
-                className="group inline-flex items-center gap-2 rounded-md border border-white/40 px-6 py-3 text-sm font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-white hover:bg-white/10"
+                className="group inline-flex items-center gap-2 rounded-md border border-white/40 px-6 py-3 text-sm font-bold text-white transition-all duration-500 hover:-translate-y-0.5 hover:border-white hover:bg-white/10"
               >
                 Our Services
-                <IconArrow className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                <IconArrow className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
               </Link>
             </div>
+
+            {/* STATISTIK DI HERO BANNER */}
+            <div 
+              className={`mt-12 grid grid-cols-2 gap-6 border-t border-white/15 pt-8 sm:grid-cols-4 transition-all duration-[2200ms] delay-[900ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${
+                isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+              }`}
+            >
+              {whoWeAreStats.map((s, i) => {
+                const Icon = s.icon;
+                return (
+                  <a
+                    key={i}
+                    href="#why-choose-us"
+                    className="group flex flex-col items-start transition-all duration-500 hover:-translate-y-1 cursor-pointer"
+                  >
+                    <Icon className="h-7 w-7 text-[#FFC107] transition-transform duration-500 group-hover:scale-110" />
+                    <p className="mt-2 text-2xl font-extrabold text-white sm:text-3xl">
+                      <CounterNumber value={s.value} />
+                    </p>
+                    <p className="text-xs font-medium text-white/75 transition-colors group-hover:text-white sm:text-sm">
+                      {s.label}
+                    </p>
+                  </a>
+                );
+              })}
+            </div>
+
           </div>
         </div>
       </section>
 
       {/* ============================== WHY CHOOSE US ============================== */}
       <div id="why-choose-us" className="scroll-mt-24">
-        <section className="bg-white py-16 md:py-20">
+        <section className="bg-white py-16 md:py-20 overflow-hidden">
           <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-14 lg:px-8">
-            <div className="relative">
-              <img
-                src="/images/we-are.png "
-                alt="SPI Engineer"
-                className="w-full rounded-2xl object-cover shadow-xl"
-              />
-            </div>
-
-            <div>
-              <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
-                Who We Are
-              </span>
-              <h2 className="text-2xl font-extrabold leading-tight text-[#0F2B5C] sm:text-3xl md:text-4xl">
-                Trusted Heavy Equipment Service Company
-              </h2>
-              <p className="mt-4 max-w-xl text-sm leading-relaxed text-[#64748B] md:text-base whitespace-pre-line">
-                Sebagai Dealer Servis Resmi Mesin Pertambangan XCMG di Indonesia sejak tahun 2022, PT Servistama Pro Indonesia mengedepankan 
-                kompetensi inti di bidang alat berat untuk membangun keandalan dan kepercayaan pelanggan. Kami menghadirkan dukungan produk yang komprehensif, 
-                layanan purnajual prima, serta komitmen penuh dalam menjaga kinerja operasional dan keberlanjutan industri Anda.</p>
-              <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4">
-                {whoWeAreStats.map((s, i) => {
-                  const Icon = s.icon;
-                  return (
-                    <div key={i}>
-                      <Icon className="h-6 w-6 text-[#FFC107]" />
-                      <p className="mt-2 text-xl font-extrabold text-[#0F2B5C] sm:text-2xl">
-                        <CounterNumber value={s.value} />
-                      </p>
-                      <p className="text-xs text-[#64748B]">{s.label}</p>
-                    </div>
-                  );
-                })}
+            
+            {/* Foto Masuk Mengalir Santai dari Kiri */}
+            <Reveal direction="left">
+              <div className="relative group">
+                <img
+                  src="/images/we-are.png"
+                  alt="SPI Engineer"
+                  className="w-full rounded-2xl object-cover shadow-xl transition-transform duration-700 group-hover:scale-[1.02]"
+                />
               </div>
-            </div>
+            </Reveal>
+
+            {/* Teks Masuk Mengalir Santai dari Kanan */}
+            <Reveal direction="right">
+              <div>
+                <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+                  Who We Are
+                </span>
+                <h2 className="text-2xl font-extrabold leading-tight text-[#0F2B5C] sm:text-3xl md:text-4xl">
+                  Trusted Heavy Equipment Service Company
+                </h2>
+                <p className="mt-4 max-w-xl text-sm leading-relaxed text-[#64748B] md:text-base whitespace-pre-line">
+                  Sebagai Dealer Servis Resmi Mesin Pertambangan XCMG di Indonesia sejak tahun 2022, PT Servistama Pro Indonesia mengedepankan 
+                  kompetensi inti di bidang alat berat untuk membangun keandalan dan kepercayaan pelanggan. Kami menghadirkan dukungan produk yang komprehensif, 
+                  layanan purnajual prima, serta komitmen penuh dalam menjaga kinerja operasional dan keberlanjutan industri Anda.
+                </p>
+                
+                {/* 4 Statistik Who We Are */}
+                <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4">
+                  {whoWeAreStats.map((s, i) => {
+                    const Icon = s.icon;
+                    return (
+                      <div key={i} className="transition-transform duration-500 hover:-translate-y-1">
+                        <Icon className="h-6 w-6 text-[#FFC107]" />
+                        <p className="mt-2 text-xl font-extrabold text-[#0F2B5C] sm:text-2xl">
+                          <CounterNumber value={s.value} />
+                        </p>
+                        <p className="text-xs text-[#64748B]">{s.label}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </Reveal>
+
           </div>
         </section>
       </div>
@@ -366,32 +489,36 @@ export default function Index({ milestones = [], managementTeam = [], customers 
         </div>
 
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-4">
-            <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
-              Company Profile
-            </span>
-          </div>
+          <Reveal direction="up">
+            <div className="mb-6">
+              <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+                Company Profile
+              </span>
+            </div>
+          </Reveal>
 
+          {/* Grid Card dengan Staggered Delay Santai */}
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {companyProfile.map((row, i) => {
               const Icon = row.icon;
               return (
-                <div
-                  key={i}
-                  className="group flex items-center gap-4 rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-lg transition-all duration-300 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-2xl"
-                >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#0F2B5C]/5 text-[#0F2B5C] transition-all duration-300 group-hover:bg-[#FFC107] group-hover:text-[#0F2B5C]">
-                    <Icon className="h-6 w-6" />
+                <Reveal key={i} delay={i * 200} direction="up">
+                  <div
+                    className="group flex items-center gap-4 rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-lg transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-2xl"
+                  >
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#0F2B5C]/5 text-[#0F2B5C] transition-all duration-500 group-hover:bg-[#FFC107] group-hover:text-[#0F2B5C]">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] transition-colors group-hover:text-[#0F2B5C]">
+                        {row.label}
+                      </p>
+                      <p className="mt-0.5 text-sm font-bold text-[#0F2B5C]">
+                        {row.value}
+                      </p>
+                    </div>
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] transition-colors group-hover:text-[#0F2B5C]">
-                      {row.label}
-                    </p>
-                    <p className="mt-0.5 text-sm font-bold text-[#0F2B5C]">
-                      {row.value}
-                    </p>
-                  </div>
-                </div>
+                </Reveal>
               );
             })}
           </div>
@@ -399,28 +526,32 @@ export default function Index({ milestones = [], managementTeam = [], customers 
       </section>
 
       {/* ============================== COMPANY HISTORY ============================== */}
-      <section className="bg-white pt-8 pb-16 md:pt-10 md:pb-20">
+      <section className="bg-white pt-8 pb-16 md:pt-10 md:pb-20 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <span className="mb-4 inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
-            Company History
-          </span>
+          <Reveal direction="up">
+            <span className="mb-4 inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+              Company History
+            </span>
+          </Reveal>
 
-          <div className="relative">
+          <div className="relative mt-4">
             <div className="absolute left-0 right-0 top-6 hidden h-0.5 bg-[#E2E8F0] sm:block" />
 
             <div className="grid grid-cols-2 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
               {historyTimeline.map((item, i) => (
-                <div key={i} className="group relative flex cursor-pointer flex-col items-center text-center">
-                  <div className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-[#0F2B5C] text-xs font-extrabold text-white shadow-md transition-all duration-300 group-hover:scale-110 group-hover:bg-[#FFC107] group-hover:text-[#0B1220] group-hover:shadow-lg group-hover:shadow-[#FFC107]/40">
-                    {item.year ? item.year.toString().slice(-2) : ""}
+                <Reveal key={i} delay={i * 220} direction="up">
+                  <div className="group relative flex cursor-pointer flex-col items-center text-center">
+                    <div className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-[#0F2B5C] text-xs font-extrabold text-white shadow-md transition-all duration-700 group-hover:scale-110 group-hover:bg-[#FFC107] group-hover:text-[#0B1220] group-hover:shadow-lg group-hover:shadow-[#FFC107]/40">
+                      {item.year ? item.year.toString().slice(-2) : ""}
+                    </div>
+                    <p className="mt-3 text-sm font-extrabold text-[#0F2B5C] transition-colors duration-500 group-hover:text-[#FFC107]">
+                      {item.year}
+                    </p>
+                    <p className="mt-1 max-w-[110px] text-xs text-[#64748B] transition-colors duration-500 group-hover:text-[#0F2B5C]">
+                      {item.title}
+                    </p>
                   </div>
-                  <p className="mt-3 text-sm font-extrabold text-[#0F2B5C] transition-colors duration-300 group-hover:text-[#FFC107]">
-                    {item.year}
-                  </p>
-                  <p className="mt-1 max-w-[110px] text-xs text-[#64748B] transition-colors duration-300 group-hover:text-[#0F2B5C]">
-                    {item.title}
-                  </p>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -429,7 +560,9 @@ export default function Index({ milestones = [], managementTeam = [], customers 
 
       {/* ============================== VISION MISSION ============================== */}
       <div id="vision-mission" className="scroll-mt-24">
-        <VisionMission />
+        <Reveal direction="up">
+          <VisionMission />
+        </Reveal>
       </div>
 
       {/* ============================== COMPANY STATISTICS ============================== */}
@@ -442,20 +575,25 @@ export default function Index({ milestones = [], managementTeam = [], customers 
         }}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <span className="mb-8 inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
-            Company Statistics
-          </span>
+          <Reveal direction="up">
+            <span className="mb-8 inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+              Company Statistics
+            </span>
+          </Reveal>
+          
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
             {companyStats.map((s, i) => {
               const Icon = s.icon;
               return (
-                <div key={i} className="text-center sm:text-left">
-                  <Icon className="mx-auto h-7 w-7 text-[#FFC107] sm:mx-0" />
-                  <p className="mt-3 text-3xl font-extrabold text-white md:text-4xl">
-                    <CounterNumber value={s.value} />
-                  </p>
-                  <p className="mt-1 text-xs text-white/60">{s.label}</p>
-                </div>
+                <Reveal key={i} delay={i * 200} direction="scale">
+                  <div className="text-center sm:text-left transition-transform duration-500 hover:-translate-y-1">
+                    <Icon className="mx-auto h-7 w-7 text-[#FFC107] sm:mx-0" />
+                    <p className="mt-3 text-3xl font-extrabold text-white md:text-4xl text-[#FFC107]">
+                      <CounterNumber value={s.value} />
+                    </p>
+                    <p className="mt-2 text-xs font-bold text-white">{s.label}</p>
+                  </div>
+                </Reveal>
               );
             })}
           </div>
@@ -463,641 +601,179 @@ export default function Index({ milestones = [], managementTeam = [], customers 
       </section>
 
       {/* ===================== MILESTONE / ORG STRUCTURE / MANAGEMENT ===================== */}
-      <section className="bg-slate-50 py-16 border-t border-slate-200">
+      <section className="bg-slate-50 py-16 border-t border-slate-200 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
           {/* MILESTONES (Dinamis dari Database) */}
-          <div className="text-center mb-10">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
-              Company Milestone
-            </span>
-            <h2 className="mt-1 text-2xl font-black text-[#0F2B5C]">
-              OUR JOURNEY & ACHIEVEMENTS
-            </h2>
-          </div>
+          <Reveal direction="up">
+            <div className="text-center mb-10">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+                Company Milestone
+              </span>
+              <h2 className="mt-1 text-2xl font-black text-[#0F2B5C]">
+                OUR JOURNEY & ACHIEVEMENTS
+              </h2>
+            </div>
+          </Reveal>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-20">
             {milestones.length === 0 ? (
               <p className="text-center text-slate-400 text-xs col-span-3 py-6">Belum ada data milestone.</p>
             ) : (
-              milestones.map((m) => (
-                <div
-                  key={m.id}
-                  className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl flex flex-col justify-between"
-                >
-                  <div>
-                    {m.image_path ? (
-                      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-slate-100 mb-4">
-                        <img
-                          src={`/${m.image_path}`}
-                          alt={m.title}
-                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                        <div className="absolute top-3 left-3">
-                          <span className="inline-block rounded-lg bg-[#0F2B5C]/90 backdrop-blur-sm px-3 py-1 text-xs font-extrabold text-[#FFC107] shadow">
+              milestones.map((m, i) => (
+                <Reveal key={m.id} delay={i * 220} direction="up">
+                  <div
+                    className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl flex flex-col justify-between h-full"
+                  >
+                    <div>
+                      {m.image_path ? (
+                        <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-slate-100 mb-4">
+                          <img
+                            src={`/${m.image_path}`}
+                            alt={m.title}
+                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                          <div className="absolute top-3 left-3">
+                            <span className="inline-block rounded-lg bg-[#0F2B5C]/90 backdrop-blur-sm px-3 py-1 text-xs font-extrabold text-[#FFC107] shadow">
+                              {m.year}
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="mb-4">
+                          <span className="inline-block rounded-lg bg-[#0F2B5C] px-3 py-1 text-xs font-extrabold text-[#FFC107] shadow">
                             {m.year}
                           </span>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="mb-4">
-                        <span className="inline-block rounded-lg bg-[#0F2B5C] px-3 py-1 text-xs font-extrabold text-[#FFC107] shadow">
-                          {m.year}
-                        </span>
-                      </div>
-                    )}
-                    <h4 className="text-base font-extrabold text-[#0F2B5C] line-clamp-1">
-                      {m.title}
-                    </h4>
-                    <p className="mt-2 text-xs leading-relaxed text-slate-600 line-clamp-3">
-                      {m.description}
-                    </p>
+                      )}
+                      <h4 className="text-base font-extrabold text-[#0F2B5C] line-clamp-1">
+                        {m.title}
+                      </h4>
+                      <p className="mt-2 text-xs leading-relaxed text-slate-600 line-clamp-3">
+                        {m.description}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </Reveal>
               ))
             )}
           </div>
-          </div>
 
-       {/* =========================================================
-    STRUKTUR ORGANISASI
-    MODERN CORPORATE ORGANIZATION CHART
-========================================================= */}
-<div className="mt-16 w-full py-6">
+          {/* ================= STRUKTUR ORGANISASI ================= */}
+          <Reveal direction="scale">
+            <section className="w-full overflow-hidden bg-white py-16 rounded-3xl border border-slate-200 shadow-sm mb-16">
+              <div className="w-full overflow-x-auto overflow-y-hidden">
+                <div className="relative mx-auto min-w-[1380px] w-[1380px] h-[370px] bg-white">
 
-  {/* ================= TITLE ================= */}
-  <div className="mb-10 text-center">
-    <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
-      Organization Structure
-    </span>
+                  <div className="absolute top-[0px] left-0 w-full text-center text-[11px] font-medium tracking-[0.12em] text-[#0F2B5C]">
+                    Organization Structure
+                  </div>
 
-    <h3 className="mt-1 text-2xl font-black tracking-tight text-[#0F2B5C] md:text-3xl">
-      STRUKTUR ORGANISASI PT SERVISTAMA PRO INDONESIA
-    </h3>
-  </div>
+                  <h2 className="absolute top-[20px] left-0 w-full text-center text-[17px] font-semibold text-[#111827]">
+                    STRUKTUR ORGANISASI PT SERVISTAMA PRO INDONESIA
+                  </h2>
 
+                  {/* CEO -> MAIN HORIZONTAL LINE */}
+                  <div className="absolute left-[700px] top-[90px] h-[12px] w-px bg-[#111827]" />
+                  <div className="absolute left-[295px] top-[101px] h-px w-[946px] bg-[#111827]" />
 
-  {/* ================= CHART ================= */}
-  <div className="overflow-x-auto pb-12 pt-4">
+                  {/* MAIN LEVEL VERTICAL CONNECTORS */}
+                  <div className="absolute left-[295px] top-[101px] h-[13px] w-px bg-[#111827]" />
+                  <div className="absolute left-[700px] top-[101px] h-[13px] w-px bg-[#111827]" />
+                  <div className="absolute left-[943px] top-[101px] h-[13px] w-px bg-[#111827]" />
+                  <div className="absolute left-[1104px] top-[101px] h-[68px] w-px bg-[#111827]" />
+                  <div className="absolute left-[1241px] top-[101px] h-[68px] w-px bg-[#111827]" />
 
-    <div
-      className="
-        relative mx-auto
-        min-w-[1400px]
-        select-none
-        px-6
-        font-sans
-      "
-      style={{ height: "560px" }}
-    >
+                  {/* COO CHILD CONNECTOR */}
+                  <div className="absolute left-[295px] top-[147px] h-[12px] w-px bg-[#111827]" />
+                  <div className="absolute left-[106px] top-[159px] h-px w-[342px] bg-[#111827]" />
+                  <div className="absolute left-[106px] top-[159px] h-[10px] w-px bg-[#111827]" />
+                  <div className="absolute left-[295px] top-[159px] h-[10px] w-px bg-[#111827]" />
+                  <div className="absolute left-[448px] top-[159px] h-[10px] w-px bg-[#111827]" />
 
+                  {/* HR CHILD CONNECTOR */}
+                  <div className="absolute left-[700px] top-[147px] h-[12px] w-px bg-[#111827]" />
+                  <div className="absolute left-[621px] top-[159px] h-px w-[144px] bg-[#111827]" />
+                  <div className="absolute left-[621px] top-[159px] h-[10px] w-px bg-[#111827]" />
+                  <div className="absolute left-[765px] top-[159px] h-[63px] w-px bg-[#111827]" />
 
-      {/* =====================================================
-          CEO
-      ====================================================== */}
+                  {/* FINANCE CHILD CONNECTOR */}
+                  <div className="absolute left-[943px] top-[147px] h-[22px] w-px bg-[#111827]" />
 
-      <div
-        className="
-          absolute left-1/2 top-0 z-20
-          flex h-[76px] w-[270px]
-          -translate-x-1/2
-          flex-col items-center justify-center
-          rounded-xl
-          border border-slate-200
-          bg-white
-          text-center
-          shadow-[0_8px_25px_rgba(15,43,92,0.08)]
-        "
-      >
-        <h4 className="text-sm font-extrabold text-[#0F2B5C]">
-          Chief Executive Officer
-        </h4>
+                  {/* CARDS LAYER */}
+                  <OrganizationCard className="left-[621px] top-[51px] w-[158px] h-[39px]">
+                    Chief Executive Officer
+                  </OrganizationCard>
 
-        <div className="mt-2 h-1 w-8 rounded-full bg-[#FFC107]" />
-      </div>
+                  <OrganizationCard className="left-[201.5px] top-[114px] w-[187px] h-[33px]">
+                    Chief Operasional Officer
+                  </OrganizationCard>
 
+                  <OrganizationCard className="left-[621px] top-[114px] w-[158px] h-[33px]">
+                    Chief Human Resources <br /> Officer
+                  </OrganizationCard>
 
-      {/* =====================================================
-          GARIS CEO → GARIS UTAMA
-      ====================================================== */}
+                  <OrganizationCard className="left-[880px] top-[114px] w-[125px] h-[33px]">
+                    Chief Finance Officer
+                  </OrganizationCard>
 
-      <div
-        className="
-          absolute left-1/2 top-[76px]
-          h-[34px] w-[2px]
-          -translate-x-1/2
-          bg-[#0F2B5C]
-        "
-      />
+                  <OrganizationCard className="left-[43px] top-[169px] w-[126px] h-[42px]">
+                    Operasional Manager
+                  </OrganizationCard>
 
+                  <OrganizationCard className="left-[233px] top-[169px] w-[124px] h-[42px]">
+                    Technical Service <br /> Manager
+                  </OrganizationCard>
 
-      {/* =====================================================
-          GARIS HORIZONTAL UTAMA
-      ====================================================== */}
+                  <OrganizationCard className="left-[397px] top-[169px] w-[101px] h-[42px]">
+                    Quality Control <br /> Manager
+                  </OrganizationCard>
 
-      <div
-        className="
-          absolute
-          left-[8%] right-[8%]
-          top-[110px]
-          h-[2px]
-          bg-[#0F2B5C]
-        "
-      />
+                  <OrganizationCard className="left-[560px] top-[169px] w-[123px] h-[42px]">
+                    HRGA Manager
+                  </OrganizationCard>
 
+                  <OrganizationCard className="left-[717px] top-[222px] w-[96px] h-[31px]">
+                    Sr HSE Officer
+                  </OrganizationCard>
 
-      {/* =====================================================
-          VERTICAL CONNECTORS LEVEL UTAMA
+                  <OrganizationCard className="left-[880px] top-[169px] w-[125px] h-[42px]">
+                    Finance Manager
+                  </OrganizationCard>
 
-          1 = COO
-          2 = CHRO
-          3 = CFO
-          4 = WH
-          5 = PART
-      ====================================================== */}
+                  <OrganizationCard className="left-[1041px] top-[169px] w-[126px] h-[42px]">
+                    WH & Logistic Manager
+                  </OrganizationCard>
 
-      {/* COO */}
-      <div
-        className="
-          absolute left-[16%] top-[110px]
-          h-[32px] w-[2px]
-          bg-[#0F2B5C]
-        "
-      />
+                  <OrganizationCard className="left-[1178px] top-[169px] w-[126px] h-[42px]">
+                    Part & Key Account <br /> Manager
+                  </OrganizationCard>
 
-      {/* CHRO */}
-      <div
-        className="
-          absolute left-[50%] top-[110px]
-          h-[32px] w-[2px]
-          bg-[#0F2B5C]
-        "
-      />
+                </div>
+              </div>
+            </section>
+          </Reveal>
 
-      {/* CFO */}
-      <div
-        className="
-          absolute left-[70%] top-[110px]
-          h-[32px] w-[2px]
-          bg-[#0F2B5C]
-        "
-      />
-
-      {/* WH */}
-      <div
-        className="
-          absolute left-[84%] top-[110px]
-          h-[32px] w-[2px]
-          bg-[#0F2B5C]
-        "
-      />
-
-      {/* PART */}
-      <div
-        className="
-          absolute left-[94%] top-[110px]
-          h-[32px] w-[2px]
-          bg-[#0F2B5C]
-        "
-      />
-
-
-      {/* =====================================================
-          COO
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[16%] top-[142px]
-          flex h-[76px] w-[300px]
-          -translate-x-1/2
-          flex-col items-center justify-center
-          rounded-xl
-          border border-slate-200
-          bg-white
-          text-center
-          shadow-[0_8px_25px_rgba(15,43,92,0.08)]
-        "
-      >
-        <p className="text-sm font-bold text-[#0F2B5C]">
-          Chief Operasional Officer
-        </p>
-
-        <div className="mt-2 h-1 w-8 rounded-full bg-[#FFC107]" />
-      </div>
-
-
-      {/* COO DOWN */}
-      <div
-        className="
-          absolute left-[16%] top-[218px]
-          h-[30px] w-[2px]
-          bg-[#0F2B5C]
-        "
-      />
-
-
-      {/* COO 3 MANAGER HORIZONTAL */}
-      <div
-        className="
-          absolute left-[6%] top-[248px]
-          h-[2px] w-[20%]
-          bg-[#0F2B5C]
-        "
-      />
-
-
-      {/* COO CHILD CONNECTORS */}
-
-      <div
-        className="
-          absolute left-[6%] top-[248px]
-          h-[30px] w-[2px]
-          bg-[#0F2B5C]
-        "
-      />
-
-      <div
-        className="
-          absolute left-[16%] top-[248px]
-          h-[30px] w-[2px]
-          bg-[#0F2B5C]
-        "
-      />
-
-      <div
-        className="
-          absolute left-[26%] top-[248px]
-          h-[30px] w-[2px]
-          bg-[#0F2B5C]
-        "
-      />
-
-
-      {/* =====================================================
-          OPERASIONAL MANAGER
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[6%] top-[278px]
-          flex h-[78px] w-[190px]
-          -translate-x-1/2
-          items-center justify-center
-          rounded-xl
-          border border-slate-200
-          bg-white
-          p-3
-          text-center
-          shadow-[0_6px_18px_rgba(15,43,92,0.07)]
-        "
-      >
-        <div>
-          <p className="text-xs font-bold text-[#0F2B5C]">
-            Operasional Manager
-          </p>
-
-          <div className="mx-auto mt-2 h-1 w-8 rounded-full bg-[#FFC107]" />
         </div>
-      </div>
-
-
-      {/* =====================================================
-          TECHNICAL SERVICE MANAGER
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[16%] top-[278px]
-          flex h-[78px] w-[205px]
-          -translate-x-1/2
-          items-center justify-center
-          rounded-xl
-          border border-slate-200
-          bg-white
-          p-3
-          text-center
-          shadow-[0_6px_18px_rgba(15,43,92,0.07)]
-        "
-      >
-        <div>
-          <p className="text-xs font-bold leading-tight text-[#0F2B5C]">
-            Technical Service
-            <br />
-            Manager
-          </p>
-
-          <div className="mx-auto mt-2 h-1 w-8 rounded-full bg-[#FFC107]" />
-        </div>
-      </div>
-
-
-      {/* =====================================================
-          QUALITY CONTROL MANAGER
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[26%] top-[278px]
-          flex h-[78px] w-[200px]
-          -translate-x-1/2
-          items-center justify-center
-          rounded-xl
-          border border-slate-200
-          bg-white
-          p-3
-          text-center
-          shadow-[0_6px_18px_rgba(15,43,92,0.07)]
-        "
-      >
-        <div>
-          <p className="text-xs font-bold leading-tight text-[#0F2B5C]">
-            Quality Control
-            <br />
-            Manager
-          </p>
-
-          <div className="mx-auto mt-2 h-1 w-8 rounded-full bg-[#FFC107]" />
-        </div>
-      </div>
-
-
-      {/* =====================================================
-          CHRO
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[50%] top-[142px]
-          flex h-[76px] w-[300px]
-          -translate-x-1/2
-          flex-col items-center justify-center
-          rounded-xl
-          border border-slate-200
-          bg-white
-          text-center
-          shadow-[0_8px_25px_rgba(15,43,92,0.08)]
-        "
-      >
-        <p className="text-sm font-bold leading-tight text-[#0F2B5C]">
-          Chief Human Resources
-          <br />
-          Officer
-        </p>
-
-        <div className="mt-2 h-1 w-8 rounded-full bg-[#FFC107]" />
-      </div>
-
-
-      {/* =====================================================
-          CHRO DOWN → BRANCH
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[50%] top-[218px]
-          h-[30px] w-[2px]
-          -translate-x-1/2
-          bg-[#0F2B5C]
-        "
-      />
-
-
-      {/* =====================================================
-          GARIS HRGA + HSE
-
-          HRGA = LEBIH TINGGI
-          HSE  = LEBIH RENDAH
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[43%] top-[248px]
-          h-[2px] w-[14%]
-          bg-[#0F2B5C]
-        "
-      />
-
-
-      {/* =====================================================
-          HRGA CONNECTOR
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[43%] top-[248px]
-          h-[28px] w-[2px]
-          bg-[#0F2B5C]
-        "
-      />
-
-
-      {/* =====================================================
-          HRGA MANAGER
-          LEBIH TINGGI
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[43%] top-[276px]
-          flex h-[78px] w-[210px]
-          -translate-x-1/2
-          items-center justify-center
-          rounded-xl
-          border border-slate-200
-          bg-white
-          p-3
-          text-center
-          shadow-[0_6px_18px_rgba(15,43,92,0.07)]
-        "
-      >
-        <div>
-          <p className="text-xs font-bold text-[#0F2B5C]">
-            HRGA Manager
-          </p>
-
-          <div className="mx-auto mt-2 h-1 w-8 rounded-full bg-[#FFC107]" />
-        </div>
-      </div>
-
-
-      {/* =====================================================
-          SR HSE CONNECTOR
-          DIBUAT LEBIH PANJANG
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[57%] top-[248px]
-          h-[48px] w-[2px]
-          bg-[#0F2B5C]
-        "
-      />
-
-
-      {/* =====================================================
-          SR HSE OFFICER
-          LEBIH RENDAH
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[57%] top-[296px]
-          flex h-[78px] w-[195px]
-          -translate-x-1/2
-          items-center justify-center
-          rounded-xl
-          border border-slate-200
-          bg-white
-          p-3
-          text-center
-          shadow-[0_6px_18px_rgba(15,43,92,0.07)]
-        "
-      >
-        <div>
-          <p className="text-xs font-bold text-[#0F2B5C]">
-            Sr HSE Officer
-          </p>
-
-          <div className="mx-auto mt-2 h-1 w-8 rounded-full bg-[#FFC107]" />
-        </div>
-      </div>
-
-
-      {/* =====================================================
-          CFO
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[70%] top-[142px]
-          flex h-[76px] w-[235px]
-          -translate-x-1/2
-          flex-col items-center justify-center
-          rounded-xl
-          border border-slate-200
-          bg-white
-          text-center
-          shadow-[0_8px_25px_rgba(15,43,92,0.08)]
-        "
-      >
-        <p className="text-sm font-bold text-[#0F2B5C]">
-          Chief Finance Officer
-        </p>
-
-        <div className="mt-2 h-1 w-8 rounded-full bg-[#FFC107]" />
-      </div>
-
-
-      {/* CFO DOWN */}
-      <div
-        className="
-          absolute left-[70%] top-[218px]
-          h-[60px] w-[2px]
-          bg-[#0F2B5C]
-        "
-      />
-
-
-      {/* =====================================================
-          FINANCE MANAGER
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[70%] top-[278px]
-          flex h-[78px] w-[190px]
-          -translate-x-1/2
-          items-center justify-center
-          rounded-xl
-          border border-slate-200
-          bg-white
-          p-3
-          text-center
-          shadow-[0_6px_18px_rgba(15,43,92,0.07)]
-        "
-      >
-        <div>
-          <p className="text-xs font-bold text-[#0F2B5C]">
-            Finance Manager
-          </p>
-
-          <div className="mx-auto mt-2 h-1 w-8 rounded-full bg-[#FFC107]" />
-        </div>
-      </div>
-
-
-      {/* =====================================================
-          WH & LOGISTIC
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[84%] top-[142px]
-          flex h-[76px] w-[235px]
-          -translate-x-1/2
-          flex-col items-center justify-center
-          rounded-xl
-          border border-slate-200
-          bg-white
-          text-center
-          shadow-[0_8px_25px_rgba(15,43,92,0.08)]
-        "
-      >
-        <p className="text-sm font-bold text-[#0F2B5C]">
-          WH & Logistic Manager
-        </p>
-
-        <div className="mt-2 h-1 w-8 rounded-full bg-[#FFC107]" />
-      </div>
-
-
-      {/* =====================================================
-          PART & KEY ACCOUNT
-      ====================================================== */}
-
-      <div
-        className="
-          absolute left-[94%] top-[142px]
-          flex h-[76px] w-[235px]
-          -translate-x-1/2
-          flex-col items-center justify-center
-          rounded-xl
-          border border-slate-200
-          bg-white
-          text-center
-          shadow-[0_8px_25px_rgba(15,43,92,0.08)]
-        "
-      >
-        <p className="text-sm font-bold leading-tight text-[#0F2B5C]">
-          Part & Key Account
-          <br />
-          Manager
-        </p>
-
-        <div className="mt-2 h-1 w-8 rounded-full bg-[#FFC107]" />
-      </div>
-
-
-    </div>
-  </div>
-</div>
-
-
-        {/* ================= MANAGEMENT TEAM DINAMIS DARI DATABASE ================= */}
-        <div id="management" className="mt-12 scroll-mt-24">
-          <Management managementTeam={managementTeam} />
-        </div>
-
-        {/* ================= OUR CUSTOMERS DINAMIS DARI DATABASE ================= */}
-        <OurCustomers customers={customers} />
       </section>
 
+      {/* ================= MANAGEMENT TEAM DINAMIS DARI DATABASE ================= */}
+      <div id="management" className="scroll-mt-24">
+        <Reveal direction="up">
+          <Management managementTeam={managementTeam} />
+        </Reveal>
+      </div>
+
+      {/* ================= OUR CUSTOMERS DINAMIS DARI DATABASE ================= */}
+      <Reveal direction="up">
+        <OurCustomers customers={customers} />
+      </Reveal>
+
       {/* ============================== COMPANY CULTURE + GOVERNANCE ============================== */}
-      <section className="bg-[#F8FAFC] pt-6 pb-12 border-t border-slate-200">
+      <section className="bg-[#F8FAFC] pt-6 pb-12 border-t border-slate-200 overflow-hidden">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8 items-stretch">
           
-          <div className="flex flex-col h-full">
+          <Reveal direction="left" className="flex flex-col h-full">
             <span className="mb-5 inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
               Company Culture
             </span>
@@ -1107,9 +783,9 @@ export default function Index({ milestones = [], managementTeam = [], customers 
                 return (
                   <div
                     key={i}
-                    className="group flex flex-col items-center justify-center rounded-xl border border-[#E2E8F0] bg-white p-4 text-center shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl"
+                    className="group flex flex-col items-center justify-center rounded-xl border border-[#E2E8F0] bg-white p-4 text-center shadow-sm transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl"
                   >
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#0F2B5C]/5 text-[#0F2B5C] transition-colors duration-300 group-hover:bg-[#FFC107]">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#0F2B5C]/5 text-[#0F2B5C] transition-colors duration-500 group-hover:bg-[#FFC107]">
                       <Icon className="h-5 w-5" />
                     </span>
                     <p className="mt-2.5 text-xs font-bold leading-tight text-[#0F2B5C]">
@@ -1122,13 +798,13 @@ export default function Index({ milestones = [], managementTeam = [], customers 
                 );
               })}
             </div>
-          </div>
+          </Reveal>
 
-          <div className="flex flex-col h-full">
+          <Reveal direction="right" className="flex flex-col h-full">
             <span className="mb-5 inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
               Corporate Governance
             </span>
-            <div className="flex flex-col justify-between flex-1 h-full rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl md:p-7">
+            <div className="flex flex-col justify-between flex-1 h-full rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-sm transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl md:p-7">
               <p className="mb-6 text-sm leading-relaxed text-[#64748B]">
                 Kami berkomitmen menerapkan prinsip Good Corporate Governance (GCG) secara konsisten demi memberikan pelayanan servis alat berat terbaik, terpercaya, dan profesional di Indonesia.
               </p>
@@ -1139,9 +815,9 @@ export default function Index({ milestones = [], managementTeam = [], customers 
                   return (
                     <div 
                       key={i} 
-                      className="group flex items-start gap-3 rounded-xl p-2 transition-all duration-300 hover:bg-[#F8FAFC]"
+                      className="group flex items-start gap-3 rounded-xl p-2 transition-all duration-500 hover:bg-[#F8FAFC]"
                     >
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#FFC107]/15 text-[#0F2B5C] transition-all duration-300 group-hover:bg-[#FFC107] group-hover:scale-105">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#FFC107]/15 text-[#0F2B5C] transition-all duration-500 group-hover:bg-[#FFC107] group-hover:scale-105">
                         <Icon className="h-5 w-5" />
                       </span>
                       <div>
@@ -1157,77 +833,79 @@ export default function Index({ milestones = [], managementTeam = [], customers 
                 })}
               </div>
             </div>
-          </div>
+          </Reveal>
 
         </div>
       </section>
 
       {/* ============================== CTA BANNER ============================== */}
-      <section className="grid grid-cols-1 md:grid-cols-2">
-        <div
-          className="relative flex min-h-[280px] items-center overflow-hidden px-8 py-14 sm:px-12"
-          style={{
-            backgroundImage: "linear-gradient(to bottom, rgba(11,18,32,0.70), rgba(11,18,32,0.85)), url('https://img.youtube.com/vi/qIVMKITIV7o/maxresdefault.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <div>
-            <h3 className="max-w-md text-xl font-extrabold uppercase leading-tight text-white sm:text-2xl md:text-3xl">
-              BUILDING THE FUTURE OF HEAVY EQUIPMENT SERVICES
-            </h3>
-            <p className="mt-3 text-sm font-semibold text-[#FFC107]">
-              Menjadi fondasi menuju Smart Mining Service Ecosystem.
-            </p>
+      <Reveal direction="scale">
+        <section className="grid grid-cols-1 md:grid-cols-2">
+          <div
+            className="relative flex min-h-[280px] items-center overflow-hidden px-8 py-14 sm:px-12"
+            style={{
+              backgroundImage: "linear-gradient(to bottom, rgba(11,18,32,0.70), rgba(11,18,32,0.85)), url('https://img.youtube.com/vi/qIVMKITIV7o/maxresdefault.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <div>
+              <h3 className="max-w-md text-xl font-extrabold uppercase leading-tight text-white sm:text-2xl md:text-3xl">
+                BUILDING THE FUTURE OF HEAVY EQUIPMENT SERVICES
+              </h3>
+              <p className="mt-3 text-sm font-semibold text-[#FFC107]">
+                Menjadi fondasi menuju Smart Mining Service Ecosystem.
+              </p>
 
-            <button
-              type="button"
-              onClick={() => setIsVideoOpen(true)}
-              aria-label="Play company video"
-              className="mt-6 flex h-14 w-14 items-center justify-center rounded-full border-2 border-white/70 bg-[#0B1220]/40 text-white backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-white hover:text-[#0B1220]"
-            >
-              <IconPlay className="ml-1 h-5 w-5" />
-            </button>
+              <button
+                type="button"
+                onClick={() => setIsVideoOpen(true)}
+                aria-label="Play company video"
+                className="mt-6 flex h-14 w-14 items-center justify-center rounded-full border-2 border-white/70 bg-[#0B1220]/40 text-white backdrop-blur-sm transition-all duration-500 hover:scale-110 hover:bg-white hover:text-[#0B1220] cursor-pointer"
+              >
+                <IconPlay className="ml-1 h-5 w-5" />
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div
-          className="relative flex min-h-[280px] items-center overflow-hidden bg-[#FFC107] px-8 py-14 sm:px-12"
-          style={{
-            backgroundImage: "linear-gradient(to left, rgba(255,193,7,0.35), rgba(255,193,7,0.92)), url('https://placehold.co/960x480/FFC107/FFC107?text=+')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <div>
-            <h3 className="max-w-sm text-xl font-extrabold uppercase leading-tight text-[#0B1220] sm:text-2xl md:text-3xl">
-              LET'S BUILD A BETTER FUTURE TOGETHER
-            </h3>
-            <p className="mt-3 max-w-sm text-sm leading-relaxed text-[#0B1220]/80">
-              We are ready to support your business with our best services and solutions.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-4">
+          <div
+            className="relative flex min-h-[280px] items-center overflow-hidden bg-[#FFC107] px-8 py-14 sm:px-12"
+            style={{
+              backgroundImage: "linear-gradient(to left, rgba(255,193,7,0.35), rgba(255,193,7,0.92)), url('https://placehold.co/960x480/FFC107/FFC107?text=+')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <div>
+              <h3 className="max-w-sm text-xl font-extrabold uppercase leading-tight text-[#0B1220] sm:text-2xl md:text-3xl">
+                LET'S BUILD A BETTER FUTURE TOGETHER
+              </h3>
+              <p className="mt-3 max-w-sm text-sm leading-relaxed text-[#0B1220]/80">
+                We are ready to support your business with our best services and solutions.
+              </p>
               <div className="mt-6 flex flex-wrap gap-4">
                 <a
                   href="https://wa.me/6282258013177?text=Halo%20PT.%20Servistama%20Pro%20Indonesia,%20saya%20tertarik%20untuk%20menghubungi%20Anda."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-md bg-[#0B1220] px-6 py-3 text-sm font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0F2B5C] hover:shadow-lg"
+                  className="inline-flex items-center gap-2 rounded-md bg-[#0B1220] px-6 py-3 text-sm font-bold text-white transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#0F2B5C] hover:shadow-lg"
                 >
                   Contact Us
                   <IconArrow className="h-4 w-4" />
                 </a>
                 <a
-                  href="mailto:info@servistamapro.co.id?subject=Request%20Consultation%20-%20PT.%20Servistama%20Pro%20Indonesia"
-                  className="inline-flex items-center gap-2 rounded-md border-2 border-[#0B1220] px-6 py-3 text-sm font-bold text-[#0B1220] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0B1220] hover:text-white"
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=info@servistamapro.com&su=Request%20Consultation%20-%20PT.%20Servistama%20Pro%20Indonesia"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-md border-2 border-[#0B1220] px-6 py-3 text-sm font-bold text-[#0B1220] transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#0B1220] hover:text-white"
                 >
                   Request Consultation
                 </a>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </Reveal>
 
       {/* ============================== MODAL POP-UP VIDEO ============================== */}
       {isVideoOpen && (
@@ -1241,7 +919,7 @@ export default function Index({ milestones = [], managementTeam = [], customers 
           >
             <button
               onClick={() => setIsVideoOpen(false)}
-              className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white transition-all hover:bg-white hover:text-black"
+              className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white transition-all hover:bg-white hover:text-black cursor-pointer"
             >
               ✕
             </button>

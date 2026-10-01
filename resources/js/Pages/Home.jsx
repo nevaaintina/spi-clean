@@ -198,29 +198,6 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
     return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&controls=0&playlist=${videoId}` : url;
   };
 
-  const staticStatistics = [
-    { target: 5, suffix: "+", label: "Tahun Pengalaman", desc: "Melayani kebutuhan alat berat di berbagai proyek nasional." },
-    { target: 500, suffix: "+", label: "Unit Terawat", desc: "Dukungan armada unit handal dan siap operasional." },
-    { target: 200, suffix: "+", label: "Mekanik Bersertifikat", desc: "Tenaga ahli profesional di bidang perawatan alat berat." },
-    { target: 99, suffix: "%", label: "Kepuasan Pelanggan", desc: "Komitmen memberikan pelayanan terbaik bagi mitra." },
-    { target: 200, suffix: "+", label: "Professional", desc: "Tim solid yang berpengalaman menangani proyek besar." },
-  ];
-
-  const staticStrengths = [
-    { label: "Tahun Pengalaman", desc: "Melayani kebutuhan alat berat di berbagai proyek nasional." },
-    { label: "Unit Terawat", desc: "Dukungan armada unit handal dan siap operasional." },
-    { label: "Mekanik Bersertifikat", desc: "Tenaga ahli profesional di bidang perawatan alat berat." },
-    { label: "Kepuasan Pelanggan", desc: "Komitmen memberikan pelayanan terbaik bagi mitra." },
-    { label: "Professional", desc: "Tim solid yang berpengalaman menangani proyek besar." },
-  ];
-
-  const staticFeaturedItems = [
-    { id: 1, slug: "pelatihan-operator", title: "Pelatihan Operator", description: "Kami memberikan pelatihan khusus kepada operator anda untuk unit XCMG pertambangan...", image_path: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80" },
-    { id: 2, slug: "layanan-maintenance", title: "Heavy Equipment Maintenance & Overhaul", description: "Layanan pemeliharaan menyeluruh dan overhaul komponen alat berat...", image_path: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=600&q=80" },
-    { id: 3, slug: "suplai-suku-cadang", title: "Suplai Suku Cadang", description: "Ketersediaan suku cadang original XCMG lengkap dengan jaminan kualitas terbaik...", image_path: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=600&q=80" },
-    { id: 4, slug: "konsultasi-teknis", title: "Konsultasi Teknis", description: "Layanan konsultasi pemilihan unit dan analisis kebutuhan operasional proyek...", image_path: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=600&q=80" },
-  ];
-
   // Inisialisasi Peta Interaktif Leaflet Publik
   useEffect(() => {
     let mapInstance = null;
@@ -334,7 +311,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
               </h2>
 
               <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-8 font-normal max-w-xl">
-                Kami hadir dengan berbagai layanan untuk mendukung produktivitas alat berat Anda agar tetap optimal di setiap pekerjaan.
+                SPI menyediakan berbagai solusi layanan alat berat yang profesional, andal, dan terpercaya untuk mendukung kebutuhan operasional pelanggan. Didukung oleh tenaga ahli dan pengalaman di bidang alat berat, kami memberikan layanan mulai dari perawatan, perbaikan, inspeksi, overhaul, instalasi, hingga dukungan warranty dan purna jual untuk menjaga performa serta keandalan setiap unit.
               </p>
 
               <div className="grid grid-cols-3 gap-3 pt-6 border-t border-slate-200/80">
@@ -344,7 +321,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
                   </div>
                   <div>
                     <h4 className="font-bold text-xs text-[#0f2b5c]">Berpengalaman</h4>
-                    <p className="text-[10px] text-slate-500 leading-snug mt-0.5">Lebih dari 10 tahun melayani berbagai industri</p>
+                    <p className="text-[10px] text-slate-500 leading-snug mt-0.5">4 tahun melayani berbagai industri</p>
                   </div>
                 </div>
 
@@ -383,7 +360,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
           {/* 3 CARD LAYANAN BESAR */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="relative p-8 bg-white border border-slate-200 rounded-3xl shadow-sm transition-all duration-500 hover:shadow-2xl flex flex-col justify-end group overflow-hidden h-[340px]">
-              <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url('/images/suku-cadang.jpg')` }} />
+              <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url('/images/suku-cadang.png')` }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:bg-[#0f2b5c]/90 transition-colors duration-500" />
               <div className="relative z-10 transition-all duration-500 transform group-hover:-translate-y-2 text-center">
                 <h3 className="font-black text-xl text-white drop-shadow-md mb-1">Suku Cadang</h3>
@@ -395,7 +372,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             </div>
 
             <div className="relative p-8 bg-white border border-slate-200 rounded-3xl shadow-sm transition-all duration-500 hover:shadow-2xl flex flex-col justify-end group overflow-hidden h-[340px]">
-              <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url('/images/layanan-purnajual.jpg')` }} />
+              <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url('/images/layanan-purnajual.png')` }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:bg-[#0f2b5c]/90 transition-colors duration-500" />
               <div className="relative z-10 transition-all duration-500 transform group-hover:-translate-y-2 text-center">
                 <h3 className="font-black text-xl text-white drop-shadow-md mb-1">Layanan Purna Jual</h3>
@@ -407,7 +384,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             </div>
 
             <div className="relative p-8 bg-white border border-slate-200 rounded-3xl shadow-sm transition-all duration-500 hover:shadow-2xl flex flex-col justify-end group overflow-hidden h-[340px]">
-              <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url('/images/kemitraan.jpg')` }} />
+              <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url('/images/kemitraan.png')` }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:bg-[#0f2b5c]/90 transition-colors duration-500" />
               <div className="relative z-10 transition-all duration-500 transform group-hover:-translate-y-2 text-center">
                 <h3 className="font-black text-xl text-white drop-shadow-md mb-1">Kemitraan</h3>
@@ -430,9 +407,14 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
 
       {/* 4. SECTION COMPANY STATISTICS */}
       <section id="statistics" className="relative w-full bg-[#0f2b5c] text-white py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center opacity-80 pointer-events-none" style={{ backgroundImage: `url('/images/statistik.png')` }} />
+        {/* Gambar Latar Belakang */}
+        <div className="absolute inset-0 bg-cover bg-center pointer-events-none" style={{ backgroundImage: `url('/images/statistik.png')` }} />
+        
+        {/* Overlay Biru Tipis agar Tulisan Tetap Terlihat Jelas */}
+        <div className="absolute inset-0 bg-[#071b38]/50 pointer-events-none" />
+
         <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-16 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-5xl mx-auto mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
               Rekam Jejak &{' '}
               <span className="relative inline-block mx-1">
@@ -441,23 +423,63 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
               </span> <br />
               Perusahaan
             </h2>
-            <p className="text-white text-xs md:text-sm mt-4 font-normal leading-relaxed max-w-2xl mx-auto">
+            <p className="text-white text-xs md:text-sm mt-4 font-normal leading-relaxed max-w-4xl mx-auto md:whitespace-nowrap">
               Komitmen kami dalam memberikan layanan terbaik bagi sektor pertambangan dan konstruksi di seluruh Indonesia.
             </p>
           </div> 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-16">
-            {staticStatistics.map((item, idx) => (
-              <div key={idx} className="flex flex-col items-center text-center pt-6 lg:pt-0 lg:px-3 group">
-                <div className="relative w-44 h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-300">
-                  <div className="text-3xl sm:text-4xl font-black text-white leading-none mb-1.5">
-                    <AnimatedCounter targetNumber={item.target} suffix={item.suffix} />
-                  </div>
-                  <div className="text-xs font-bold text-[#ffc107] px-2">{item.label}</div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            
+            <div className="flex flex-col items-center text-center group">
+              <div className="relative w-44 h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-300">
+                <div className="text-3xl sm:text-4xl font-black text-white leading-none mb-1.5">
+                  100%
                 </div>
-                <p className="text-white text-xs leading-relaxed mt-4 max-w-[180px]">{item.desc}</p>
+                <div className="text-xs font-bold text-[#ffc107] px-2 text-center">Dukungan Teknis</div>
               </div>
-            ))}
+              <p className="text-white text-xs leading-relaxed mt-4 max-w-[200px]">
+                Komitmen memberikan layanan teknis untuk setiap kebutuhan pelanggan.
+              </p>
+            </div>
+
+            <div className="flex flex-col items-center text-center group">
+              <div className="relative w-44 h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-300">
+                <div className="text-3xl sm:text-4xl font-black text-white leading-none mb-1.5 flex items-center">
+                  <AnimatedCounter targetNumber={4} suffix="+" />
+                </div>
+                <div className="text-xs font-bold text-[#ffc107] px-2 text-center">Tahun Pengalaman</div>
+              </div>
+              <p className="text-white text-xs leading-relaxed mt-4 max-w-[200px]">
+                Berpengalaman dalam memberikan solusi terbaik di bidangnya.
+              </p>
+            </div>
+
+            <div className="flex flex-col items-center text-center group">
+              <div className="relative w-44 h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-300">
+                <div className="text-3xl sm:text-4xl font-black text-white leading-none mb-1.5 flex items-center">
+                  <AnimatedCounter targetNumber={99} suffix="%" />
+                </div>
+                <div className="text-xs font-bold text-[#ffc107] px-2 text-center">Kepuasan Pelanggan</div>
+              </div>
+              <p className="text-white text-xs leading-relaxed mt-4 max-w-[200px]">
+                Siap memberikan dukungan teknis kapan pun dibutuhkan.
+              </p>
+            </div>
+
+            <div className="flex flex-col items-center text-center group">
+              <div className="relative w-44 h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-300">
+                <div className="text-3xl sm:text-4xl font-black text-white leading-none mb-1.5">
+                  100%
+                </div>
+                <div className="text-xs font-bold text-[#ffc107] px-2 text-center">Layanan Terpercaya</div>
+              </div>
+              <p className="text-white text-xs leading-relaxed mt-4 max-w-[200px]">
+                Memberikan layanan dengan mengutamakan profesionalisme dan tanggung jawab.
+              </p>
+            </div>
+
           </div>
+
           <div className="flex flex-wrap justify-center items-center gap-4">
             {["Terpercaya & Profesional", "Layanan Cepat & Tepat", "Mitra Jangka Panjang"].map((text, i) => (
               <div key={i} className="px-5 py-2.5 bg-[#0f2b5c]/50 backdrop-blur-md border border-white/20 rounded-full flex items-center shadow-sm">
@@ -485,7 +507,13 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-16">
-            {staticStrengths.map((item, i) => (
+            {[
+              { label: "Tahun Pengalaman", desc: "Melayani kebutuhan alat berat di berbagai proyek nasional." },
+              { label: "Unit Terawat", desc: "Dukungan armada unit handal dan siap operasional." },
+              { label: "Mekanik Bersertifikat", desc: "Tenaga ahli profesional di bidang perawatan alat berat." },
+              { label: "Kepuasan Pelanggan", desc: "Komitmen memberikan pelayanan terbaik bagi mitra." },
+              { label: "Professional", desc: "Tim solid yang berpengalaman menangani proyek besar." },
+            ].map((item, i) => (
               <div key={i} className="p-6 bg-white border border-slate-200/90 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between relative overflow-hidden group">
                 <div className="absolute bottom-0 right-0 w-6 h-6 bg-[#0f2b5c]" style={{ clipPath: 'polygon(100% 0, 0 100%, 100% 100%)' }}></div>
                 <div className="w-full h-1 bg-[#0f2b5c] absolute bottom-0 left-0"></div>
@@ -503,7 +531,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             <div className="lg:col-span-7 p-8 lg:p-10 flex flex-col justify-center bg-white pr-12">
               <h3 className="text-2xl font-black text-[#0f2b5c] mb-2">Mengapa Memilih Kami?</h3>
               <p className="text-slate-500 text-xs md:text-sm leading-relaxed mb-8 max-w-xl">
-                Kami tidak hanya menyediakan layanan, tetapi juga menghadirkan nilai tambah melalui kualitas, inovasi, dan komitmen berkelanjutan.
+                SPI hadir sebagai mitra terpercaya dalam mendukung kebutuhan alat berat dengan pengalaman, kompetensi, dan layanan profesional. Sebagai Dealer Servis Resmi XCMG, kami berkomitmen memberikan solusi yang andal, responsif, dan berkualitas untuk menjaga performa alat berat serta mendukung produktivitas pelanggan.
               </p>
             </div>
           </div>
@@ -512,7 +540,6 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
 
      {/* 6. SECTION FEATURED SERVICES */}
       <section id="featured-services" className="relative w-full py-24 overflow-hidden border-b border-slate-800 bg-[#0f2b5c]">
-        {/* Latar Belakang Section Menggunakan Foto featured-service.jpg */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <img src="/images/featured-service.jpg" alt="Featured Services Background" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-[#0f2b5c]/40" />
@@ -602,7 +629,6 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
 
       {/* 8. SECTION PROJECT GALLERY (DINAMIS DATABASE + BACKGROUND STATIS) */}
       <section id="projects" className="relative w-full text-slate-800 py-24 overflow-hidden border-b border-slate-200 bg-[#0f2b5c]">
-        {/* Latar Belakang Section (Statis dengan foto kita.jpg & overlay biru semi-transparan tanpa blur) */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <img src="/images/back-project.png" alt="Projects Background" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-[#0f2b5c]/50" />
@@ -619,7 +645,6 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             </p>
           </div>
 
-          {/* Grid Proyek Tetap Dinamis Mengambil dari Database */}
           {projects.length === 0 ? (
             <p className="text-center text-slate-300 text-xs">Belum ada proyek yang ditambahkan.</p>
           ) : (
@@ -657,7 +682,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
         </div>
       </section>
 
-      {/* 9. SECTION LATEST NEWS (BERITA TERBARU - TERHUBUNG DINAMIS DARI DATABASE KNOWLEDGE) */}
+      {/* 9. SECTION LATEST NEWS */}
       <section id="news" className="relative w-full bg-white text-slate-800 py-24 overflow-hidden border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-16 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-12">
@@ -685,16 +710,16 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
           {latestPosts.length === 0 ? (
             <p className="text-center text-slate-400 text-xs py-10">Belum ada berita atau artikel knowledge terbaru.</p>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              {/* Berita Utama (index 0) */}
-              <div className="lg:col-span-7 relative rounded-3xl overflow-hidden shadow-xl min-h-[440px] md:min-h-[480px] flex flex-col justify-end p-8 md:p-10 group">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+              <div className="lg:col-span-7 relative rounded-3xl overflow-hidden shadow-xl min-h-[480px] md:min-h-[520px] flex flex-col justify-end p-8 md:p-10 group">
                 <div 
                   className="absolute inset-0 w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700 z-0" 
-                  style={{ backgroundImage: `url('${latestPosts[0].thumbnail ? `/${latestPosts[0].thumbnail}` : 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=800&q=80'}')` }}
+                  style={{ backgroundImage: `url('${latestPosts[0].thumbnail ? (latestPosts[0].thumbnail.startsWith('http') ? latestPosts[0].thumbnail : `/${latestPosts[0].thumbnail}`) : 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=800&q=80'}')` }}
                 ></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/50 to-transparent z-10"></div>
                 <div className="relative z-20 text-white">
-                  <span className="text-xs text-slate-300 block mb-2">
+                  <span className="text-xs text-slate-300 block mb-2 flex items-center gap-1.5">
+                    <svg className="w-3.5 h-3.5 text-[#ffc107]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     {new Date(latestPosts[0].created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}
                   </span>
                   <h3 className="text-2xl sm:text-3xl font-black text-white leading-snug mb-3">{latestPosts[0].title}</h3>
@@ -703,26 +728,40 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
                 </div>
               </div>
 
-              {/* Berita Samping (index 1 & 2) */}
-              <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
-                {latestPosts.slice(1, 3).map((post) => (
-                  <div key={post.id} className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition flex items-center justify-between gap-4 group">
-                    <div className="flex items-center gap-4">
-                      <img 
-                        src={post.thumbnail ? `/${post.thumbnail}` : 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=200&q=80'} 
-                        alt={post.title} 
-                        className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md shrink-0" 
-                      />
-                      <div>
-                        <span className="text-[10px] text-slate-400 block mb-1">
-                          {new Date(post.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}
-                        </span>
-                        <h4 className="font-extrabold text-xs text-[#0f2b5c] group-hover:text-amber-600 transition leading-snug line-clamp-1">{post.title}</h4>
-                        <p className="text-slate-500 text-[10px] line-clamp-1 mt-1">{post.excerpt || post.content}</p>
+              <div className="lg:col-span-5 relative flex flex-col justify-between py-1">
+                {latestPosts.slice(1, 4).map((post, idx) => (
+                  <React.Fragment key={post.id || idx}>
+                    <div className="relative z-10 bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-md transition flex items-center justify-between gap-5 group">
+                      <div className="flex items-center gap-5">
+                        <img 
+                          src={post.thumbnail ? (post.thumbnail.startsWith('http') ? post.thumbnail : `/${post.thumbnail}`) : 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=200&q=80'} 
+                          alt={post.title} 
+                          className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-slate-100 shadow-sm shrink-0" 
+                        />
+                        <div>
+                          <span className="text-xs text-slate-400 font-medium flex items-center gap-1.5 mb-1.5">
+                            <svg className="w-3.5 h-3.5 text-[#ffc107]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            {new Date(post.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}
+                          </span>
+                          <h4 className="font-black text-sm sm:text-base text-[#0f2b5c] group-hover:text-amber-600 transition leading-snug line-clamp-1">{post.title}</h4>
+                          <p className="text-slate-500 text-xs line-clamp-2 mt-1">{post.excerpt || post.content}</p>
+                        </div>
                       </div>
+                      <Link 
+                        href={`/knowledge/${post.id}`} 
+                        className="w-10 h-10 rounded-full bg-slate-50 text-[#0f2b5c] flex items-center justify-center hover:bg-[#ffc107] transition shrink-0 text-sm font-bold shadow-sm border border-slate-100"
+                        title="Baca Berita"
+                      >
+                        →
+                      </Link>
                     </div>
-                    <Link href={`/knowledge/${post.id}`} className="w-8 h-8 rounded-full bg-slate-50 text-[#0f2b5c] flex items-center justify-center hover:bg-[#ffc107] transition shrink-0">→️</Link>
-                  </div>
+
+                    {idx < 2 && (
+                      <div className="flex items-center my-[-6px] z-0 pl-8 sm:pl-10">
+                        <div className="w-[3px] h-7 bg-[#ffc107] rounded-full"></div>
+                      </div>
+                    )}
+                  </React.Fragment>
                 ))}
               </div>
             </div>
@@ -777,7 +816,6 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
                 <div className="space-y-1.5 text-[11px] text-slate-600">
                   <p>Hotline: <span className="font-medium text-[#0f2b5c]">+62 822-5801-3177</span></p>
                   <p>Email: <span className="font-medium text-[#0f2b5c]">info@servistamapro.com</span></p>
-                  
                 </div>
               </div>
               <div className="mt-5 pt-3 border-t border-slate-100">
@@ -788,7 +826,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
         </div>
       </section>
 
-      {/* 11. SECTION BRANCH OFFICE & LEAFLET MAP (DINAMIS) */}
+      {/* 11. SECTION BRANCH OFFICE & LEAFLET MAP */}
       <section id="operational-area" className="relative w-full bg-white text-[#0b2348] overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <img src="/images/branch.jpg" alt="Operational Area Background" className="absolute inset-0 w-full h-full object-cover opacity-25" />
@@ -821,13 +859,19 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
         </div>
       </section>
 
-      {/* POPUP POSTER MODAL (CLEAN, TANPA BLUR, UKURAN MENGIKUTI ASLI) */}
+      {/* POPUP POSTER MODAL (DIPERBESAR UKURANNYA) */}
       {showPoster && activePoster && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="relative max-w-fit max-h-[90vh] flex items-center justify-center">
+        <div 
+          onClick={() => setShowPoster(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 cursor-pointer"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()} 
+            className="relative w-full max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl max-h-[90vh] flex items-center justify-center cursor-default"
+          >
             <button 
               onClick={() => setShowPoster(false)}
-              className="absolute -top-3 -right-3 z-10 w-9 h-9 rounded-full bg-slate-900/90 text-white hover:bg-red-600 flex items-center justify-center font-bold text-sm transition shadow-lg cursor-pointer"
+              className="absolute -top-4 -right-4 z-10 w-10 h-10 rounded-full bg-slate-900/90 text-white hover:bg-red-600 flex items-center justify-center font-bold text-base transition shadow-xl cursor-pointer"
               aria-label="Close Poster"
             >
               ✕
@@ -835,7 +879,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             <img 
               src={`/${activePoster.image_path}`} 
               alt="Popup Poster" 
-              className="w-auto h-auto max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl" 
+              className="w-full h-auto max-h-[88vh] object-contain rounded-2xl shadow-2xl bg-white" 
             />
           </div>
         </div>

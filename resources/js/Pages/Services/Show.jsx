@@ -14,7 +14,6 @@ const IconGear = (p) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColo
 const IconHeadset = (p) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><path d="M20 13v3a2 2 0 0 1-2 2h-1"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M15 18a2 2 0 0 1-2 2h-2"/></svg>;
 
 export default function Show({ category = { name: "Preventive Maintenance", description: "Layanan pemeliharaan berkala dan preventif untuk memastikan unit alat berat Anda selalu dalam kondisi prima." }, serviceList = [] }) {
-    // Jika data dari database kosong, sediakan fallback data agar tampilan tetap aman
     const activeServices = serviceList.length > 0 ? serviceList : [
         {
             id: 1,
@@ -36,7 +35,6 @@ export default function Show({ category = { name: "Preventive Maintenance", desc
 
     const [selectedItem, setSelectedItem] = useState(activeServices[0]);
 
-    // Update selected item jika props serviceList berubah/di-load
     useEffect(() => {
         if (activeServices.length > 0) {
             setSelectedItem(activeServices[0]);
@@ -50,24 +48,32 @@ export default function Show({ category = { name: "Preventive Maintenance", desc
             <div className="min-h-screen bg-[#F8FAFC]">
                 <Navbar />
 
-                {/* Sub-header Navigation Bar (Tanpa Tombol Back) */}
-                <div className="border-b border-gray-200 bg-white pt-24 pb-6">
-                    <div className="mx-auto max-w-[1440px] px-6 lg:px-10">
-                        <div>
-                            <div className="mb-2 flex items-center gap-2 text-xs font-bold tracking-wider text-gray-400 uppercase">
-                                <Link href="/" className="hover:text-[#FDC02F]">HOME</Link>
-                                <span>/</span>
-                                <Link href="/services" className="hover:text-[#FDC02F]">SERVICES</Link>
-                                <span>/</span>
-                                <span className="text-[#FDC02F]">{category.name}</span>
-                            </div>
-                            <h1 className="text-3xl font-extrabold text-[#0B1B32]">
-                                {category.name}
-                            </h1>
-                            <p className="mt-1 text-xs text-gray-500 max-w-2xl">
-                                {category.description}
-                            </p>
+                {/* Sub-header / Hero Banner Full Satu Lebar dengan Overlay Biru Terang */}
+                <div className="relative bg-[#0f2b5c] pt-32 pb-16 overflow-hidden">
+                    {/* Background Image dengan Opasitas Lebih Terang & Gradien Lembut */}
+                    <div className="absolute inset-0 z-0">
+                        <img 
+                            src="/images/hero-detailserv.png" 
+                            alt={category.name} 
+                            className="h-full w-full object-cover opacity-75"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#0f2b5c]/90 via-[#0f2b5c]/60 to-transparent" />
+                    </div>
+
+                    <div className="relative z-10 mx-auto max-w-[1440px] px-6 lg:px-10">
+                        <div className="mb-3 flex items-center gap-2 text-xs font-bold tracking-wider text-amber-200 uppercase">
+                            <Link href="/" className="hover:text-[#FDC02F] transition">HOME</Link>
+                            <span>/</span>
+                            <Link href="/services" className="hover:text-[#FDC02F] transition">SERVICES</Link>
+                            <span>/</span>
+                            <span className="text-[#FDC02F]">{category.name}</span>
                         </div>
+                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight drop-shadow-sm">
+                            {category.name}
+                        </h1>
+                        <p className="mt-3 text-xs sm:text-sm text-slate-100 max-w-2xl leading-relaxed drop-shadow-sm">
+                            {category.description}
+                        </p>
                     </div>
                 </div>
 
@@ -126,7 +132,7 @@ export default function Show({ category = { name: "Preventive Maintenance", desc
                             </div>
                         </div>
 
-                        {/* RIGHT CONTENT AREA: Selected Sub-service Detail (Tanpa Foto & Video) */}
+                        {/* RIGHT CONTENT AREA: Selected Sub-service Detail */}
                         <div className="space-y-8 lg:col-span-8">
                             {selectedItem && (
                                 <>
@@ -208,17 +214,10 @@ export default function Show({ category = { name: "Preventive Maintenance", desc
                                             </div>
                                         </div>
 
-                                        <div className="flex w-full sm:w-auto items-center gap-3 shrink-0">
+                                        <div className="flex w-full sm:w-auto items-center shrink-0">
                                             <Link
                                                 href="/contact-us"
-                                                className="flex-1 sm:flex-initial text-center rounded-xl bg-[#FDC02F] px-5 py-3 text-xs font-bold text-[#0B1B32] hover:bg-yellow-400 transition-colors flex items-center justify-center gap-2"
-                                            >
-                                                REQUEST SERVICE
-                                                <IconArrowRight className="h-4 w-4" />
-                                            </Link>
-                                            <Link
-                                                href="/contact-us"
-                                                className="flex-1 sm:flex-initial text-center rounded-xl border border-white/30 px-5 py-3 text-xs font-bold text-white hover:border-[#FDC02F] hover:text-[#FDC02F] transition-colors flex items-center justify-center gap-2"
+                                                className="w-full sm:w-auto text-center rounded-xl bg-[#FDC02F] px-6 py-3.5 text-xs font-bold text-[#0B1B32] hover:bg-yellow-400 transition-colors flex items-center justify-center gap-2 shadow-sm"
                                             >
                                                 TALK TO OUR EXPERT
                                                 <IconArrowRight className="h-4 w-4" />

@@ -1,22 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { usePage, router } from "@inertiajs/react";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState('');
-  
-  const [lang, setLang] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('app_lang') || 'id';
-    }
-    return 'id';
-  });
 
-  const changeLanguage = (newLang) => {
-    setLang(newLang);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('app_lang', newLang);
+  // Ambil locale dan translations dari Inertia shared props backend Laravel
+  const { locale = 'id', translations = {} } = usePage().props;
+
+  // Fungsi untuk mengganti bahasa via Google Translate (Custom Flag Trigger)
+  const changeLanguage = (langCode) => {
+    const selectField = document.querySelector(".goog-te-combo");
+    if (selectField) {
+      selectField.value = langCode;
+      selectField.dispatchEvent(new Event('change'));
     }
   };
 
@@ -57,66 +56,26 @@ export default function Navbar() {
   const isActive = (path) => currentPath === path;
   const isParentActive = (paths) => paths.some((p) => currentPath.startsWith(p));
 
-  const t = {
-    id: {
-      home: "Home",
-      homeTop: "Top of Home",
-      homeIntro: "Pengenalan Perusahaan",
-      homeStats: "Statistik Perusahaan",
-      homeStrength: "Keunggulan Perusahaan",
-      homeServices: "Layanan Unggulan",
-      homeTestimonials: "Testimoni Pelanggan",
-      homeProjects: "Galeri Proyek",
-      homeNews: "Berita Terbaru",
-      homeContact: "Informasi Kontak",
-      homeBranch: "Kantor Cabang",
-
-      about: "About Us",
-      aboutOverview: "Company Profile Overview",
-      aboutWhy: "Why Choose Us",
-      aboutEsg: "Environment, Social & Governance (ESG)",
-      aboutHse: "Health, Safety & Environment (HSE)",
-
-      products: "Products",
-      services: "Services",
-      parts: "Spare Parts",
-      knowledge: "Knowledge",
-      media: "Media",
-      career: "Career",
-      contact: "Contact",
-      bahasa: "Bahasa:"
-    },
-    en: {
-      home: "Home",
-      homeTop: "Top of Home",
-      homeIntro: "Company Introduction",
-      homeStats: "Company Statistics",
-      homeStrength: "Company Strength",
-      homeServices: "Featured Services",
-      homeTestimonials: "Customer Testimonials",
-      homeProjects: "Project Gallery",
-      homeNews: "Latest News",
-      homeContact: "Contact Information",
-      homeBranch: "Branch Office",
-
-      about: "About Us",
-      aboutOverview: "Company Profile Overview",
-      aboutWhy: "Why Choose Us",
-      aboutEsg: "Environment, Social & Governance (ESG)",
-      aboutHse: "Health, Safety & Environment (HSE)",
-
-      products: "Products",
-      services: "Services",
-      parts: "Spare Parts",
-      knowledge: "Knowledge",
-      media: "Media",
-      career: "Career",
-      contact: "Contact",
-      bahasa: "Language:"
+  // Fungsi helper penerjemah teks dari JSON Laravel
+  const t = (key, fallback) => {
+    if (translations && translations[key]) {
+      return translations[key];
     }
+    // Fallback dictionary darurat jika key belum ada di file JSON Laravel
+    const fallbackDict = {
+      id: {
+        home: "Home", homeTop: "Top of Home", homeIntro: "Pengenalan Perusahaan", homeStats: "Statistik Perusahaan", homeStrength: "Keunggulan Perusahaan", homeServices: "Layanan Unggulan", homeTestimonials: "Testimoni Pelanggan", homeProjects: "Galeri Proyek", homeNews: "Berita Terbaru", homeContact: "Informasi Kontak", homeBranch: "Kantor Cabang",
+        about: "About Us", aboutOverview: "Company Profile Overview", aboutWhy: "Why Choose Us", aboutEsg: "Environment, Social & Governance (ESG)", aboutHse: "Health, Safety & Environment (HSE)",
+        products: "Products", services: "Services", parts: "Spare Parts", knowledge: "Knowledge", media: "Media", career: "Career", contact: "Contact", bahasa: "Bahasa:"
+      },
+      en: {
+        home: "Home", homeTop: "Top of Home", homeIntro: "Company Introduction", homeStats: "Company Statistics", homeStrength: "Company Strength", homeServices: "Featured Services", homeTestimonials: "Customer Testimonials", homeProjects: "Project Gallery", homeNews: "Latest News", homeContact: "Contact Information", homeBranch: "Branch Office",
+        about: "About Us", aboutOverview: "Company Profile Overview", aboutWhy: "Why Choose Us", aboutEsg: "Environment, Social & Governance (ESG)", aboutHse: "Health, Safety & Environment (HSE)",
+        products: "Products", services: "Services", parts: "Spare Parts", knowledge: "Knowledge", media: "Media", career: "Career", contact: "Contact", bahasa: "Language:"
+      }
+    };
+    return fallbackDict[locale]?.[key] || fallback || key;
   };
-
-  const currentText = t[lang];
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full font-sans transition-all duration-300">
@@ -131,14 +90,19 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
           
-          {/* LOGO SISI KIRI */}
-          <a href="/" className="flex items-center group shrink-0 lg:mr-6">
-            <div className="h-9 md:h-10 flex items-center">
+          {/* LOGO & NAMA PT SISI KIRI (TANPA TEKS HEAVY EQUIPMENT) */}
+          <a href="/" className="flex items-center gap-3 group shrink-0 lg:mr-6 notranslate">
+            <div className="h-9 md:h-10 flex items-center shrink-0">
               <img 
                 src="/images/logo.png" 
                 alt="Logo PT. Servistama Pro Indonesia" 
                 className="h-full w-auto object-contain transition-transform duration-300 group-hover:scale-105"
               />
+            </div>
+            <div className="flex flex-col justify-center">
+              <span className="text-sm md:text-base font-black text-[#0f2b5c] tracking-tight leading-none group-hover:text-[#ffc107] transition-colors">
+                PT. Servistama Pro Indonesia
+              </span>
             </div>
           </a>
 
@@ -153,23 +117,23 @@ export default function Navbar() {
                   activeMenu === 'home' || isActive('/') ? 'border-[#ffc107] text-[#ffc107]' : 'border-transparent text-[#0f2b5c]'
                 }`}
               >
-                <span>{currentText.home}</span>
+                <span>{t('home', 'Home')}</span>
                 <span className="text-[10px]">▼</span>
               </button>
 
               {activeMenu === 'home' && (
                 <div className="absolute top-full left-0 w-[420px] bg-white/95 backdrop-blur-md border border-slate-200/80 rounded-2xl shadow-2xl p-5 mt-3 z-50">
                   <div className="grid grid-cols-2 gap-x-6 gap-y-2.5 text-xs font-bold text-[#0f2b5c]">
-                    <a href="/" className="hover:text-[#ffc107] transition py-1 col-span-2 border-b border-slate-100 font-black">{currentText.homeTop}</a>
-                    <a href="/#about" className="hover:text-[#ffc107] transition py-1">{currentText.homeIntro}</a>
-                    <a href="/#statistics" className="hover:text-[#ffc107] transition py-1">{currentText.homeStats}</a>
-                    <a href="/#strength" className="hover:text-[#ffc107] transition py-1">{currentText.homeStrength}</a>
-                    <a href="/#services" className="hover:text-[#ffc107] transition py-1">{currentText.homeServices}</a>
-                    <a href="/#testimonials" className="hover:text-[#ffc107] transition py-1">{currentText.homeTestimonials}</a>
-                    <a href="/#projects" className="hover:text-[#ffc107] transition py-1">{currentText.homeProjects}</a>
-                    <a href="/#news" className="hover:text-[#ffc107] transition py-1">{currentText.homeNews}</a>
-                    <a href="/#contact" className="hover:text-[#ffc107] transition py-1">{currentText.homeContact}</a>
-                    <a href="/#operational-area" className="hover:text-[#ffc107] transition py-1 col-span-2">{currentText.homeBranch}</a>
+                    <a href="/" className="hover:text-[#ffc107] transition py-1 col-span-2 border-b border-slate-100 font-black">{t('homeTop', 'Top of Home')}</a>
+                    <a href="/#about" className="hover:text-[#ffc107] transition py-1">{t('homeIntro', 'Company Introduction')}</a>
+                    <a href="/#statistics" className="hover:text-[#ffc107] transition py-1">{t('homeStats', 'Company Statistics')}</a>
+                    <a href="/#strength" className="hover:text-[#ffc107] transition py-1">{t('homeStrength', 'Company Strength')}</a>
+                    <a href="/#services" className="hover:text-[#ffc107] transition py-1">{t('homeServices', 'Featured Services')}</a>
+                    <a href="/#testimonials" className="hover:text-[#ffc107] transition py-1">{t('homeTestimonials', 'Customer Testimonials')}</a>
+                    <a href="/#projects" className="hover:text-[#ffc107] transition py-1">{t('homeProjects', 'Project Gallery')}</a>
+                    <a href="/#news" className="hover:text-[#ffc107] transition py-1">{t('homeNews', 'Latest News')}</a>
+                    <a href="/#contact" className="hover:text-[#ffc107] transition py-1">{t('homeContact', 'Contact Information')}</a>
+                    <a href="/#operational-area" className="hover:text-[#ffc107] transition py-1 col-span-2">{t('homeBranch', 'Branch Office')}</a>
                   </div>
                 </div>
               )}
@@ -183,88 +147,76 @@ export default function Navbar() {
                   activeMenu === 'about' || isParentActive(['/about', '/why-choose-us', '/esg', '/hse']) ? 'border-[#ffc107] text-[#ffc107]' : 'border-transparent text-[#0f2b5c]'
                 }`}
               >
-                <span>{currentText.about}</span>
+                <span>{t('about', 'About Us')}</span>
                 <span className="text-[10px]">▼</span>
               </button>
 
               {activeMenu === 'about' && (
                 <div className="absolute top-full left-0 w-[320px] bg-white/95 backdrop-blur-md border border-slate-200/80 rounded-2xl shadow-2xl p-4 mt-3 z-50">
                   <div className="flex flex-col space-y-2 text-xs font-bold">
-                    <a href="/about" className="text-[#0f2b5c] hover:text-[#ffc107] transition py-1.5 border-b border-slate-100 font-black">{currentText.aboutOverview}</a>
-                    <a href="/why-choose-us" className="text-[#0f2b5c] hover:opacity-80 transition py-1 font-extrabold">{currentText.aboutWhy}</a>
-                    <a href="/esg" className="text-[#15803d] hover:opacity-80 transition py-1 font-extrabold">{currentText.aboutEsg}</a>
-                    <a href="/hse" className="text-[#0284c7] hover:opacity-80 transition py-1 font-extrabold">{currentText.aboutHse}</a>
+                    <a href="/about" className="text-[#0f2b5c] hover:text-[#ffc107] transition py-1.5 border-b border-slate-100 font-black">{t('aboutOverview', 'Company Profile Overview')}</a>
+                    <a href="/why-choose-us" className="text-[#0f2b5c] hover:opacity-80 transition py-1 font-extrabold">{t('aboutWhy', 'Why Choose Us')}</a>
+                    <a href="/esg" className="text-[#15803d] hover:opacity-80 transition py-1 font-extrabold">{t('aboutEsg', 'Environment, Social & Governance (ESG)')}</a>
+                    <a href="/hse" className="text-[#0284c7] hover:opacity-80 transition py-1 font-extrabold">{t('aboutHse', 'Health, Safety & Environment (HSE)')}</a>
                   </div>
                 </div>
               )}
             </div>
 
             {/* Products */}
-            <a 
-              href="/products" 
-              className={`px-2.5 py-1.5 transition-all duration-200 border-b-2 hover:text-[#ffc107] ${
-                isParentActive(['/products']) ? 'border-[#ffc107] text-[#ffc107]' : 'border-transparent text-[#0f2b5c]'
-              }`}
-            >
-              {currentText.products}
+            <a href="/products" className={`px-2.5 py-1.5 transition-all duration-200 border-b-2 hover:text-[#ffc107] ${isParentActive(['/products']) ? 'border-[#ffc107] text-[#ffc107]' : 'border-transparent text-[#0f2b5c]'}`}>
+              {t('products', 'Products')}
             </a>
 
             {/* Services */}
-            <a 
-              href="/services" 
-              className={`px-2.5 py-1.5 transition-all duration-200 border-b-2 hover:text-[#ffc107] ${
-                isParentActive(['/services']) ? 'border-[#ffc107] text-[#ffc107]' : 'border-transparent text-[#0f2b5c]'
-              }`}
-            >
-              {currentText.services}
+            <a href="/services" className={`px-2.5 py-1.5 transition-all duration-200 border-b-2 hover:text-[#ffc107] ${isParentActive(['/services']) ? 'border-[#ffc107] text-[#ffc107]' : 'border-transparent text-[#0f2b5c]'}`}>
+              {t('services', 'Services')}
             </a>
 
-            {/* Spare Parts (Mengarah ke folder SpareParts Index) */}
+            {/* Spare Parts */}
             <a href="/spare-parts" className={`px-2.5 py-1.5 transition-all duration-200 border-b-2 hover:text-[#ffc107] ${isParentActive(['/spare-parts']) ? 'border-[#ffc107] text-[#ffc107]' : 'border-transparent text-[#0f2b5c]'}`}>
-              {currentText.parts}
+              {t('parts', 'Spare Parts')}
             </a>
 
             {/* Knowledge */}
             <a href="/knowledge" className={`px-2.5 py-1.5 transition-all duration-200 border-b-2 hover:text-[#ffc107] ${isActive('/knowledge') ? 'border-[#ffc107] text-[#ffc107]' : 'border-transparent text-[#0f2b5c]'}`}>
-              {currentText.knowledge}
+              {t('knowledge', 'Knowledge')}
             </a>
 
             {/* Media */}
             <a href="/media-gallery" className={`px-2.5 py-1.5 transition-all duration-200 border-b-2 hover:text-[#ffc107] ${isActive('/media-gallery') ? 'border-[#ffc107] text-[#ffc107]' : 'border-transparent text-[#0f2b5c]'}`}>
-              {currentText.media}
+              {t('media', 'Media')}
             </a>
 
             {/* Career */}
             <a href="/career" className={`px-2.5 py-1.5 transition-all duration-200 border-b-2 hover:text-[#ffc107] ${isActive('/career') ? 'border-[#ffc107] text-[#ffc107]' : 'border-transparent text-[#0f2b5c]'}`}>
-              {currentText.career}
+              {t('career', 'Career')}
             </a>
 
             {/* Contact */}
             <a href="/contact-us" className={`px-2.5 py-1.5 transition-all duration-200 border-b-2 hover:text-[#ffc107] ${isActive('/contact-us') ? 'border-[#ffc107] text-[#ffc107]' : 'border-transparent text-[#0f2b5c]'}`}>
-              {currentText.contact}
+              {t('contact', 'Contact')}
             </a>
           </nav>
 
-          {/* BENDERA / PEMILIH BAHASA (DESKTOP) */}
+          {/* BENDERA SAJA (DESKTOP) - TANPA TEKS ID/EN */}
           <div className="hidden lg:flex items-center space-x-2.5 text-sm shrink-0">
             <button 
               onClick={() => changeLanguage('id')} 
-              className={`flex items-center gap-1.5 transition cursor-pointer ${lang === 'id' ? 'opacity-100 font-bold scale-105' : 'opacity-40 hover:opacity-80'}`} 
+              className="flex items-center transition cursor-pointer opacity-100 hover:scale-110 focus:outline-none" 
               title="Bahasa Indonesia"
             >
-              <img src="https://flagcdn.com/id.svg" alt="Indonesia" className="w-5 h-3.5 object-cover rounded-xs shadow-xs" />
-              <span className="text-xs font-bold text-[#0f2b5c]">ID</span>
+              <img src="https://flagcdn.com/id.svg" alt="Indonesia" className="w-6 h-4 object-cover rounded-xs shadow-xs" />
             </button>
             
             <span className="text-slate-300 font-normal">|</span>
             
             <button 
               onClick={() => changeLanguage('en')} 
-              className={`flex items-center gap-1.5 transition cursor-pointer ${lang === 'en' ? 'opacity-100 font-bold scale-105' : 'opacity-40 hover:opacity-80'}`} 
+              className="flex items-center transition cursor-pointer opacity-100 hover:scale-110 focus:outline-none" 
               title="English"
             >
-              <img src="https://flagcdn.com/gb.svg" alt="English" className="w-5 h-3.5 object-cover rounded-xs shadow-xs" />
-              <span className="text-xs font-bold text-slate-500">EN</span>
+              <img src="https://flagcdn.com/gb.svg" alt="English" className="w-6 h-4 object-cover rounded-xs shadow-xs" />
             </button>
           </div>
 
@@ -283,55 +235,58 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-white/95 backdrop-blur-md text-[#0f2b5c] border-b border-slate-200 shadow-xl p-6 font-bold text-sm max-h-[85vh] overflow-y-auto">
           <div className="flex flex-col space-y-3">
-            <a href="/" className="py-2 border-b border-slate-100">Home</a>
-            <a href="/#about" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{currentText.homeIntro}</a>
-            <a href="/#statistics" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{currentText.homeStats}</a>
-            <a href="/#strength" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{currentText.homeStrength}</a>
-            <a href="/#services" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{currentText.homeServices}</a>
-            <a href="/#testimonials" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{currentText.homeTestimonials}</a>
-            <a href="/#projects" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{currentText.homeProjects}</a>
-            <a href="/#news" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{currentText.homeNews}</a>
-            <a href="/#contact" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{currentText.homeContact}</a>
-            <a href="/#operational-area" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{currentText.homeBranch}</a>
+            <a href="/" className="py-2 border-b border-slate-100">{t('home', 'Home')}</a>
+            <a href="/#about" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeIntro', 'Company Introduction')}</a>
+            <a href="/#statistics" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeStats', 'Company Statistics')}</a>
+            <a href="/#strength" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeStrength', 'Company Strength')}</a>
+            <a href="/#services" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeServices', 'Featured Services')}</a>
+            <a href="/#testimonials" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeTestimonials', 'Customer Testimonials')}</a>
+            <a href="/#projects" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeProjects', 'Project Gallery')}</a>
+            <a href="/#news" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeNews', 'Latest News')}</a>
+            <a href="/#contact" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeContact', 'Contact Information')}</a>
+            <a href="/#operational-area" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeBranch', 'Branch Office')}</a>
 
             <div className="py-2 border-b border-slate-100 flex flex-col space-y-2">
-              <span className="text-slate-400 font-semibold">{currentText.about}</span>
-              <a href="/about" className="pl-4 text-xs text-[#0f2b5c] font-black">{currentText.aboutOverview}</a>
-              <a href="/why-choose-us" className="pl-4 text-xs text-[#0f2b5c] font-extrabold">{currentText.aboutWhy}</a>
-              <a href="/esg" className="pl-4 text-xs text-[#15803d] font-extrabold">{currentText.aboutEsg}</a>
-              <a href="/hse" className="pl-4 text-xs text-[#0284c7] font-extrabold">{currentText.aboutHse}</a>
+              <span className="text-slate-400 font-semibold">{t('about', 'About Us')}</span>
+              <a href="/about" className="pl-4 text-xs text-[#0f2b5c] font-black">{t('aboutOverview', 'Company Profile Overview')}</a>
+              <a href="/why-choose-us" className="pl-4 text-xs text-[#0f2b5c] font-extrabold">{t('aboutWhy', 'Why Choose Us')}</a>
+              <a href="/esg" className="pl-4 text-xs text-[#15803d] font-extrabold">{t('aboutEsg', 'Environment, Social & Governance (ESG)')}</a>
+              <a href="/hse" className="pl-4 text-xs text-[#0284c7] font-extrabold">{t('aboutHse', 'Health, Safety & Environment (HSE)')}</a>
             </div>
             
-            <a href="/products" className="py-2 border-b border-slate-100">{currentText.products}</a>
-            <a href="/services" className="py-2 border-b border-slate-100">{currentText.services}</a>
-            <a href="/spare-parts" className="py-2 border-b border-slate-100">{currentText.parts}</a>
-            <a href="/knowledge" className="py-2 border-b border-slate-100">{currentText.knowledge}</a>
-            <a href="/media-gallery" className="py-2 border-b border-slate-100">{currentText.media}</a>
-            <a href="/career" className="py-2 border-b border-slate-100">{currentText.career}</a>
-            <a href="/contact-us" className="py-2">{currentText.contact}</a>
+            <a href="/products" className="py-2 border-b border-slate-100">{t('products', 'Products')}</a>
+            <a href="/services" className="py-2 border-b border-slate-100">{t('services', 'Services')}</a>
+            <a href="/spare-parts" className="py-2 border-b border-slate-100">{t('parts', 'Spare Parts')}</a>
+            <a href="/knowledge" className="py-2 border-b border-slate-100">{t('knowledge', 'Knowledge')}</a>
+            <a href="/media-gallery" className="py-2 border-b border-slate-100">{t('media', 'Media')}</a>
+            <a href="/career" className="py-2 border-b border-slate-100">{t('career', 'Career')}</a>
+            <a href="/contact-us" className="py-2">{t('contact', 'Contact')}</a>
 
-            {/* Pilihan Bahasa Versi Mobile */}
+            {/* Pilihan Bahasa Versi Mobile (Hanya Bendera) */}
             <div className="pt-4 border-t border-slate-200 flex items-center gap-4">
-              <span className="text-xs text-slate-400">{currentText.bahasa}</span>
+              <span className="text-xs text-slate-400">{t('bahasa', 'Language:')}</span>
               
               <button 
                 onClick={() => changeLanguage('id')} 
-                className={`flex items-center gap-1 text-xs font-bold ${lang === 'id' ? 'text-[#0f2b5c]' : 'text-slate-400'}`}
+                className="flex items-center focus:outline-none"
               >
-                <img src="https://flagcdn.com/id.svg" alt="ID" className="w-4 h-3 object-cover rounded-xs" /> ID
+                <img src="https://flagcdn.com/id.svg" alt="ID" className="w-5 h-3.5 object-cover rounded-xs shadow-xs" />
               </button>
               
               <button 
                 onClick={() => changeLanguage('en')} 
-                className={`flex items-center gap-1 text-xs font-bold ${lang === 'en' ? 'text-[#0f2b5c]' : 'text-slate-400'}`}
+                className="flex items-center focus:outline-none"
               >
-                <img src="https://flagcdn.com/gb.svg" alt="EN" className="w-4 h-3 object-cover rounded-xs" /> EN
+                <img src="https://flagcdn.com/gb.svg" alt="EN" className="w-5 h-3.5 object-cover rounded-xs shadow-xs" />
               </button>
             </div>
 
           </div>
         </div>
       )}
+
+      {/* Elemen Wajib Google Translate (Disembunyikan agar terintegrasi dengan tombol bendera) */}
+      <div id="google_translate_element" style={{ display: 'none' }}></div>
 
     </header>
   );

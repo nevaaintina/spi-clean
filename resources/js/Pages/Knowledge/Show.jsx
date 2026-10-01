@@ -40,14 +40,6 @@ const IconArrowLeft = (props) => (
     </svg>
 );
 
-const IconLightbulb = (props) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <path d="M9 18h6" />
-        <path d="M10 21h4" />
-        <path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2.2h5.2c0-1 .4-1.7 1-2.2A6 6 0 0 0 12 3z" />
-    </svg>
-);
-
 const IconWrench = (props) => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
         <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2-2z" />
@@ -96,15 +88,7 @@ export default function Show({ article, relatedArticles = [] }) {
                 {/* ================= ARTICLE HERO ================= */}
                 <section className="bg-white px-6 pb-10 pt-12 sm:px-10 lg:px-16">
                     <div className="mx-auto max-w-[960px]">
-                        <Link
-                            href="/knowledge"
-                            className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-[#64748B] transition-colors duration-300 hover:text-[#0F2B5C]"
-                        >
-                            <IconArrowLeft className="h-4 w-4" />
-                            Kembali ke Knowledge Center
-                        </Link>
-
-                        <span className="text-xs font-bold tracking-[0.2em] text-[#FFC107]">{article.category}</span>
+        
                         <h1 className="mt-3 text-3xl font-extrabold leading-tight text-[#0F2B5C] sm:text-4xl lg:text-[2.75rem]">
                             {article.title}
                         </h1>
@@ -154,18 +138,22 @@ export default function Show({ article, relatedArticles = [] }) {
                     </div>
                 </section>
 
-                {/* ================= ARTICLE CONTENT ================= */}
+                {/* ================= ARTICLE CONTENT (DIPERBAIKI AGAR FORMAT PARAGRAF & ENTER RAPI) ================= */}
                 <section className="bg-white px-6 py-12 sm:px-10 lg:px-16">
                     <div className="mx-auto max-w-[820px]">
                         {article.excerpt && (
-                            <p className="text-lg font-medium leading-relaxed text-[#334155] mb-6">{article.excerpt}</p>
+                            <p className="text-lg font-medium leading-relaxed text-[#334155] mb-8 p-6 bg-slate-50 border-l-4 border-[#FFC107] rounded-r-2xl">
+                                {article.excerpt}
+                            </p>
                         )}
 
-                        <div className="mt-8 space-y-6 text-base leading-relaxed text-[#334155]">
-                            <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: article.content }} />
+                        {/* Menggunakan white-space: pre-line agar enter/spasi dari database tampil sempurna */}
+                        <div 
+                            className="text-base leading-[1.9] text-[#334155] space-y-4"
+                            style={{ whiteSpace: 'pre-line' }}
+                        >
+                            {article.content}
                         </div>
-
-                        
                     </div>
                 </section>
 

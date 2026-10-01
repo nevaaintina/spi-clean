@@ -46,14 +46,15 @@ const getCategoryDesign = (index) => {
 /* -------------------------------------------------------------------------- */
 function Hero() {
     return (
-        <section className="relative flex h-screen w-full items-center overflow-hidden bg-black pt-16">
+        <section className="relative flex h-screen w-full items-center overflow-hidden bg-[#071b38] pt-16">
             <div className="absolute inset-0">
                 <img
-                    src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1600&q=90"
+                    src="/images/hero-service.png"
                     alt="SPI technician inspecting heavy equipment"
                     className="h-full w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+                {/* Gradasi warna biru SPI menggantikan gradasi hitam */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#071b38]/90 via-[#071b38]/50 to-transparent" />
             </div>
 
             <div className="relative mx-auto w-full max-w-[1440px] px-6 lg:px-10">
@@ -129,11 +130,9 @@ function CategoryCard({ category, index }) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Technical Support & CTA Statis                                             */
+/* Technical Support & CTA Statis                                            */
 /* -------------------------------------------------------------------------- */
 function TechnicalSupportCTA() {
-    const waUrl = `https://wa.me/6281122233344?text=Halo%20SPI,%20saya%20butuh%20bantuan%20teknis%20dan%20konsultasi%20layanan.`;
-
     return (
         <section className="mx-6 mb-20 overflow-hidden rounded-2xl bg-[#0B1B32] lg:mx-10">
             <div className="relative flex flex-col items-start gap-8 px-8 py-12 sm:flex-row sm:items-center sm:justify-between sm:px-12">
@@ -163,20 +162,11 @@ function TechnicalSupportCTA() {
                 <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
                     <Link
                         href="/contact-us"
-                        className="flex items-center justify-center gap-2 rounded-full border border-white/40 px-6 py-3 text-xs font-bold tracking-wide text-white transition-colors duration-200 hover:border-[#FDC02F] hover:text-[#FDC02F]"
+                        className="flex items-center justify-center gap-2 rounded-full bg-[#FDC02F] px-6 py-3 text-xs font-bold tracking-wide text-[#0B1B32] transition-transform duration-200 hover:scale-105"
                     >
                         TALK TO OUR EXPERT
                         <IconArrowRight className="h-3.5 w-3.5" />
                     </Link>
-                    <a
-                        href={waUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 rounded-full bg-[#FDC02F] px-6 py-3 text-xs font-bold tracking-wide text-[#0B1B32] transition-transform duration-200 hover:scale-105"
-                    >
-                        REQUEST SERVICE
-                        <IconArrowRight className="h-3.5 w-3.5" />
-                    </a>
                 </div>
             </div>
         </section>
@@ -208,14 +198,20 @@ export default function Index({ categories = [] }) {
         }
     ];
 
-    // Gabungkan data statis dengan jumlah sub-layanan yang dihitung dari database (props `categories`)
+    // Gabungkan data statis dengan pencocokan fleksibel (mengabaikan spasi dan huruf kapital/kecil)
     const dynamicCategories = defaultCategories.map((cat, idx) => {
-        const found = categories.find(c => c.category?.toLowerCase() === cat.name.toLowerCase());
+        const found = categories.find(c => {
+            const dbCategoryName = (c.category || c.name || '').trim().toLowerCase();
+            const defaultName = cat.name.trim().toLowerCase();
+            return dbCategoryName === defaultName;
+        });
+
         return {
             id: idx + 1,
             name: cat.name,
             description: cat.description,
-            services_count: found ? found.total : 0
+            // Mengambil nilai total dari database, mendukung properti `total` atau `services_count`
+            services_count: found ? (found.total ?? found.services_count ?? 0) : 0
         };
     });
 

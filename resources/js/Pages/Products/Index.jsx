@@ -191,35 +191,32 @@ export default function ProductIndex({ products = [], catalogPdfUrl = null }) {
             })}
           </div>
 
-          {/* PRODUCT GRID */}
+          {/* PRODUCT GRID (Gambar Full Menutupi Card) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product) => (
               <Link
                 key={product.id}
                 href={`/products/${product.id}`}
-                className="group relative bg-[#fcfcfc] border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:bg-[#0b2348] transition-all duration-500 flex flex-col justify-between h-[340px] p-6 text-center"
+                className="group relative bg-slate-100 border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-end h-[400px] text-center cursor-pointer"
               >
-                <div className="my-auto flex flex-col items-center justify-center transition-all duration-500 group-hover:-translate-y-8">
-                  <div className="relative w-full h-48 flex items-center justify-center mb-4">
-                    <img
-                      src={product.image ? `/${product.image}` : "https://via.placeholder.com/300"}
-                      alt={product.name}
-                      className="max-h-full max-w-full object-contain filter drop-shadow-md transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <h3 className="text-base font-normal text-slate-700 group-hover:text-white transition-colors duration-300 tracking-wide">
-                    {product.name}
-                  </h3>
+                {/* Gambar Full Cover Card (Hanya menggunakan foto utama/image sampul) */}
+                <div className="absolute inset-0 w-full h-full z-0">
+                  <img
+                    src={product.image ? `/${product.image}` : "https://via.placeholder.com/300"}
+                    alt={product.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
                 </div>
 
-                <div className="absolute inset-x-0 bottom-0 p-6 bg-[#0b2348] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out flex flex-col items-center justify-end text-center z-20">
-                  <h3 className="text-base font-normal text-white tracking-wide mb-2">
+                {/* Overlay Informasi Saat Hover */}
+                <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-[#0b2348] via-[#0b2348]/95 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out flex flex-col items-center justify-end text-center z-20">
+                  <h3 className="text-base font-bold text-white tracking-wide mb-1">
                     {product.name}
                   </h3>
-                  <p className="text-xs text-slate-300 font-light leading-relaxed mb-4 line-clamp-2">
+                  <p className="text-xs text-slate-200 font-light leading-relaxed mb-3 line-clamp-2">
                     {product.overview || product.description}
                   </p>
-                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#ffc107]">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-black text-[#ffc107]">
                     Lihat Produk <span className="group-hover:translate-x-1 transition-transform duration-200">→</span>
                   </span>
                 </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "@/Components/Navbar";
 import Footer from "@/Components/Footer";
-import { Head, useForm } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 
 /* =========================================================
    POP UP SCROLL ANIMATION
@@ -124,64 +124,9 @@ function SoftReveal({
 }
 
 /* =========================================================
-   CONTACT PAGE (STATIS SESUAI TAMPILAN ASLI)
+   CONTACT PAGE (FULL-WIDTH HEAD OFFICE CARD & MAPS + QR)
 ========================================================= */
 export default function Contact() {
-  const { data, setData, post, processing, reset, errors } = useForm({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: '',
-  });
-
-  const submitContact = (e) => {
-    e.preventDefault();
-    post('/contact/submit', {
-      preserveScroll: true,
-      onSuccess: () => {
-        alert("Pesan Anda berhasil dikirim! Tim kami akan segera menghubungi Anda.");
-        reset();
-      },
-    });
-  };
-
-  // Data Statis Kartu Kontak sesuai Asli
-  const contactCards = [
-    {
-      id: 1,
-      card_number: '01',
-      title: 'Office Hotline',
-      subtitle: 'Office Hotline',
-      detail: '+62 21 555 888',
-      image: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=900&q=85'
-    },
-    {
-      id: 2,
-      card_number: '02',
-      title: 'WhatsApp Support',
-      subtitle: 'Respon cepat melalui WhatsApp',
-      detail: '+62 811-2223-3344',
-      image: 'https://images.unsplash.com/photo-1525182008055-f88b95ff7980?auto=format&fit=crop&w=900&q=85'
-    },
-    {
-      id: 3,
-      card_number: '03',
-      title: 'Official Email',
-      subtitle: 'Pertanyaan & proposal bisnis',
-      detail: 'info@servistamapro.co.id',
-      image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=85'
-    },
-    {
-      id: 4,
-      card_number: '04',
-      title: 'Emergency Service',
-      subtitle: 'Layanan darurat alat berat',
-      detail: '0800-1234-567',
-      image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=900&q=85'
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-[#f7f9fc]">
       <Head title="Contact Us - PT. Servistama Pro Indonesia" />
@@ -197,24 +142,15 @@ export default function Contact() {
       <section
         className="relative flex min-h-[500px] md:min-h-[560px] w-full items-center overflow-hidden bg-cover bg-center py-24"
         style={{
-          backgroundImage: `url('/images/hero banner 2.png')`,
+          backgroundImage: `url('/images/hero-contact.png')`,
         }}
       >
         <div className="mx-auto w-full max-w-7xl px-6 md:px-12 xl:px-16 z-10">
           <SoftReveal direction="up" delay={100} className="max-w-2xl">
-            {/* Label */}
-            <div className="flex items-center gap-3 mb-4">
-              <span className="w-8 h-[2px] bg-[#ffc107]" />
-              <span className="text-[10px] md:text-[11px] font-bold tracking-[0.22em] uppercase text-[#ffc107] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-                Get In Touch
-              </span>
-              <span className="w-10 h-[1px] bg-white/60" />
-            </div>
-
             {/* Heading */}
-            <h1 className="text-[40px] sm:text-[48px] md:text-[56px] leading-[1.1] font-black tracking-[-0.035em] text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]">
+            <h1 className="text-[40px] sm:text-[48px] md:text-[56px] leading-[1.1] font-black tracking-[-0.035em] text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
               Let's Build Something{" "}
-              <span className="text-[#ffc107] drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]">
+              <span className="text-[#ffc107]">
                 Great.
               </span>
             </h1>
@@ -237,13 +173,14 @@ export default function Contact() {
               </a>
 
               <a
-                href="https://wa.me/6281122233344"
+                href="https://wa.me/6282258013177"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl border border-white/60 text-white text-xs font-bold hover:bg-white/20 hover:-translate-y-1 transition-all duration-300 bg-black/30 backdrop-blur-sm shadow-md"
               >
-                <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.5a8.38 8.38 0 01-9 8.5 8.5 8.5 0 01-4.1-1.05L3 20l1.1-4.5A8.5 8.5 0 113 11.5" />
+                {/* Logo Resmi WhatsApp */}
+                <svg className="w-4 h-4 text-emerald-400 fill-current" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
                 </svg>
                 WhatsApp Support
               </a>
@@ -253,256 +190,163 @@ export default function Contact() {
       </section>
 
       {/* =====================================================
-          CONTACT INFO CARDS
+          CONTACT INFO CARD (FULL-WIDTH MEMBENTANG)
       ===================================================== */}
       <section className="relative z-30 -mt-10 md:-mt-14 mb-12">
         <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <PopReveal delay={0}>
+            <div className="group bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-[0_12px_35px_rgba(15,35,70,0.08)] hover:shadow-2xl hover:border-[#ffc107] transition-all duration-500 flex flex-col md:flex-row items-center">
 
-            {contactCards.map((card, idx) => (
-              <PopReveal key={card.id} delay={idx * 80}>
-                <div className="group bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-[0_12px_35px_rgba(15,35,70,0.08)] hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl hover:border-[#ffc107] transition-all duration-500 flex flex-col h-full">
+              {/* IMAGE (Sisi Kiri) */}
+              <div className="relative w-full md:w-[42%] h-[220px] md:h-[200px] overflow-hidden shrink-0">
+                <img
+                  src="/images/office-contact.jpeg"
+                  alt="Kantor Pusat"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/20 md:block hidden" />
+                <span className="absolute top-4 left-4 text-[10px] font-bold text-white bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">
+                  HEAD OFFICE
+                </span>
+              </div>
 
-                  {/* IMAGE */}
-                  <div className="relative h-[145px] overflow-hidden">
-                    <img
-                      src={card.image}
-                      alt={card.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#071b38]/80 via-[#071b38]/20 to-transparent" />
-                    <span className="absolute top-5 right-5 text-[10px] font-bold text-white/90 bg-black/30 px-2 py-0.5 rounded backdrop-blur-sm">
-                      {card.card_number}
-                    </span>
-                  </div>
-
-                  {/* CONTENT */}
-                  <div className="p-6 flex flex-col justify-between flex-1">
-                    <div>
-                      <p className="text-[9px] font-bold tracking-[0.22em] text-[#b27b00] mb-1 uppercase">
-                        {card.title}
-                      </p>
-                      <h3 className="text-sm font-bold text-[#071b38]">
-                        {card.title}
-                      </h3>
-                      <p className="text-[10px] text-slate-500 mt-1 font-normal">
-                        {card.subtitle}
-                      </p>
-                    </div>
-
-                    <div className="mt-4 text-xs font-bold text-[#071b38] group-hover:text-[#b27b00] transition">
-                      {card.detail}
-                    </div>
-                  </div>
-
+              {/* CONTENT (Sisi Kanan - Full Lebar) */}
+              <div className="p-7 md:p-8 flex flex-col justify-between flex-1 w-full">
+                <div>
+                  <p className="text-[10px] font-bold tracking-[0.22em] text-[#b27b00] mb-1 uppercase">
+                    PT. SERVISTAMA PRO INDONESIA
+                  </p>
+                  <h3 className="text-lg md:text-xl font-black text-[#071b38]">
+                    HEAD OFFICE KANTOR PUSAT & WAREHOUSE
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-2 font-normal leading-relaxed">
+                    Foresta Business Loft 7 (unit 6-7), Lengkong Kulon, Pagedangan, Tangerang Regency, Banten 15331.
+                  </p>
                 </div>
-              </PopReveal>
-            ))}
 
-          </div>
+                <div className="mt-6 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
+                  <div className="text-xs font-bold text-slate-700">
+                    Hotline Utama: <span className="text-[#b27b00] font-black">+62 822-5801-3177</span>
+                  </div>
+                  <a
+                    href="https://maps.app.goo.gl/jWF4GkC83QECqqyAA"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#071b38] text-white text-xs font-bold hover:bg-[#ffc107] hover:text-[#071b38] transition-all duration-300 shadow-sm"
+                  >
+                    <span>Buka di Google Maps</span>
+                    <span>→</span>
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </PopReveal>
         </div>
       </section>
 
       {/* =====================================================
-          CONTACT FORM + LOCATION
+          MAPS & QR CODE SECTION (BERDAMPINGAN RAPI)
       ===================================================== */}
       <section className="pb-20 pt-2 md:pt-4 bg-[#f7f9fc]">
         <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 items-stretch">
 
-            {/* CONTACT FORM */}
-            <SoftReveal direction="left" delay={100} className="lg:col-span-7">
-              <div className="bg-white rounded-2xl border border-slate-200/90 p-7 md:p-9 shadow-[0_10px_35px_rgba(15,35,70,0.06)] hover:shadow-xl transition-shadow duration-300">
-                
-                <div className="mb-7">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="w-8 h-[2px] bg-[#ffc107]" />
-                    <span className="text-[9px] font-bold tracking-[0.22em] text-[#b27b00] uppercase">
-                      Send Message
-                    </span>
-                    <span className="w-10 h-[1px] bg-slate-200" />
+            {/* GOOGLE MAPS (DIARAHKAN KE LINK BARU) */}
+            <PopReveal delay={100} className="h-full">
+              <div className="bg-white rounded-2xl border border-slate-200/90 p-5 md:p-6 shadow-[0_10px_35px_rgba(15,35,70,0.06)] hover:shadow-xl transition-shadow duration-300 h-full flex flex-col justify-between">
+                <div>
+                  <div className="flex gap-3 items-start mb-4">
+                    <div className="w-9 h-9 rounded-xl bg-[#fff8df] flex items-center justify-center shrink-0 text-[#b27b00]">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z" />
+                        <circle cx="12" cy="11" r="3" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-bold text-[#071b38]">Lokasi Kantor Pusat & Warehouse</h3>
+                      <p className="text-[10px] text-slate-500 leading-relaxed mt-1 font-normal">
+                        Foresta Business Loft 7, Unit 6-7, Jl. BSD Boulevard Utara, Lengkong Kulon, Pagedangan, Tangerang Regency, Banten 15331
+                      </p>
+                    </div>
                   </div>
-                  <h2 className="text-2xl md:text-[27px] font-black text-[#071b38] tracking-tight">
-                    Kirimkan Pesan{" "}
-                    <span className="text-[#b27b00]">
-                      Kepada Kami
+                </div>
+
+                <a
+                  href="https://maps.app.goo.gl/jWF4GkC83QECqqyAA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full h-[230px] md:h-[250px] rounded-xl overflow-hidden border border-slate-200 mt-2 relative group cursor-pointer"
+                  title="Klik untuk membuka lokasi di Google Maps"
+                >
+                  <iframe
+                    title="Google Maps Location"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.7441235678!2d106.638!3d-6.301!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTgnMDMuNiJTIDEwNsKwMzgnMTYuOCJF!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0, pointerEvents: 'none' }}
+                    allowFullScreen=""
+                    loading="lazy"
+                  />
+                  
+                  {/* Overlay Interaktif Hover */}
+                  <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <span className="bg-white/95 text-[#0f2b5c] font-bold text-xs px-3 py-1.5 rounded-md shadow-md">
+                      Buka di Google Maps ↗
                     </span>
-                  </h2>
-                  <p className="mt-1.5 text-[11px] text-slate-500 font-normal">
-                    Isi formulir di bawah ini dan tim kami akan segera merespons Anda.
+                  </div>
+                </a>
+              </div>
+            </PopReveal>
+
+            {/* QR CODE CARD (BERISI FILE GAMBAR) */}
+            <PopReveal delay={200} className="h-full">
+              <div className="relative overflow-hidden bg-[#071b38] rounded-2xl p-6 md:p-8 shadow-[0_12px_35px_rgba(7,27,56,0.18)] hover:scale-[1.01] transition-transform duration-300 h-full flex flex-col justify-between">
+                <div className="absolute -right-16 -bottom-16 w-44 h-44 rounded-full border border-white/5 pointer-events-none" />
+                <div className="absolute right-10 top-[-70px] w-32 h-32 rounded-full border border-[#ffc107]/10 pointer-events-none" />
+
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-[#ffc107]">Scan To Connect</span>
+                    <span className="w-8 h-[1px] bg-white/20" />
+                  </div>
+
+                  <h4 className="text-lg md:text-xl font-bold text-white">
+                    Simpan Kontak Kami
+                  </h4>
+
+                  <p className="text-[11px] text-slate-300 leading-relaxed mt-1.5 max-w-[320px] font-normal">
+                    Scan QR Code di bawah untuk langsung menyimpan kontak resmi PT. Servistama Pro Indonesia ke dalam ponsel Anda dengan mudah dan cepat.
                   </p>
                 </div>
 
-                <form onSubmit={submitContact} className="space-y-5">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-[10px] font-bold text-[#071b38] mb-2">Nama Lengkap</label>
-                      <input
-                        type="text"
-                        required
-                        value={data.name}
-                        onChange={e => setData('name', e.target.value)}
-                        placeholder="Nama Anda"
-                        className="w-full h-11 px-4 rounded-lg border border-slate-200 bg-[#fafbfc] text-[11px] outline-none transition focus:bg-white focus:border-[#071b38] focus:ring-2 focus:ring-[#071b38]/5"
-                      />
-                      {errors.name && <span className="text-red-500 text-[10px] mt-1 block">{errors.name}</span>}
-                    </div>
-
-                    <div>
-                      <label className="block text-[10px] font-bold text-[#071b38] mb-2">Email Aktif</label>
-                      <input
-                        type="email"
-                        required
-                        value={data.email}
-                        onChange={e => setData('email', e.target.value)}
-                        placeholder="nama@email.com"
-                        className="w-full h-11 px-4 rounded-lg border border-slate-200 bg-[#fafbfc] text-[11px] outline-none transition focus:bg-white focus:border-[#071b38] focus:ring-2 focus:ring-[#071b38]/5"
-                      />
-                      {errors.email && <span className="text-red-500 text-[10px] mt-1 block">{errors.email}</span>}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-[10px] font-bold text-[#071b38] mb-2">Nomor Telepon / WhatsApp</label>
-                      <input
-                        type="tel"
-                        required
-                        value={data.phone}
-                        onChange={e => setData('phone', e.target.value)}
-                        placeholder="08xxxxxxxxxx"
-                        className="w-full h-11 px-4 rounded-lg border border-slate-200 bg-[#fafbfc] text-[11px] outline-none transition focus:bg-white focus:border-[#071b38] focus:ring-2 focus:ring-[#071b38]/5"
-                      />
-                      {errors.phone && <span className="text-red-500 text-[10px] mt-1 block">{errors.phone}</span>}
-                    </div>
-
-                    <div>
-                      <label className="block text-[10px] font-bold text-[#071b38] mb-2">Subjek Pesan</label>
-                      <input
-                        type="text"
-                        required
-                        value={data.subject}
-                        onChange={e => setData('subject', e.target.value)}
-                        placeholder="Contoh: Konsultasi Unit XCMG"
-                        className="w-full h-11 px-4 rounded-lg border border-slate-200 bg-[#fafbfc] text-[11px] outline-none transition focus:bg-white focus:border-[#071b38] focus:ring-2 focus:ring-[#071b38]/5"
-                      />
-                      {errors.subject && <span className="text-red-500 text-[10px] mt-1 block">{errors.subject}</span>}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-[#071b38] mb-2">Pesan / Pertanyaan</label>
-                    <textarea
-                      rows="4"
-                      required
-                      value={data.message}
-                      onChange={e => setData('message', e.target.value)}
-                      placeholder="Tuliskan pesan Anda di sini..."
-                      className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-[#fafbfc] text-[11px] outline-none resize-none transition focus:bg-white focus:border-[#071b38] focus:ring-2 focus:ring-[#071b38]/5"
+                <div className="relative z-10 flex flex-col sm:flex-row items-center gap-6 my-6">
+                  <div className="bg-white rounded-2xl p-3.5 shrink-0 shadow-md">
+                    <img
+                      src="/images/barcode.png"
+                      alt="QR Code Contact SPI"
+                      className="w-[120px] h-[120px] object-contain"
                     />
-                    {errors.message && <span className="text-red-500 text-[10px] mt-1 block">{errors.message}</span>}
                   </div>
 
-                  <button
-                    type="submit"
-                    disabled={processing}
-                    className="w-full h-11 rounded-lg bg-[#071b38] text-white text-[11px] font-bold flex items-center justify-center gap-3 hover:bg-[#ffc107] hover:text-[#071b38] transition-all duration-300 shadow-md hover:-translate-y-0.5 disabled:opacity-50 cursor-pointer"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M22 2L11 13" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M22 2l-7 20-4-9-9-4 20-7z" />
-                    </svg>
-                    <span>{processing ? 'Mengirim...' : 'Kirim Pesan Sekarang'}</span>
-                    <span className="text-base">→</span>
-                  </button>
-                </form>
+                  <div className="flex flex-col gap-2.5">
+                    <span className="flex items-center gap-2 text-[11px] font-medium text-slate-200">
+                      <span className="w-2 h-2 rounded-full bg-[#ffc107]" /> Akses Kontak Cepat
+                    </span>
+                    <span className="flex items-center gap-2 text-[11px] font-medium text-slate-200">
+                      <span className="w-2 h-2 rounded-full bg-[#ffc107]" /> 100% Aman & Terverifikasi
+                    </span>
+                    <span className="flex items-center gap-2 text-[11px] font-medium text-slate-200">
+                      <span className="w-2 h-2 rounded-full bg-[#ffc107]" /> Terhubung Langsung ke Tim SPI
+                    </span>
+                  </div>
+                </div>
 
+                <div className="pt-4 border-t border-white/10 text-[10px] text-slate-400">
+                  PT. Servistama Pro Indonesia © {new Date().getFullYear()} — All Rights Reserved
+                </div>
               </div>
-            </SoftReveal>
-
-            {/* RIGHT SIDE (LOCATION & QR CODE) */}
-            <SoftReveal direction="right" delay={180} className="lg:col-span-5">
-              <div className="space-y-5">
-
-                {/* LOCATION */}
-                <PopReveal delay={200}>
-                  <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-[0_10px_35px_rgba(15,35,70,0.06)] hover:shadow-xl transition-shadow duration-300">
-                    <div className="flex gap-3 items-start mb-4">
-                      <div className="w-9 h-9 rounded-xl bg-[#fff8df] flex items-center justify-center shrink-0 text-[#b27b00]">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z" />
-                          <circle cx="12" cy="11" r="3" />
-                        </svg>
-                      </div>
-                      <div>
-                        <h3 className="text-xs font-bold text-[#071b38]">Lokasi Kantor Pusat & Warehouse</h3>
-                        <p className="text-[10px] text-slate-500 leading-relaxed mt-1 font-normal">
-                          Foresta Business Loft 7, Unit 6-7, Jl. BSD Boulevard Utara, Lengkong Kulon, Pagedangan, Tangerang Regency, Banten 15331
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="w-full h-[205px] rounded-xl overflow-hidden border border-slate-200">
-                      <iframe
-                        title="Google Maps Location"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.845688680327!2d106.6341!3d-6.3024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTgnMTAuNiJTIDE0NsKwMzgnMDIuOCJF!5e0!3m2!1sid!2sid!4v1620000000000!5m2!1sid!2sid"
-                        width="100%"
-                        height="100%"
-                        style={{ border: 0 }}
-                        allowFullScreen=""
-                        loading="lazy"
-                      />
-                    </div>
-                  </div>
-                </PopReveal>
-
-                {/* QR CODE */}
-                <PopReveal delay={350}>
-                  <div className="relative overflow-hidden bg-[#071b38] rounded-2xl p-5 md:p-6 shadow-[0_12px_35px_rgba(7,27,56,0.18)] hover:scale-[1.01] transition-transform duration-300">
-                    <div className="absolute -right-16 -bottom-16 w-44 h-44 rounded-full border border-white/5 pointer-events-none" />
-                    <div className="absolute right-10 top-[-70px] w-32 h-32 rounded-full border border-[#ffc107]/10 pointer-events-none" />
-
-                    <div className="relative z-10 flex items-center gap-5">
-                      <div className="bg-white rounded-xl p-2.5 shrink-0 shadow-sm">
-                        <img
-                          src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://servistamapro.co.id"
-                          alt="QR Code Contact SPI"
-                          className="w-[92px] h-[92px] object-contain"
-                        />
-                      </div>
-
-                      <div>
-                        <div className="flex items-center gap-3 mb-1.5">
-                          <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-[#ffc107]">Scan To Connect</span>
-                          <span className="w-8 h-[1px] bg-white/20" />
-                        </div>
-
-                        <h4 className="text-base font-bold text-white">
-                          Simpan Kontak Kami
-                        </h4>
-
-                        <p className="text-[10px] text-slate-300 leading-relaxed mt-1 max-w-[250px] font-normal">
-                          Scan QR Code untuk menyimpan kontak resmi SPI ke ponsel Anda dengan mudah.
-                        </p>
-
-                        <div className="flex items-center gap-4 mt-3">
-                          <span className="flex items-center gap-1.5 text-[9px] font-normal text-slate-300">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#ffc107]" /> Cepat
-                          </span>
-                          <span className="flex items-center gap-1.5 text-[9px] font-normal text-slate-300">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#ffc107]" /> Aman
-                          </span>
-                          <span className="flex items-center gap-1.5 text-[9px] font-normal text-slate-300">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#ffc107]" /> Resmi
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </PopReveal>
-
-              </div>
-            </SoftReveal>
+            </PopReveal>
 
           </div>
         </div>

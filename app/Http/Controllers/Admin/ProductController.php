@@ -6,9 +6,28 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+
+        // Menyaring agar foto utama (image) tidak ikut masuk ke dalam array galeri detail
+        $gallery = $product->gallery ?? [];
+        if ($product->image) {
+            $gallery = array_values(array_filter($gallery, function ($item) use ($product) {
+                return $item !== $product->image;
+            }));
+        }
+        $product->gallery = $gallery;
+
+        return Inertia::render('ProductDetail', [
+            'product' => $product
+        ]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -108,7 +127,6 @@ class ProductController extends Controller
             'brochure' => $brochurePath, // Menyimpan path file fisik PDF
             'video_path' => $videoPath,
             'gallery' => $galleryPaths,
-            'overview' => $request->overview,
             'description' => $request->description,
             'specifications' => $specifications,
             'features' => $features,
@@ -128,9 +146,14 @@ class ProductController extends Controller
             'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10048',
         ]);
 
-        // Update gambar utama jika ada file baru yang diunggah
+        // 1. Update atau Hapus Gambar Utama
         $imagePath = $product->image;
-        if ($request->hasFile('image')) {
+        if ($request->boolean('remove_image')) {
+            if ($product->image && File::exists(public_path($product->image))) {
+                File::delete(public_path($product->image));
+            }
+            $imagePath = null;
+        } elseif ($request->hasFile('image')) {
             if ($product->image && File::exists(public_path($product->image))) {
                 File::delete(public_path($product->image));
             }
@@ -160,9 +183,14 @@ class ProductController extends Controller
             $brochurePath = 'brochures/products/' . $pdfName;
         }
 
-        // Update video jika ada file baru yang diunggah
+        // 2. Update atau Hapus Video Produk
         $videoPath = $product->video_path;
-        if ($request->hasFile('video_file')) {
+        if ($request->boolean('remove_video')) {
+            if ($product->video_path && File::exists(public_path($product->video_path))) {
+                File::delete(public_path($product->video_path));
+            }
+            $videoPath = null;
+        } elseif ($request->hasFile('video_file')) {
             if ($product->video_path && File::exists(public_path($product->video_path))) {
                 File::delete(public_path($product->video_path));
             }
@@ -217,7 +245,6 @@ class ProductController extends Controller
             'brochure' => $brochurePath,
             'video_path' => $videoPath,
             'gallery' => $galleryPaths,
-            'overview' => $request->overview,
             'description' => $request->description,
             'specifications' => $specifications,
             'features' => $features,

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('brochure')->nullable();      // Path file PDF brosur lokal (disimpan di folder brochures/products)
             $table->string('video_path')->nullable();    // Path file video lokal yang di-upload
             $table->json('gallery')->nullable();         // Galeri foto tambahan
-            $table->text('overview')->nullable();        // Overview singkat
             $table->text('description')->nullable();     // Deskripsi lengkap
             $table->json('specifications')->nullable();  // Data spesifikasi teknis dinamis (Label & Nilai)
             $table->json('features')->nullable();        // Poin-poin fitur unggulan

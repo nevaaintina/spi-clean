@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Head } from '@inertiajs/react';
 import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
@@ -106,10 +106,9 @@ const IconVideo = ({ className = 'w-6 h-6' }) => (
   </svg>
 );
 
-const IconPin = ({ className = 'w-6 h-6' }) => (
+const IconShield = ({ className = 'w-6 h-6' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
-    <path d="M12 21s7-6.6 7-11.5a7 7 0 1 0-14 0C5 14.4 12 21 12 21Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-    <circle cx="12" cy="9.5" r="2.3" stroke="currentColor" strokeWidth="1.6" />
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
   </svg>
 );
 
@@ -119,7 +118,7 @@ const CATEGORIES = [
   { id: 'Mining Site', label: 'Mining Site', number: '03.', icon: IconExcavator },
   { id: 'Customer Visit', label: 'Customer Visit', number: '04.', icon: IconUsers },
   { id: 'Training', label: 'Training', number: '05.', icon: IconGraduation },
-  { id: 'CSR', label: 'CSR', number: '06.', icon: IconHandshake },
+  { id: 'CSR/TJSL', label: 'CSR/TJSL', number: '06.', icon: IconHandshake },
   { id: 'Company Event', label: 'Company Event', number: '07.', icon: IconCalendar },
   { id: 'Drone Video', label: 'Drone Video', number: '08.', icon: IconDrone },
 ];
@@ -171,22 +170,66 @@ const MediaCard = ({ item, onImageClick }) => {
   );
 };
 
-const StatItem = ({ icon: Icon, value, label }) => (
-  <div className="flex items-center gap-3 px-4 py-6 sm:py-0">
-    <Icon className="h-7 w-7 text-[#F5B800]" />
-    <div className="text-left">
-      <p className="text-2xl font-bold text-[#F5B800] leading-none">{value}</p>
-      <p className="text-xs text-gray-300 mt-1">{label}</p>
+// Komponen Counter dengan Animasi Angka Bergerak
+const CounterItem = ({ icon: Icon, targetValue, label }) => {
+  const safeTargetVal = String(targetValue ?? '0');
+  const numericTarget = parseInt(safeTargetVal, 10) || 0;
+  const suffix = safeTargetVal.replace(/[0-9]/g, '');
+
+  const [count, setCount] = useState(1);
+  const ref = useRef(null);
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated.current) {
+          hasAnimated.current = true;
+          let current = 1;
+          const duration = 1500;
+          const steps = 30;
+          const increment = Math.max(1, Math.floor((numericTarget - 1) / steps));
+          const stepTime = Math.floor(duration / steps);
+
+          const timer = setInterval(() => {
+            current += increment;
+            if (current >= numericTarget) {
+              setCount(numericTarget);
+              clearInterval(timer);
+            } else {
+              setCount(current);
+            }
+          }, stepTime);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [numericTarget]);
+
+  return (
+    <div ref={ref} className="flex items-center gap-3 px-4 py-6 sm:py-0">
+      <Icon className="h-7 w-7 text-[#F5B800]" />
+      <div className="text-left">
+        <p className="text-2xl font-bold text-[#F5B800] leading-none">
+          {numericTarget > 0 ? `${count}${suffix}` : targetValue}
+        </p>
+        <p className="text-xs text-gray-300 mt-1">{label}</p>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default function Media({ mediaGalleries = [] }) {
   const [activeCategory, setActiveCategory] = useState('Photo Gallery');
   const [visibleCount, setVisibleCount] = useState(6);
   const [modalImage, setModalImage] = useState(null);
 
-  // Fallback data statis jika database mediaGalleries kosong
   const fallbackMediaItems = [
     { id: 1, category: 'Photo Gallery', title: 'Heavy Equipment Showcase', description: 'Unit alat berat siap operasional di lapangan.', file_path: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80' },
     { id: 2, category: 'Photo Gallery', title: 'Hydraulic System Check', description: 'Pemeriksaan rutin komponen hidrolik.', file_path: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80' },
@@ -198,15 +241,13 @@ export default function Media({ mediaGalleries = [] }) {
     { id: 8, category: 'Mining Site', title: 'Open Pit Mining Operation', description: 'Aktivitas pertambangan skala besar di Kalimantan.', file_path: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=800&q=80' },
     { id: 9, category: 'Customer Visit', title: 'Kunjungan Klien Korporat', description: 'Diskusi strategis bersama mitra bisnis.', file_path: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80' },
     { id: 10, category: 'Training', title: 'Pelatihan Operator XCMG', description: 'Sesi pelatihan teori dan praktik bagi operator.', file_path: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80' },
-    { id: 11, category: 'CSR', title: 'Program Sosial Perusahaan', description: 'Kontribusi nyata bagi masyarakat sekitar wilayah operasional.', file_path: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=800&q=80' },
+    { id: 11, category: 'CSR/TJSL', title: 'Program Sosial Perusahaan', description: 'Kontribusi nyata bagi masyarakat sekitar wilayah operasional.', file_path: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=800&q=80' },
     { id: 12, category: 'Company Event', title: 'Annual Gathering SPI', description: 'Acara kebersamaan seluruh karyawan dan manajemen.', file_path: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80' },
     { id: 13, category: 'Drone Video', title: 'Aerial Survey Project', description: 'Pemantauan udara area proyek konstruksi.', file_path: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=800&q=80' },
   ];
 
-  // Gunakan data dari database (mediaGalleries) jika ada, jika tidak gunakan fallback
   const activeMediaList = mediaGalleries && mediaGalleries.length > 0 ? mediaGalleries : fallbackMediaItems;
 
-  // Logika Dinamis & Random untuk Featured Story (Mengambil 3 item secara acak dari activeMediaList)
   const getRandomStoryImages = () => {
     const shuffled = [...activeMediaList].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, 3);
@@ -214,7 +255,6 @@ export default function Media({ mediaGalleries = [] }) {
 
   const [randomStoryImages] = useState(getRandomStoryImages);
 
-  // Logika Dinamis & Random untuk Drone Video Highlights dari kategori 'Drone Video'
   const droneVideoList = activeMediaList.filter(item => 
     item.category?.trim().toLowerCase() === 'drone video'
   );
@@ -234,29 +274,43 @@ export default function Media({ mediaGalleries = [] }) {
 
   const [randomDroneVideos] = useState(getRandomDroneVideos);
 
-  const mainDroneVideo = randomDroneVideos[0] || null;
-  const sideDroneVideos = randomDroneVideos.slice(1, 3);
+  const [selectedMainVideo, setSelectedMainVideo] = useState(null);
+  const currentMainVideo = selectedMainVideo || randomDroneVideos[0] || null;
+  const sideDroneVideos = randomDroneVideos.filter(vid => vid.id !== currentMainVideo?.id);
+
+  // Perhitungan Otomatis Statistik
+  const totalPhotos = activeMediaList.filter(item => {
+    const cat = item.category?.trim().toLowerCase() || '';
+    const path = item.file_path || '';
+    const isVid = item.media_type?.toLowerCase().includes('video') || path.endsWith('.mp4') || path.endsWith('.mov') || path.endsWith('.avi');
+    return !isVid && cat !== 'drone video';
+  }).length;
+
+  const totalDroneVideos = activeMediaList.filter(item => {
+    const cat = item.category?.trim().toLowerCase() || '';
+    const path = item.file_path || '';
+    const isVid = item.media_type?.toLowerCase().includes('video') || path.endsWith('.mp4') || path.endsWith('.mov') || path.endsWith('.avi');
+    return isVid || cat === 'drone video';
+  }).length;
 
   const statistics = [
-    { value: '500+', label: 'Photo Documentation' },
-    { value: '50+', label: 'Video Highlights' },
-    { value: '10+', label: 'Active Sites' },
-    { value: '24/7', label: 'Support Coverage' },
-    { value: '100%', label: 'Commitment' },
+    { icon: IconPhoto, targetValue: `${totalPhotos}+`, label: 'Photo Documentation' },
+    { icon: IconVideo, targetValue: `${totalDroneVideos}+`, label: 'Video Drone' },
+    { icon: IconCalendar, targetValue: '99%', label: 'Kepuasan Pelanggan' },
+    { icon: IconShield, targetValue: '100%', label: 'Commitment' },
   ];
 
-  const filteredMedia = activeMediaList.filter(item => 
-    item.category?.trim().toLowerCase() === activeCategory.trim().toLowerCase()
-  );
+  const filteredMedia = activeMediaList.filter(item => {
+    const itemCat = item.category?.trim().toLowerCase() || '';
+    const activeCat = activeCategory.trim().toLowerCase();
+
+    if (activeCat === 'csr/tjsl') {
+      return itemCat === 'csr' || itemCat === 'csr/tjsl';
+    }
+    return itemCat === activeCat;
+  });
   
   const displayedMedia = filteredMedia.slice(0, visibleCount);
-
-  const statIcons = [IconPhoto, IconVideo, IconPin, IconCalendar, IconUsers];
-  const mappedStats = statistics.map((stat, idx) => ({
-    icon: statIcons[idx % statIcons.length],
-    value: stat.value,
-    label: stat.label,
-  }));
 
   return (
     <>
@@ -268,7 +322,7 @@ export default function Media({ mediaGalleries = [] }) {
         <section className="relative flex min-h-screen w-full items-center overflow-hidden">
           <div className="absolute inset-0">
             <img
-              src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1600&q=90"
+              src="/images/hero-media.png"
               alt="Heavy equipment technician"
               className="h-full w-full object-cover"
             />
@@ -330,7 +384,7 @@ export default function Media({ mediaGalleries = [] }) {
           </div>
         </section>
 
-        {/* ============ 3. FEATURED STORY (DINAMIS & RANDOM DARI DATABASE) ============ */}
+        {/* ============ 3. FEATURED STORY ============ */}
         <section className="bg-white py-10">
           <div className="mx-auto max-w-7xl px-6">
             <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] items-center">
@@ -446,18 +500,18 @@ export default function Media({ mediaGalleries = [] }) {
           </div>
         </section>
 
-        {/* ============ 6. STATS BAR ============ */}
+        {/* ============ 6. STATS BAR (ANIMASI COUNTER) ============ */}
         <section className="bg-[#0B1E3D] py-8">
           <div className="mx-auto max-w-7xl px-6">
-            <div className="grid grid-cols-1 divide-y divide-white/10 sm:grid-cols-5 sm:divide-y-0 sm:divide-x">
-              {mappedStats.map((stat, index) => (
-                <StatItem key={index} {...stat} />
+            <div className="grid grid-cols-1 divide-y divide-white/10 sm:grid-cols-4 sm:divide-y-0 sm:divide-x">
+              {statistics.map((stat, index) => (
+                <CounterItem key={index} {...stat} />
               ))}
             </div>
           </div>
         </section>
 
-        {/* ============ 7. DRONE VIDEO HIGHLIGHT (DINAMIS & RANDOM DARI DATABASE) ============ */}
+        {/* ============ 7. DRONE VIDEO HIGHLIGHT ============ */}
         <section className="bg-white py-16">
           <div className="mx-auto max-w-7xl px-6">
             <div className="grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.8fr)] items-center">
@@ -472,17 +526,18 @@ export default function Media({ mediaGalleries = [] }) {
               </div>
 
               <div className="grid gap-4 sm:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)]">
-                {mainDroneVideo ? (
-                  <div className="relative overflow-hidden rounded-lg h-72 bg-slate-900 shadow-md flex items-center justify-center">
+                {currentMainVideo ? (
+                  <div key={currentMainVideo.id} className="relative overflow-hidden rounded-lg h-72 bg-slate-900 shadow-md flex items-center justify-center">
                     <video 
-                      src={mainDroneVideo.file_path.startsWith('http') ? mainDroneVideo.file_path : `/${mainDroneVideo.file_path}`} 
+                      src={currentMainVideo.file_path.startsWith('http') ? currentMainVideo.file_path : `/${currentMainVideo.file_path}`} 
                       className="absolute inset-0 h-full w-full object-cover" 
                       controls
+                      autoPlay
                     />
-                    <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between text-white pointer-events-none bg-black/40 p-2 rounded-lg backdrop-blur-xs">
+                    <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between text-white pointer-events-none p-2">
                       <div>
-                        <p className="text-sm font-semibold">{mainDroneVideo.title}</p>
-                        <p className="text-xs text-white/80">{mainDroneVideo.description || 'Drone Footage'}</p>
+                        <p className="text-sm font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">{currentMainVideo.title}</p>
+                        <p className="text-xs text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">{currentMainVideo.description || 'Drone Footage'}</p>
                       </div>
                     </div>
                   </div>
@@ -492,14 +547,20 @@ export default function Media({ mediaGalleries = [] }) {
                   </div>
                 )}
 
+                {/* Sisi Kanan: Daftar video yang bisa diklik untuk diputar di kiri */}
                 <div className="flex flex-col justify-center gap-4">
                   {sideDroneVideos.length > 0 ? (
                     sideDroneVideos.map((vid) => (
-                      <div key={vid.id} className="flex items-center gap-3 group bg-slate-50 p-2.5 rounded-lg border border-slate-100 shadow-xs">
+                      <div 
+                        key={vid.id} 
+                        onClick={() => setSelectedMainVideo(vid)}
+                        className="flex items-center gap-3 group bg-slate-50 p-2.5 rounded-lg border border-slate-100 shadow-xs cursor-pointer hover:border-[#F5B800] transition"
+                        title="Klik untuk putar video ini"
+                      >
                         <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-md bg-slate-900 flex items-center justify-center">
                           <video 
                             src={vid.file_path.startsWith('http') ? vid.file_path : `/${vid.file_path}`} 
-                            className="h-full w-full object-cover" 
+                            className="h-full w-full object-cover pointer-events-none" 
                           />
                           <span className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
                             <IconPlay className="w-4 h-4 text-white" />

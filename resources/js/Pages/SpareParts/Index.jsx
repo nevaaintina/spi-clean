@@ -106,7 +106,7 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
     router.get('/spare-parts', { search: keyword, category }, { preserveState: true });
   };
 
-  // Logika Download Katalog: Jika ada PDF dari admin buka PDF, jika tidak gabungkan semua foto spare parts jadi PDF cetak
+  // Logika Download Katalog: Utamakan file PDF permanen dari database admin
   const handleDownloadCatalog = () => {
     if (catalogPdfUrl) {
       window.open(`/${catalogPdfUrl.replace(/^\//, '')}`, "_blank");
@@ -117,7 +117,6 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
         return;
       }
 
-      // Kumpulkan semua foto spare parts (foto utama + galeri)
       let allImages = [];
       spareParts.forEach(part => {
         if (part.image) allImages.push({ url: `/${part.image.replace(/^\//, '')}`, title: `${part.name} (Part No: ${part.part_number})` });
