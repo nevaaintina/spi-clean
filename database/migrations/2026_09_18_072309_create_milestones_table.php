@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('milestones', function (Blueprint $table) {
-    $table->id();
-    $table->string('year'); // Cth: 2022 atau 1 Jan 2025 - 31 Des 2028
-    $table->string('title');
-    $table->text('description');
-    $table->string('image_path')->nullable();
-    $table->timestamps();
-});
+        if (!Schema::hasTable('milestones')) {
+            Schema::create('milestones', function (Blueprint $table) {
+                $table->id();
+                $table->string('year'); // Cth: 2022 atau 1 Jan 2025 - 31 Des 2028
+                $table->string('title');
+                $table->text('description');
+                $table->string('image_path')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

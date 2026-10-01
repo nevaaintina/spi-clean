@@ -8,13 +8,20 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('job_vacancies', function (Blueprint $table) {
-            $table->id();$table->string('title');
-            $table->string('department');$table->string('location');
-            $table->string('education');$table->string('job_type');
-            $table->string('image')->nullable();$table->text('description')->nullable();
-            $table->text('requirements')->nullable();$table->timestamps();
-        });
+        if (!Schema::hasTable('job_vacancies')) {
+            Schema::create('job_vacancies', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->string('department');
+                $table->string('location');
+                $table->string('education');
+                $table->string('job_type');
+                $table->string('image')->nullable();
+                $table->text('description')->nullable();
+                $table->text('requirements')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     public function down(): void

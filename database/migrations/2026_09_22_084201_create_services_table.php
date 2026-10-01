@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('services', function (Blueprint $table) {
-            $table->id();
-            $table->string('category'); // Menyimpan kategori layanan utama (dropdown)
-            $table->string('title'); // Nama Sub-Layanan
-            $table->text('description')->nullable(); // Penjelasan lengkap
-            $table->json('what_we_do')->nullable(); // Poin-poin pekerjaan
-            $table->json('key_benefits')->nullable(); // Poin-poin keuntungan
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('services')) {
+            Schema::create('services', function (Blueprint $table) {
+                $table->id();
+                $table->string('category'); // Menyimpan kategori layanan utama (dropdown)
+                $table->string('title'); // Nama Sub-Layanan
+                $table->text('description')->nullable(); // Penjelasan lengkap
+                $table->json('what_we_do')->nullable(); // Poin-poin pekerjaan
+                $table->json('key_benefits')->nullable(); // Poin-poin keuntungan
+                $table->timestamps();
+            });
+        }
     }
 
     /**

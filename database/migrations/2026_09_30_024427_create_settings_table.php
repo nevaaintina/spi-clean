@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->id();
-            $table->string('key')->unique(); // Menyimpan kunci unik (misal: product_catalog_pdf, spare_part_catalog_pdf)
-            $table->text('value')->nullable(); // Menyimpan nilai atau path file PDF
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('settings')) {
+            Schema::create('settings', function (Blueprint $table) {
+                $table->id();
+                $table->string('key')->unique(); // Menyimpan kunci unik (misal: product_catalog_pdf, spare_part_catalog_pdf)
+                $table->text('value')->nullable(); // Menyimpan nilai atau path file PDF
+                $table->timestamps();
+            });
+        }
     }
 
     /**

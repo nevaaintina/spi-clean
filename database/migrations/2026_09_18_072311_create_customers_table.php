@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
-    $table->id();
-    $table->string('name');
-    $table->string('region');
-    $table->text('description')->nullable();
-    $table->text('address')->nullable(); // 👈 Tambahkan baris ini
-    $table->string('logo_path')->nullable();
-    $table->timestamps();
-});
+        if (!Schema::hasTable('customers')) {
+            Schema::create('customers', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('region');
+                $table->text('description')->nullable();
+                $table->text('address')->nullable();
+                $table->string('logo_path')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

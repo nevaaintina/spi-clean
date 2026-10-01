@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('team_members', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('role'); // Cth: CEO, Operation Director, HRGA Manager
-            $table->string('category'); // Cth: 'management' atau 'operational'
-            $table->string('linkedin')->nullable(); // 👈 Kolom linkedin ditambahkan di sini
-            $table->string('image_path')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('team_members')) {
+            Schema::create('team_members', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('role'); // Cth: CEO, Operation Director, HRGA Manager
+                $table->string('category'); // Cth: 'management' atau 'operational'
+                $table->string('linkedin')->nullable(); // 👈 Kolom linkedin ditambahkan di sini
+                $table->string('image_path')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
