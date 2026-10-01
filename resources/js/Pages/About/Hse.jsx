@@ -34,7 +34,8 @@ function AnimatedHeroBanner() {
                             : 'opacity-0 translate-y-24 scale-95'
                     }`}
                 >
-                    <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight drop-shadow-2xl leading-tight text-[#0284c7]">
+                    {/* Diubah dari text-[#0284c7] menjadi text-white */}
+                    <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight drop-shadow-2xl leading-tight text-white">
                         Safety First
                     </h1>
                 </div>

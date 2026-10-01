@@ -581,7 +581,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
                 slug: "suplai-suku-cadang",
                 title: "Suplai Suku Cadang",
                 description: "Ketersediaan suku cadang original XCMG lengkap dengan jaminan kualitas terbaik...",
-                image_path: "/images/featured-service3.jpg"
+                image_path: "/images/featured-service3.png"
               },
               {
                 id: 4,
