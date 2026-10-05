@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Head, Link } from "@inertiajs/react";
 import Navbar from "@/Components/Navbar";
 import Footer from "@/Components/Footer";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const categoryIcons = {
   "All": (
@@ -55,6 +57,15 @@ const defaultCategoryIcon = (
 export default function ProductIndex({ products = [], catalogPdfUrl = null }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+  // Inisialisasi AOS dengan durasi animasi santai (2.2 detik)
+  useEffect(() => {
+    AOS.init({
+      duration: 2200,
+      once: false,
+      easing: 'cubic-bezier(0.12, 1, 0.2, 1)',
+    });
+  }, []);
+
   const categories = [
     "Excavator",
     "Wheel Loader",
@@ -95,38 +106,40 @@ export default function ProductIndex({ products = [], catalogPdfUrl = null }) {
       {/* HERO BANNER */}
       <section className="relative overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center z-0"
+          className="absolute inset-0 bg-cover bg-center z-0 scale-105 transition-transform duration-[4000ms]"
           style={{
             backgroundImage: `url('/images/hero-product.png')`,
           }}
+          data-aos="zoom-out"
+          data-aos-duration="3000"
         />
         <div className="absolute inset-0 bg-[#071b38]/30 z-10" />
 
-        <div className="relative max-w-[1380px] mx-auto px-7 sm:px-10 lg:px-16 xl:px-20 py-36 lg:py-48 min-h-[660px] lg:min-h-[740px] flex items-center z-20">
-          <div className="w-full max-w-[820px]">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="w-7 h-[3px] bg-[#ffc107]" />
-              <span className="text-sm md:text-[15px] font-extrabold tracking-[0.08em] text-[#ffc107] uppercase drop-shadow-md">
+        <div className="relative max-w-[1380px] mx-auto px-4 sm:px-10 lg:px-16 xl:px-20 py-24 sm:py-36 lg:py-48 min-h-[480px] sm:min-h-[660px] lg:min-h-[740px] flex items-center z-20">
+          <div className="w-full max-w-[820px]" data-aos="fade-up" data-aos-duration="2400">
+            <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6" data-aos="fade-right" data-aos-delay="200">
+              <span className="w-5 sm:w-7 h-[2.5px] sm:h-[3px] bg-[#ffc107]" />
+              <span className="text-[11px] sm:text-sm md:text-[15px] font-extrabold tracking-[0.08em] text-[#ffc107] uppercase drop-shadow-md" translate="no">
                 KATALOG ALAT BERAT & PRODUK
               </span>
             </div>
 
-            <h1 className="text-[40px] sm:text-[50px] md:text-[60px] xl:text-[70px] leading-[1.08] tracking-[-0.02em] font-semibold text-white drop-shadow-lg">
+            <h1 className="text-2xl sm:text-[50px] md:text-[60px] xl:text-[70px] leading-[1.12] sm:leading-[1.08] tracking-[-0.02em] font-semibold text-white drop-shadow-lg" data-aos="fade-up" data-aos-delay="400">
               Solusi Alat Berat & <br />
               <span className="text-[#ffc107] font-bold">Suku Cadang XCMG</span>
             </h1>
 
-            <p className="mt-7 max-w-[680px] text-[16px] md:text-[18px] leading-8 text-slate-100 font-medium drop-shadow-md">
+            <p className="mt-4 sm:mt-7 max-w-[680px] text-xs sm:text-[16px] md:text-[18px] leading-relaxed sm:leading-8 text-slate-100 font-medium drop-shadow-md" data-aos="fade-up" data-aos-delay="600">
               Temukan berbagai lini produk berkualitas tinggi untuk mendukung efisiensi dan produktivitas proyek konstruksi serta pertambangan Anda.
             </p>
 
-            <div className="mt-9 flex flex-wrap items-center gap-4">
+            <div className="mt-6 sm:mt-9 flex flex-wrap items-center gap-3 sm:gap-4" data-aos="fade-up" data-aos-delay="800">
               <a
                 href="#products"
-                className="inline-flex items-center gap-3 bg-[#ffc107] hover:bg-[#e0a806] text-[#0f2b5c] px-8 py-4 rounded-xl text-sm font-black shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                className="inline-flex items-center gap-2 sm:gap-3 bg-[#ffc107] hover:bg-[#e0a806] text-[#0f2b5c] px-5 sm:px-8 py-3 sm:py-4 rounded-xl text-xs sm:text-sm font-black shadow-lg transition-all duration-500 hover:-translate-y-1 cursor-pointer"
               >
                 LIHAT PRODUK
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-5-5l5 5-5 5" />
                 </svg>
               </a>
@@ -134,9 +147,9 @@ export default function ProductIndex({ products = [], catalogPdfUrl = null }) {
               <button
                 type="button"
                 onClick={handleDownloadCatalog}
-                className="inline-flex items-center gap-3 bg-white/10 hover:bg-white hover:text-[#0f2b5c] text-white border border-white/30 px-8 py-4 rounded-xl text-sm font-black shadow-lg backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                className="inline-flex items-center gap-2 sm:gap-3 bg-white/10 hover:bg-white hover:text-[#0f2b5c] text-white border border-white/30 px-5 sm:px-8 py-3 sm:py-4 rounded-xl text-xs sm:text-sm font-black shadow-lg backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 cursor-pointer"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" />
                 </svg>
                 DOWNLOAD KATALOG
@@ -147,27 +160,27 @@ export default function ProductIndex({ products = [], catalogPdfUrl = null }) {
       </section>
 
       {/* PRODUCT SECTION */}
-      <section id="products" className="relative bg-white py-16 lg:py-20">
-        <div className="relative max-w-[1380px] mx-auto px-6 sm:px-8 lg:px-12 xl:px-20">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+      <section id="products" className="relative bg-white py-12 sm:py-16 lg:py-20">
+        <div className="relative max-w-[1380px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-20">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 sm:gap-6 mb-8 sm:mb-10" data-aos="fade-up">
             <div>
-              <div className="flex items-center gap-3 mb-3">
-                <span className="w-7 h-[2px] bg-[#ffc107]" />
-                <span className="text-[11px] font-black tracking-[0.16em] uppercase text-[#0f2b5c]">
+              <div className="flex items-center gap-2.5 sm:gap-3 mb-2 sm:mb-3">
+                <span className="w-6 sm:w-7 h-[2px] bg-[#ffc107]" />
+                <span className="text-[10px] sm:text-[11px] font-black tracking-[0.16em] uppercase text-[#0f2b5c]" translate="no">
                   OUR PRODUCTS
                 </span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-black text-[#0f2b5c] tracking-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#0f2b5c] tracking-tight">
                 Pilihan Alat Berat <span className="text-[#ffc107]">Berkualitas</span>
               </h2>
             </div>
-            <p className="max-w-md text-sm leading-6 text-slate-500 font-light">
+            <p className="max-w-md text-xs sm:text-sm leading-relaxed text-slate-500 font-light">
               Pilih kategori untuk menemukan produk yang sesuai dengan kebutuhan proyek Anda.
             </p>
           </div>
 
           {/* CATEGORY FILTER */}
-          <div className="flex gap-3 overflow-x-auto pb-4 mb-12 scrollbar-hide">
+          <div className="flex gap-2 sm:gap-3 overflow-x-auto pb-3 sm:pb-4 mb-8 sm:mb-12 scrollbar-hide" data-aos="fade-up" data-aos-delay="200">
             {categoryList.map((category) => {
               const active = selectedCategory === category.name;
               return (
@@ -176,47 +189,49 @@ export default function ProductIndex({ products = [], catalogPdfUrl = null }) {
                   type="button"
                   onClick={() => setSelectedCategory(category.name)}
                   className={`
-                    shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-lg border text-xs font-bold transition-all duration-300 cursor-pointer
+                    shrink-0 flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-lg border text-[11px] sm:text-xs font-bold transition-all duration-300 cursor-pointer
                     ${
                       active
-                        ? "bg-[#0f2b5c] border-[#0f2b5c] text-[#ffc107]"
-                        : "bg-white border-slate-200 text-slate-600 hover:border-[#0f2b5c]"
+                        ? "bg-[#0f2b5c] border-[#0f2b5c] text-[#ffc107] scale-105 shadow-md"
+                        : "bg-white border-slate-200 text-slate-600 hover:border-[#0f2b5c] hover:scale-102"
                     }
                   `}
                 >
-                  <span className={active ? "text-[#ffc107]" : "text-[#0f2b5c]"}>{category.icon}</span>
+                  <span className={`w-4 h-4 sm:w-5 sm:h-5 ${active ? "text-[#ffc107]" : "text-[#0f2b5c]"}`}>{category.icon}</span>
                   {category.name}
                 </button>
               );
             })}
           </div>
 
-          {/* PRODUCT GRID (Gambar Full Menutupi Card) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredProducts.map((product) => (
+          {/* PRODUCT GRID */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 sm:gap-6" data-aos="fade-up" data-aos-duration="2400">
+            {filteredProducts.map((product, idx) => (
               <Link
                 key={product.id}
                 href={`/products/${product.id}`}
-                className="group relative bg-slate-100 border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-end h-[400px] text-center cursor-pointer"
+                className="group relative bg-slate-100 border border-slate-200 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-end h-[220px] sm:h-[300px] lg:h-[400px] text-center cursor-pointer"
+                data-aos="fade-up"
+                data-aos-delay={(idx % 4) * 150}
               >
-                {/* Gambar Full Cover Card (Hanya menggunakan foto utama/image sampul) */}
+                {/* Gambar Full Cover Card */}
                 <div className="absolute inset-0 w-full h-full z-0">
                   <img
                     src={product.image ? `/${product.image}` : "https://via.placeholder.com/300"}
                     alt={product.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>
 
-                {/* Overlay Informasi Saat Hover */}
-                <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-[#0b2348] via-[#0b2348]/95 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out flex flex-col items-center justify-end text-center z-20">
-                  <h3 className="text-base font-bold text-white tracking-wide mb-1">
+                {/* Overlay Informasi (Default bersih hanya gambar. Teks judul dan sedikit deskripsi muncul saat di-hover/disentuh kursor) */}
+                <div className="absolute inset-x-0 bottom-0 p-3 sm:p-6 bg-gradient-to-t from-[#0b2348] via-[#0b2348]/95 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out flex flex-col items-center justify-end text-center z-20">
+                  <h3 className="text-xs sm:text-base font-bold text-white tracking-wide mb-1 line-clamp-1">
                     {product.name}
                   </h3>
-                  <p className="text-xs text-slate-200 font-light leading-relaxed mb-3 line-clamp-2">
+                  <p className="text-[11px] sm:text-xs text-slate-200 font-light leading-relaxed mb-2 line-clamp-2">
                     {product.overview || product.description}
                   </p>
-                  <span className="inline-flex items-center gap-1.5 text-xs font-black text-[#ffc107]">
+                  <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-black text-[#ffc107]">
                     Lihat Produk <span className="group-hover:translate-x-1 transition-transform duration-200">→</span>
                   </span>
                 </div>
@@ -225,7 +240,7 @@ export default function ProductIndex({ products = [], catalogPdfUrl = null }) {
           </div>
 
           {filteredProducts.length === 0 && (
-            <div className="py-16 text-center">
+            <div className="py-16 text-center" data-aos="fade">
               <h3 className="text-base font-bold text-[#0f2b5c]">Produk tidak ditemukan</h3>
               <p className="mt-1 text-xs text-slate-400 font-light">Belum ada produk pada kategori ini.</p>
             </div>

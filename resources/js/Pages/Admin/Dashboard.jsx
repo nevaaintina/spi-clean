@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm, Head, router } from "@inertiajs/react";
 
 export default function AdminDashboard({ 
@@ -139,13 +139,11 @@ export default function AdminDashboard({
     brand: "XCMG",
     image: null,
     gallery_images: [],
-    description: "",
     delivery_time: "1-90 DAYS",
     supply_capacity: "10,000 Pieces/Year, Waiting for Your Order in Stock",
     product_origin: "China",
     package_type: "Carton or Wooden Box",
     shipping_methods: "Air Transport, Sea Transport, Express Delivery, Truck Transportation",
-    rating: "4.9 /5 based on 177 votes",
   });
 
   const articleForm = useForm({
@@ -850,13 +848,11 @@ export default function AdminDashboard({
       }
     }
      
-    formData.append("description", sparePartForm.data.description || "");
     formData.append("delivery_time", sparePartForm.data.delivery_time || "");
     formData.append("supply_capacity", sparePartForm.data.supply_capacity || "");
     formData.append("product_origin", sparePartForm.data.product_origin || "");
     formData.append("package_type", sparePartForm.data.package_type || "");
     formData.append("shipping_methods", sparePartForm.data.shipping_methods || "");
-    formData.append("rating", sparePartForm.data.rating || "");
 
     router.post("/admin/spare-parts", formData, {
       forceFormData: true,
@@ -1024,15 +1020,15 @@ export default function AdminDashboard({
 
   const catalogForm = useForm({
     catalog_pdf: null,
-    assembly_name: "Maintenance Tips",
+    assembly_name: "Hydraulic System",
     exploded_image: null,
-    exploded_parts: [{ no: "01", component: "", partNumber: "", status: "Genuine Part" }]
+    exploded_parts: [{ no: "01", component: "" }]
   });
 
   const handleAddExplodedRow = () => {
     catalogForm.setData("exploded_parts", [
       ...catalogForm.data.exploded_parts,
-      { no: String(catalogForm.data.exploded_parts.length + 1).padStart(2, '0'), component: "", partNumber: "", status: "Genuine Part" }
+      { no: String(catalogForm.data.exploded_parts.length + 1).padStart(2, '0'), component: "" }
     ]);
   };
 
@@ -1358,7 +1354,7 @@ export default function AdminDashboard({
               <h3 className="text-xs font-bold uppercase tracking-wider text-[#071b38] mb-4">
                 Daftar Cabang / Area Operasional Tersimpan ({branches.length})
               </h3>
-               
+                 
               {branches.length === 0 ? (
                 <p className="text-xs text-slate-400">Belum ada cabang atau area operasional yang ditambahkan.</p>
               ) : (
@@ -2371,7 +2367,7 @@ export default function AdminDashboard({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 mb-1">Product Origin</label>
                     <input 
@@ -2389,16 +2385,6 @@ export default function AdminDashboard({
                       value={sparePartForm.data.package_type} 
                       onChange={e => sparePartForm.setData('package_type', e.target.value)} 
                       placeholder="Cth: Carton or Wooden Box"
-                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Rating</label>
-                    <input 
-                      type="text" 
-                      value={sparePartForm.data.rating} 
-                      onChange={e => sparePartForm.setData('rating', e.target.value)} 
-                      placeholder="Cth: 4.9 /5 based on 177 votes"
                       className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
                     />
                   </div>
@@ -2437,17 +2423,6 @@ export default function AdminDashboard({
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Tambahan</label>
-                  <textarea 
-                    rows="3" 
-                    placeholder="Keterangan suku cadang..." 
-                    value={sparePartForm.data.description} 
-                    onChange={e => sparePartForm.setData('description', e.target.value)} 
-                    className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
-                  />
-                </div>
-
                 <button type="submit" className="w-full py-3.5 bg-[#071b38] hover:bg-[#0f2b5c] text-[#ffc107] font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md cursor-pointer">
                   + Tambah Spare Part ke Katalog
                 </button>
@@ -2468,17 +2443,12 @@ export default function AdminDashboard({
                       onChange={e => catalogForm.setData('assembly_name', e.target.value)} 
                       className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs outline-none bg-white mb-2 font-medium"
                     >
-                      <option value="Maintenance Tips">Maintenance Tips</option>
-                      <option value="Heavy Equipment Knowledge">Heavy Equipment Knowledge</option>
-                      <option value="Mining Technology">Mining Technology</option>
                       <option value="Hydraulic System">Hydraulic System</option>
-                      <option value="Engine Maintenance">Engine Maintenance</option>
-                      <option value="Lubrication Guide">Lubrication Guide</option>
-                      <option value="Predictive Maintenance">Predictive Maintenance</option>
-                      <option value="Failure Analysis">Failure Analysis</option>
-                      <option value="Safety">Safety</option>
-                      <option value="Operator Tips">Operator Tips</option>
-                      <option value="Technical Bulletin">Technical Bulletin</option>
+                      <option value="Filters & Maintenance">Filters & Maintenance</option>
+                      <option value="Undercarriage">Undercarriage</option>
+                      <option value="Engine Parts">Engine Parts</option>
+                      <option value="Electrical System">Electrical System</option>
+                      <option value="Transmission & Brake">Transmission & Brake</option>
                     </select>
 
                     <label className="block text-[11px] font-bold text-slate-600 mb-1 mt-3">Upload Gambar Diagram (Exploded View Preview)</label>
@@ -2490,7 +2460,7 @@ export default function AdminDashboard({
                     />
                   </div>
 
-                  {/* TABEL INPUT DINAMIS UNTUK BARIS KOMPONEN EXPLODED VIEW */}
+                  {/* TABEL INPUT DINAMIS UNTUK BARIS KOMPONEN EXPLODED VIEW (HANYA NO DAN COMPONENT) */}
                   <div className="space-y-3 pt-4 border-t border-slate-200">
                     <div className="flex items-center justify-between">
                       <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Daftar Baris Komponen Exploded View</label>
@@ -2499,13 +2469,8 @@ export default function AdminDashboard({
 
                     {catalogForm.data.exploded_parts.map((part, idx) => (
                       <div key={idx} className="flex gap-2 items-center bg-white p-3 rounded-xl border border-slate-200">
-                        <input type="text" placeholder="No (Cth: 01)" value={part.no} onChange={e => { const updated = [...catalogForm.data.exploded_parts]; updated[idx].no = e.target.value; catalogForm.setData("exploded_parts", updated); }} className="w-20 h-10 px-3 rounded-lg border border-slate-200 text-xs" />
+                        <input type="text" placeholder="No (Cth: 01)" value={part.no} onChange={e => { const updated = [...catalogForm.data.exploded_parts]; updated[idx].no = e.target.value; catalogForm.setData("exploded_parts", updated); }} className="w-24 h-10 px-3 rounded-lg border border-slate-200 text-xs" />
                         <input type="text" placeholder="Nama Component (Cth: Hydraulic Pump)" value={part.component} onChange={e => { const updated = [...catalogForm.data.exploded_parts]; updated[idx].component = e.target.value; catalogForm.setData("exploded_parts", updated); }} className="flex-1 h-10 px-3 rounded-lg border border-slate-200 text-xs" />
-                        <input type="text" placeholder="Part Number (Cth: XCMG-HYD-092)" value={part.partNumber} onChange={e => { const updated = [...catalogForm.data.exploded_parts]; updated[idx].partNumber = e.target.value; catalogForm.setData("exploded_parts", updated); }} className="flex-1 h-10 px-3 rounded-lg border border-slate-200 text-xs font-mono" />
-                        <select value={part.status} onChange={e => { const updated = [...catalogForm.data.exploded_parts]; updated[idx].status = e.target.value; catalogForm.setData("exploded_parts", updated); }} className="w-36 h-10 px-3 rounded-lg border border-slate-200 text-xs bg-white">
-                          <option value="Genuine Part">Genuine Part</option>
-                          <option value="Available">Available</option>
-                        </select>
                         {catalogForm.data.exploded_parts.length > 1 && (
                           <button type="button" onClick={() => handleRemoveExplodedRow(idx)} className="px-3 py-2 bg-red-500 text-white rounded-lg text-xs cursor-pointer">✕</button>
                         )}
@@ -3530,157 +3495,6 @@ export default function AdminDashboard({
                     className="px-8 py-3 bg-[#071b38] hover:bg-[#0f2b5c] text-[#ffc107] font-extrabold text-xs uppercase tracking-wider rounded-xl shadow cursor-pointer"
                   >
                     {editServiceForm.processing ? "Menyimpan..." : "Simpan Perubahan"}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {/* ================= MODAL POPUP EDIT ARTIKEL KNOWLEDGE ================= */}
-        {editingArticle && (
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-8 space-y-6">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div>
-                  <h3 className="text-lg font-black text-[#0f2b5c]">Edit Artikel: {editingArticle.title}</h3>
-                  <p className="text-xs text-slate-500">Perbarui konten artikel knowledge dan thumbnail.</p>
-                </div>
-                <button 
-                  type="button" 
-                  onClick={() => setEditingArticle(null)} 
-                  className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <form onSubmit={handleUpdateArticle} className="space-y-4">
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul Artikel</label>
-                  <input 
-                    type="text" 
-                    value={editArticleForm.data.title} 
-                    onChange={e => editArticleForm.setData('title', e.target.value)} 
-                    className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
-                    required 
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori</label>
-                    <select 
-                      value={editArticleForm.data.category} 
-                      onChange={e => editArticleForm.setData('category', e.target.value)} 
-                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs outline-none bg-white font-medium"
-                    >
-                      <option value="Maintenance Tips">Maintenance Tips</option>
-                      <option value="Heavy Equipment Knowledge">Heavy Equipment Knowledge</option>
-                      <option value="Mining Technology">Mining Technology</option>
-                      <option value="Hydraulic System">Hydraulic System</option>
-                      <option value="Engine Maintenance">Engine Maintenance</option>
-                      <option value="Lubrication Guide">Lubrication Guide</option>
-                      <option value="Predictive Maintenance">Predictive Maintenance</option>
-                      <option value="Failure Analysis">Failure Analysis</option>
-                      <option value="Safety">Safety</option>
-                      <option value="Operator Tips">Operator Tips</option>
-                      <option value="Technical Bulletin">Technical Bulletin</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Estimasi Waktu Baca</label>
-                    <input 
-                      type="text" 
-                      value={editArticleForm.data.read_time} 
-                      onChange={e => editArticleForm.setData('read_time', e.target.value)} 
-                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Link Instagram (Opsional)</label>
-                  <input 
-                    type="url" 
-                    value={editArticleForm.data.instagram_link} 
-                    onChange={e => editArticleForm.setData('instagram_link', e.target.value)} 
-                    className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ringkasan (Excerpt)</label>
-                  <textarea 
-                    rows="3" 
-                    value={editArticleForm.data.excerpt} 
-                    onChange={e => editArticleForm.setData('excerpt', e.target.value)} 
-                    className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Isi Konten Lengkap</label>
-                  <textarea 
-                    rows="6" 
-                    value={editArticleForm.data.content} 
-                    onChange={e => editArticleForm.setData('content', e.target.value)} 
-                    className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
-                    required 
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Thumbnail (Opsional)</label>
-                  {editingArticle.thumbnail && (
-                    <div className="flex items-center gap-3 mb-2 p-2 bg-slate-50 rounded-xl border border-slate-200">
-                      <img src={`/${editingArticle.thumbnail}`} alt="" className="w-12 h-12 object-cover rounded-lg border bg-white" />
-                      <label className="flex items-center gap-2 text-xs text-red-600 font-bold cursor-pointer ml-auto">
-                        <input 
-                          type="checkbox" 
-                          checked={editArticleForm.data.remove_thumbnail} 
-                          onChange={e => editArticleForm.setData('remove_thumbnail', e.target.checked)} 
-                          className="w-4 h-4 rounded text-red-600 focus:ring-red-500 cursor-pointer"
-                        />
-                        Hapus Thumbnail Ini
-                      </label>
-                    </div>
-                  )}
-                  <input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={e => editArticleForm.setData('thumbnail', e.target.files[0])} 
-                    className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
-                  />
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <input 
-                    type="checkbox" 
-                    id="edit_is_featured"
-                    checked={editArticleForm.data.is_featured}
-                    onChange={e => editArticleForm.setData('is_featured', e.target.checked)}
-                    className="w-4 h-4 text-[#0f2b5c] rounded border-slate-300 focus:ring-[#ffc107]"
-                  />
-                  <label htmlFor="edit_is_featured" className="text-xs font-bold text-slate-700 cursor-pointer">
-                    Jadikan Artikel Utama (Featured di Banner Besar)
-                  </label>
-                </div>
-
-                <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
-                  <button 
-                    type="button" 
-                    onClick={() => setEditingArticle(null)} 
-                    className="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl cursor-pointer"
-                  >
-                    Batal
-                  </button>
-                  <button 
-                    type="submit" 
-                    disabled={editArticleForm.processing}
-                    className="px-8 py-3 bg-[#071b38] hover:bg-[#0f2b5c] text-[#ffc107] font-extrabold text-xs uppercase tracking-wider rounded-xl shadow cursor-pointer"
-                  >
-                    {editArticleForm.processing ? "Menyimpan..." : "Simpan Perubahan Artikel"}
                   </button>
                 </div>
               </form>

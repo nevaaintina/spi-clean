@@ -33,13 +33,11 @@ class SparePartController extends Controller
             'brand'            => 'nullable|string|max:255',
             'image'            => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10048',
             'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10048',
-            'description'      => 'nullable|string',
             'delivery_time'    => 'nullable|string|max:255',
             'supply_capacity'  => 'nullable|string|max:255',
             'product_origin'   => 'nullable|string|max:255',
             'package_type'     => 'nullable|string|max:255',
             'shipping_methods' => 'nullable|string|max:255',
-            'rating'           => 'nullable|string|max:255',
         ]);
 
         $imagePath = null;
@@ -75,13 +73,11 @@ class SparePartController extends Controller
             'brand'            => $request->brand ?? 'XCMG',
             'image'            => $imagePath,
             'gallery'          => $galleryPaths, // Menyimpan galeri foto yang nantinya digabung untuk download katalog PDF di frontend
-            'description'      => $request->description,
             'delivery_time'    => $request->delivery_time ?? '1-90 DAYS',
             'supply_capacity'  => $request->supply_capacity ?? '10,000 Pieces/Year, Waiting for Your Order in Stock',
             'product_origin'   => $request->product_origin ?? 'China',
             'package_type'     => $request->package_type ?? 'Carton or Wooden Box',
             'shipping_methods' => $request->shipping_methods ?? 'Air Transport, Sea Transport, Express Delivery, Truck Transportation',
-            'rating'           => $request->rating ?? '4.9 /5 based on 177 votes',
         ]);
 
         return redirect()->to('/admin?tab=spareparts')->with('success', 'Spare Part beserta galeri foto berhasil ditambahkan!');
@@ -124,6 +120,7 @@ class SparePartController extends Controller
         if ($request->filled('exploded_parts')) {
             $partsData = json_decode($request->input('exploded_parts'), true);
             $explodedPartsMap = session('spare_part_exploded_parts_data', []);
+            // Menyimpan baris komponen yang hanya berisi no dan component
             $explodedPartsMap[$request->assembly_name] = $partsData;
             session(['spare_part_exploded_parts_data' => $explodedPartsMap]);
         }

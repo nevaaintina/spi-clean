@@ -4,6 +4,50 @@ import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
 
 /* =========================================================
+   FADE REVEAL (ANIMASI SCROLL HIDUP & DINAMIS)
+========================================================= */
+function FadeReveal({ children, className = "", delay = 0 }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(element);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`
+        ${className}
+        transition-all duration-1000 ease-out
+        ${
+          visible
+            ? "opacity-100 translate-y-0 scale-100"
+            : "opacity-0 translate-y-12 scale-[0.98]"
+        }
+      `}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/* =========================================================
    INLINE SVG ICONS
 ========================================================= */
 const IconCamera = ({ className = 'w-6 h-6' }) => (
@@ -128,7 +172,7 @@ const MediaCard = ({ item, onImageClick }) => {
   const isVideo = item.media_type?.toLowerCase().includes('video') || filePath.endsWith('.mp4') || filePath.endsWith('.mov') || filePath.endsWith('.avi');
 
   return (
-    <div className="relative overflow-hidden rounded-lg group h-72 sm:h-80 shadow-md bg-slate-900 flex items-center justify-center">
+    <div className="relative overflow-hidden rounded-lg group h-48 sm:h-72 lg:h-80 shadow-md bg-slate-900 flex items-center justify-center">
       {isVideo ? (
         <video
           src={filePath}
@@ -148,10 +192,10 @@ const MediaCard = ({ item, onImageClick }) => {
       {!isVideo && (
         <div 
           onClick={() => onImageClick(filePath, item.title || item.category)}
-          className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-black/60 hover:bg-black/85 text-white p-2 rounded-xl backdrop-blur-xs z-20 cursor-pointer shadow-lg"
+          className="absolute top-2 right-2 sm:top-3 sm:right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-black/60 hover:bg-black/85 text-white p-1.5 sm:p-2 rounded-xl backdrop-blur-xs z-20 cursor-pointer shadow-lg"
           title="Lihat Foto Full"
         >
-          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
           </svg>
         </div>
@@ -159,11 +203,11 @@ const MediaCard = ({ item, onImageClick }) => {
 
       <div 
         onClick={() => !isVideo && onImageClick(filePath, item.title || item.category)}
-        className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 z-10 cursor-pointer pointer-events-none"
+        className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 sm:p-4 z-10 cursor-pointer pointer-events-none"
       >
         <div className="pointer-events-auto">
-          <p className="text-white text-sm font-bold">{item.title || item.category}</p>
-          {item.description && <p className="text-white/80 text-xs mt-1 line-clamp-1">{item.description}</p>}
+          <p className="text-white text-xs sm:text-sm font-bold">{item.title || item.category}</p>
+          {item.description && <p className="text-white/80 text-[10px] sm:text-xs mt-0.5 sm:mt-1 line-clamp-1">{item.description}</p>}
         </div>
       </div>
     </div>
@@ -213,13 +257,13 @@ const CounterItem = ({ icon: Icon, targetValue, label }) => {
   }, [numericTarget]);
 
   return (
-    <div ref={ref} className="flex items-center gap-3 px-4 py-6 sm:py-0">
-      <Icon className="h-7 w-7 text-[#F5B800]" />
+    <div ref={ref} className="flex items-center gap-2.5 sm:gap-3 px-3 py-4 sm:py-6 sm:py-0">
+      <Icon className="h-5 w-5 sm:h-7 sm:w-7 text-[#F5B800] shrink-0" />
       <div className="text-left">
-        <p className="text-2xl font-bold text-[#F5B800] leading-none">
+        <p className="text-xl sm:text-2xl font-bold text-[#F5B800] leading-none">
           {numericTarget > 0 ? `${count}${suffix}` : targetValue}
         </p>
-        <p className="text-xs text-gray-300 mt-1">{label}</p>
+        <p className="text-[11px] sm:text-xs text-gray-300 mt-1">{label}</p>
       </div>
     </div>
   );
@@ -248,8 +292,17 @@ export default function Media({ mediaGalleries = [] }) {
 
   const activeMediaList = mediaGalleries && mediaGalleries.length > 0 ? mediaGalleries : fallbackMediaItems;
 
+  // Filter out Drone Video items from non-drone categories for Featured Story
+  const nonDroneMediaList = activeMediaList.filter(item => {
+    const cat = item.category?.trim().toLowerCase() || '';
+    const path = item.file_path || '';
+    const isVid = item.media_type?.toLowerCase().includes('video') || path.endsWith('.mp4') || path.endsWith('.mov') || path.endsWith('.avi');
+    return !isVid && cat !== 'drone video';
+  });
+
   const getRandomStoryImages = () => {
-    const shuffled = [...activeMediaList].sort(() => 0.5 - Math.random());
+    const sourceList = nonDroneMediaList.length > 0 ? nonDroneMediaList : activeMediaList;
+    const shuffled = [...sourceList].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, 3);
   };
 
@@ -319,7 +372,7 @@ export default function Media({ mediaGalleries = [] }) {
 
       <div className="bg-white">
         {/* ============ 1. HERO SECTION ============ */}
-        <section className="relative flex min-h-screen w-full items-center overflow-hidden">
+        <section className="relative flex min-h-[380px] sm:min-h-[500px] lg:min-h-screen w-full items-center overflow-hidden">
           <div className="absolute inset-0">
             <img
               src="/images/hero-media.png"
@@ -329,168 +382,172 @@ export default function Media({ mediaGalleries = [] }) {
             <div className="absolute inset-0 bg-gradient-to-r from-[#0B1E3D] via-[#0B1E3D]/85 to-[#0B1E3D]/20" />
           </div>
 
-          <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-32 sm:py-40 lg:pl-24">
-            <p className="text-sm font-semibold tracking-wide text-[#F5B800]">
-              MEDIA GALLERY
-            </p>
-            <p className="mt-3 text-base text-white/90">
-              Visual Stories. Real Service. Real Performance.
-            </p>
+          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 py-20 sm:py-32 lg:pl-24">
+            <FadeReveal>
+              <p className="text-xs sm:text-sm font-semibold tracking-wide text-[#F5B800]">
+                MEDIA GALLERY
+              </p>
+              <p className="mt-2 sm:mt-3 text-xs sm:text-base text-white/90">
+                Visual Stories. Real Service. Real Performance.
+              </p>
 
-            <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
-              Behind Every Machine, There Is a Story of Performance.
-            </h1>
+              <h1 className="mt-3 sm:mt-4 max-w-2xl text-2xl sm:text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+                Behind Every Machine, There Is a Story of Performance.
+              </h1>
 
-            <span className="mt-6 block h-1 w-14 bg-[#F5B800]" />
+              <span className="mt-4 sm:mt-6 block h-1 w-12 sm:w-14 bg-[#F5B800]" />
 
-            <p className="mt-6 max-w-lg text-sm leading-relaxed text-white/80 sm:text-base">
-              Jelajahi dokumentasi aktivitas PT. Servistama Pro Indonesia dalam menghadirkan layanan heavy equipment, maintenance, customer support, training dan smart service solution.
-            </p>
+              <p className="mt-4 sm:mt-6 max-w-lg text-xs sm:text-sm leading-relaxed text-white/80 sm:text-base">
+                Jelajahi dokumentasi aktivitas PT. Servistama Pro Indonesia dalam menghadirkan layanan heavy equipment, maintenance, customer support, training dan smart service solution.
+              </p>
+            </FadeReveal>
           </div>
         </section>
 
         {/* ============ 2. CATEGORY TABS ============ */}
-        <section className="relative z-10 -mt-8 sm:-mt-10">
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="rounded-t-2xl bg-white p-6 shadow-xl">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
-                {CATEGORIES.map((cat) => {
-                  const IconComponent = cat.icon;
-                  const isActive = activeCategory.toLowerCase() === cat.id.toLowerCase();
+        <section className="relative z-10 -mt-6 sm:-mt-10">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <FadeReveal delay={150}>
+              <div className="rounded-xl sm:rounded-t-2xl bg-white p-3 sm:p-6 shadow-xl">
+                <div className="grid grid-cols-4 gap-2 sm:grid-cols-4 lg:grid-cols-8 sm:gap-3">
+                  {CATEGORIES.map((cat) => {
+                    const IconComponent = cat.icon;
+                    const isActive = activeCategory.toLowerCase() === cat.id.toLowerCase();
 
-                  return (
-                    <button
-                      key={cat.id}
-                      type="button"
-                      onClick={() => {
-                        setActiveCategory(cat.id);
-                        setVisibleCount(6);
-                      }}
-                      className={`flex flex-col items-center justify-center gap-2 rounded-xl p-4 transition-all duration-300 cursor-pointer ${
-                        isActive
-                          ? 'bg-[#FFC107] text-[#0F2B5C] shadow-md'
-                          : 'bg-[#F8FAFC] text-[#64748B] hover:bg-slate-100 hover:text-[#0F2B5C]'
-                      }`}
-                    >
-                      {IconComponent && <IconComponent className="h-6 w-6" />}
-                      <span className="text-xs font-bold tracking-wide">
-                        {cat.label}
-                      </span>
-                    </button>
-                  );
-                })}
+                    return (
+                      <button
+                        key={cat.id}
+                        type="button"
+                        onClick={() => {
+                          setActiveCategory(cat.id);
+                          setVisibleCount(6);
+                        }}
+                        className={`flex flex-col items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl p-2.5 sm:p-4 transition-all duration-300 cursor-pointer ${
+                          isActive
+                            ? 'bg-[#FFC107] text-[#0F2B5C] shadow-md'
+                            : 'bg-[#F8FAFC] text-[#64748B] hover:bg-slate-100 hover:text-[#0F2B5C]'
+                        }`}
+                      >
+                        {IconComponent && <IconComponent className="h-5 w-5 sm:h-6 sm:w-6" />}
+                        <span className="text-[10px] sm:text-xs font-bold tracking-wide text-center">
+                          {cat.label}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            </FadeReveal>
           </div>
         </section>
 
         {/* ============ 3. FEATURED STORY ============ */}
         <section className="bg-white py-10">
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] items-center">
-              <div>
-                <p className="text-xs font-semibold tracking-wide text-blue-700">FEATURED STORY</p>
-                <h2 className="mt-3 text-2xl font-bold leading-snug text-[#0B1E3D] sm:text-3xl">
-                  Maintenance Excellence at <span className="text-[#F5B800]">Mining Site</span>
-                </h2>
-                <p className="mt-4 text-sm leading-relaxed text-gray-500">
-                  Dokumentasi visual terpilih dari aktivitas operasional di lapangan secara acak.
-                </p>
-              </div>
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <FadeReveal>
+              <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] items-center">
+                <div>
+                  <p className="text-[11px] sm:text-xs font-semibold tracking-wide text-blue-700">FEATURED STORY</p>
+                  <h2 className="mt-2 sm:mt-3 text-xl sm:text-2xl font-bold leading-snug text-[#0B1E3D] sm:text-3xl">
+                    Maintenance Excellence at <span className="text-[#F5B800]">Mining Site</span>
+                  </h2>
+                  <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-gray-500">
+                    Dokumentasi visual terpilih dari aktivitas operasional di lapangan secara acak.
+                  </p>
+                </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                {randomStoryImages[0] && (
-                  <div 
-                    onClick={() => {
-                      const path = randomStoryImages[0].file_path;
-                      const fullUrl = path.startsWith('http') ? path : `/${path}`;
-                      setModalImage({ url: fullUrl, title: randomStoryImages[0].title || 'Featured Story 1' });
-                    }}
-                    className="relative col-span-1 row-span-2 overflow-hidden rounded-lg h-72 bg-slate-100 cursor-pointer group"
-                  >
-                    <img 
-                      src={randomStoryImages[0].file_path.startsWith('http') ? randomStoryImages[0].file_path : `/${randomStoryImages[0].file_path}`} 
-                      alt={randomStoryImages[0].title || "Story 1"} 
-                      className="h-full w-full object-cover group-hover:scale-105 transition" 
-                    />
-                  </div>
-                )}
-                {randomStoryImages[1] && (
-                  <div 
-                    onClick={() => {
-                      const path = randomStoryImages[1].file_path;
-                      const fullUrl = path.startsWith('http') ? path : `/${path}`;
-                      setModalImage({ url: fullUrl, title: randomStoryImages[1].title || 'Featured Story 2' });
-                    }}
-                    className="overflow-hidden rounded-lg h-[138px] bg-slate-100 cursor-pointer group"
-                  >
-                    <img 
-                      src={randomStoryImages[1].file_path.startsWith('http') ? randomStoryImages[1].file_path : `/${randomStoryImages[1].file_path}`} 
-                      alt={randomStoryImages[1].title || "Story 2"} 
-                      className="h-full w-full object-cover group-hover:scale-105 transition" 
-                    />
-                  </div>
-                )}
-                {randomStoryImages[2] && (
-                  <div 
-                    onClick={() => {
-                      const path = randomStoryImages[2].file_path;
-                      const fullUrl = path.startsWith('http') ? path : `/${path}`;
-                      setModalImage({ url: fullUrl, title: randomStoryImages[2].title || 'Featured Story 3' });
-                    }}
-                    className="overflow-hidden rounded-lg h-[138px] bg-slate-100 cursor-pointer group"
-                  >
-                    <img 
-                      src={randomStoryImages[2].file_path.startsWith('http') ? randomStoryImages[2].file_path : `/${randomStoryImages[2].file_path}`} 
-                      alt={randomStoryImages[2].title || "Story 3"} 
-                      className="h-full w-full object-cover group-hover:scale-105 transition" 
-                    />
-                  </div>
-                )}
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                  {randomStoryImages[0] && (
+                    <div 
+                      onClick={() => {
+                        const path = randomStoryImages[0].file_path;
+                        const fullUrl = path.startsWith('http') ? path : `/${path}`;
+                        setModalImage({ url: fullUrl, title: randomStoryImages[0].title || 'Featured Story 1' });
+                      }}
+                      className="relative col-span-1 row-span-2 overflow-hidden rounded-lg h-56 sm:h-72 bg-slate-100 cursor-pointer group"
+                    >
+                      <img 
+                        src={randomStoryImages[0].file_path.startsWith('http') ? randomStoryImages[0].file_path : `/${randomStoryImages[0].file_path}`} 
+                        alt={randomStoryImages[0].title || "Story 1"} 
+                        className="h-full w-full object-cover group-hover:scale-105 transition" 
+                      />
+                    </div>
+                  )}
+                  {randomStoryImages[1] && (
+                    <div 
+                      onClick={() => {
+                        const path = randomStoryImages[1].file_path;
+                        const fullUrl = path.startsWith('http') ? path : `/${path}`;
+                        setModalImage({ url: fullUrl, title: randomStoryImages[1].title || 'Featured Story 2' });
+                      }}
+                      className="overflow-hidden rounded-lg h-[106px] sm:h-[138px] bg-slate-100 cursor-pointer group"
+                    >
+                      <img 
+                        src={randomStoryImages[1].file_path.startsWith('http') ? randomStoryImages[1].file_path : `/${randomStoryImages[1].file_path}`} 
+                        alt={randomStoryImages[1].title || "Story 2"} 
+                        className="h-full w-full object-cover group-hover:scale-105 transition" 
+                      />
+                    </div>
+                  )}
+                  {randomStoryImages[2] && (
+                    <div 
+                      onClick={() => {
+                        const path = randomStoryImages[2].file_path;
+                        const fullUrl = path.startsWith('http') ? path : `/${path}`;
+                        setModalImage({ url: fullUrl, title: randomStoryImages[2].title || 'Featured Story 3' });
+                      }}
+                      className="overflow-hidden rounded-lg h-[106px] sm:h-[138px] bg-slate-100 cursor-pointer group"
+                    >
+                      <img 
+                        src={randomStoryImages[2].file_path.startsWith('http') ? randomStoryImages[2].file_path : `/${randomStoryImages[2].file_path}`} 
+                        alt={randomStoryImages[2].title || "Story 3"} 
+                        className="h-full w-full object-cover group-hover:scale-105 transition" 
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            </FadeReveal>
           </div>
         </section>
 
         {/* ============ 4. MEDIA FILTER BAR ============ */}
-        <section className="border-t border-gray-100 bg-white py-6">
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <button className="flex items-center gap-2 rounded-md bg-[#0B1E3D] px-4 py-2 text-xs font-semibold text-white">
+        <section className="border-t border-gray-100 bg-white py-4 sm:py-6">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <button className="flex items-center gap-2 rounded-md bg-[#0B1E3D] px-3.5 py-2 text-[11px] sm:text-xs font-semibold text-white">
                 <IconGrid />
                 {activeCategory.toUpperCase()}
               </button>
-              <span className="text-xs font-medium text-gray-500">
-                Menampilkan {displayedMedia.length} dari {filteredMedia.length} item
-              </span>
             </div>
           </div>
         </section>
 
         {/* ============ 5. MEDIA GRID ============ */}
-        <section className="bg-white pb-12">
-          <div className="mx-auto max-w-7xl px-6">
+        <section className="bg-white pb-10 sm:pb-12">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
             {displayedMedia.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {displayedMedia.map((item) => (
-                  <MediaCard 
-                    key={item.id} 
-                    item={item} 
-                    onImageClick={(url, title) => setModalImage({ url, title })} 
-                  />
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+                {displayedMedia.map((item, index) => (
+                  <FadeReveal key={item.id} delay={(index % 3) * 100}>
+                    <MediaCard 
+                      item={item} 
+                      onImageClick={(url, title) => setModalImage({ url, title })} 
+                    />
+                  </FadeReveal>
                 ))}
               </div>
             ) : (
-              <div className="py-16 text-center text-gray-400 text-sm bg-gray-50 rounded-xl border border-dashed border-gray-200">
+              <div className="py-12 sm:py-16 text-center text-gray-400 text-xs sm:text-sm bg-gray-50 rounded-xl border border-dashed border-gray-200 p-4">
                 Belum ada media yang diunggah untuk kategori <span className="font-bold text-[#0B1E3D]">"{activeCategory}"</span>.
               </div>
             )}
 
             {visibleCount < filteredMedia.length && (
-              <div className="mt-10 flex justify-center">
+              <div className="mt-8 sm:mt-10 flex justify-center">
                 <button 
                   onClick={() => setVisibleCount(prev => prev + 6)}
-                  className="flex items-center gap-2 rounded-md border border-gray-300 px-6 py-3 text-sm font-semibold text-[#0B1E3D] hover:bg-gray-50 transition-colors cursor-pointer"
+                  className="flex items-center gap-2 rounded-md border border-gray-300 px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-[#0B1E3D] hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   Load More Media
                   <IconRefresh />
@@ -501,9 +558,9 @@ export default function Media({ mediaGalleries = [] }) {
         </section>
 
         {/* ============ 6. STATS BAR (ANIMASI COUNTER) ============ */}
-        <section className="bg-[#0B1E3D] py-8">
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="grid grid-cols-1 divide-y divide-white/10 sm:grid-cols-4 sm:divide-y-0 sm:divide-x">
+        <section className="bg-[#0B1E3D] py-6 sm:py-8">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <div className="grid grid-cols-2 divide-y divide-white/10 sm:grid-cols-4 sm:divide-y-0 sm:divide-x">
               {statistics.map((stat, index) => (
                 <CounterItem key={index} {...stat} />
               ))}
@@ -512,65 +569,66 @@ export default function Media({ mediaGalleries = [] }) {
         </section>
 
         {/* ============ 7. DRONE VIDEO HIGHLIGHT ============ */}
-        <section className="bg-white py-16">
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.8fr)] items-center">
+        <section className="bg-white py-12 sm:py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <FadeReveal>
+              <div className="grid gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.8fr)] items-center">
               <div>
-                <p className="text-xs font-semibold tracking-wide text-blue-700">DRONE VIDEO HIGHLIGHT</p>
-                <h2 className="mt-3 text-2xl font-bold leading-snug text-[#0B1E3D] sm:text-3xl">
+                <p className="text-[11px] sm:text-xs font-semibold tracking-wide text-blue-700">DRONE VIDEO HIGHLIGHT</p>
+                <h2 className="mt-2 sm:mt-3 text-xl sm:text-2xl font-bold leading-snug text-[#0B1E3D] sm:text-3xl">
                   See the <span className="text-[#F5B800]">Bigger Picture</span>
                 </h2>
-                <p className="mt-4 text-sm leading-relaxed text-gray-500">
+                <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-gray-500">
                   Dokumentasi udara dari berbagai project dan aktivitas kami di seluruh Indonesia.
                 </p>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)]">
                 {currentMainVideo ? (
-                  <div key={currentMainVideo.id} className="relative overflow-hidden rounded-lg h-72 bg-slate-900 shadow-md flex items-center justify-center">
+                  <div key={currentMainVideo.id} className="relative overflow-hidden rounded-lg h-56 sm:h-72 bg-slate-900 shadow-md flex items-center justify-center">
                     <video 
                       src={currentMainVideo.file_path.startsWith('http') ? currentMainVideo.file_path : `/${currentMainVideo.file_path}`} 
                       className="absolute inset-0 h-full w-full object-cover" 
                       controls
                       autoPlay
                     />
-                    <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between text-white pointer-events-none p-2">
+                    <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 flex items-end justify-between text-white pointer-events-none p-1 sm:p-2">
                       <div>
-                        <p className="text-sm font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">{currentMainVideo.title}</p>
-                        <p className="text-xs text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">{currentMainVideo.description || 'Drone Footage'}</p>
+                        <p className="text-xs sm:text-sm font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">{currentMainVideo.title}</p>
+                        <p className="text-[10px] sm:text-xs text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">{currentMainVideo.description || 'Drone Footage'}</p>
                       </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="h-72 bg-slate-50 border border-dashed rounded-lg flex items-center justify-center text-gray-400 text-xs text-center p-4">
+                  <div className="h-56 sm:h-72 bg-slate-50 border border-dashed rounded-lg flex items-center justify-center text-gray-400 text-xs text-center p-4">
                     Belum ada video utama drone.
                   </div>
                 )}
 
                 {/* Sisi Kanan: Daftar video yang bisa diklik untuk diputar di kiri */}
-                <div className="flex flex-col justify-center gap-4">
+                <div className="flex flex-col justify-center gap-3 sm:gap-4">
                   {sideDroneVideos.length > 0 ? (
                     sideDroneVideos.map((vid) => (
                       <div 
                         key={vid.id} 
                         onClick={() => setSelectedMainVideo(vid)}
-                        className="flex items-center gap-3 group bg-slate-50 p-2.5 rounded-lg border border-slate-100 shadow-xs cursor-pointer hover:border-[#F5B800] transition"
+                        className="flex items-center gap-2.5 sm:gap-3 group bg-slate-50 p-2 sm:p-2.5 rounded-lg border border-slate-100 shadow-xs cursor-pointer hover:border-[#F5B800] transition"
                         title="Klik untuk putar video ini"
                       >
-                        <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-md bg-slate-900 flex items-center justify-center">
+                        <div className="relative h-12 w-16 sm:h-14 sm:w-20 shrink-0 overflow-hidden rounded-md bg-slate-900 flex items-center justify-center">
                           <video 
                             src={vid.file_path.startsWith('http') ? vid.file_path : `/${vid.file_path}`} 
                             className="h-full w-full object-cover pointer-events-none" 
                           />
                           <span className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
-                            <IconPlay className="w-4 h-4 text-white" />
+                            <IconPlay className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
                           </span>
                         </div>
                         <div>
-                          <p className="text-xs font-semibold text-[#0B1E3D] group-hover:text-[#F5B800] transition-colors line-clamp-1">
+                          <p className="text-[11px] sm:text-xs font-semibold text-[#0B1E3D] group-hover:text-[#F5B800] transition-colors line-clamp-1">
                             {vid.title}
                           </p>
-                          <p className="text-[10px] text-gray-500 line-clamp-1">
+                          <p className="text-[9px] sm:text-[10px] text-gray-500 line-clamp-1">
                             {vid.description || 'Drone Footage'}
                           </p>
                         </div>
@@ -584,6 +642,7 @@ export default function Media({ mediaGalleries = [] }) {
                 </div>
               </div>
             </div>
+            </FadeReveal>
           </div>
         </section>
       </div>
@@ -597,16 +656,16 @@ export default function Media({ mediaGalleries = [] }) {
           <div className="relative max-w-5xl w-full max-h-[90vh] flex flex-col items-center" onClick={e => e.stopPropagation()}>
             <button 
               onClick={() => setModalImage(null)}
-              className="absolute -top-12 right-0 text-white bg-white/20 hover:bg-white/40 rounded-full p-2 w-10 h-10 flex items-center justify-center font-bold text-lg transition cursor-pointer"
+              className="absolute -top-10 sm:-top-12 right-0 text-white bg-white/20 hover:bg-white/40 rounded-full p-2 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center font-bold text-base sm:text-lg transition cursor-pointer"
             >
               &times;
             </button>
             <img 
               src={modalImage.url} 
               alt={modalImage.title} 
-              className="max-w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl border border-white/10" 
+              className="max-w-full max-h-[80vh] object-contain rounded-xl sm:rounded-2xl shadow-2xl border border-white/10" 
             />
-            <p className="text-white text-sm font-semibold mt-4 text-center">{modalImage.title}</p>
+            <p className="text-white text-xs sm:text-sm font-semibold mt-4 text-center">{modalImage.title}</p>
           </div>
         </div>
       )}

@@ -163,16 +163,6 @@ export default function Contact() {
             {/* Buttons */}
             <div className="flex flex-wrap gap-3.5 mt-7">
               <a
-                href="tel:+6221555888"
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#ffc107] text-[#071b38] text-xs font-bold shadow-lg hover:bg-white hover:-translate-y-1 transition-all duration-300"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.04 11.04 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a2 2 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                Office Hotline
-              </a>
-
-              <a
                 href="https://wa.me/6282258013177"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -217,7 +207,7 @@ export default function Contact() {
                     PT. SERVISTAMA PRO INDONESIA
                   </p>
                   <h3 className="text-lg md:text-xl font-black text-[#071b38]">
-                    HEAD OFFICE KANTOR PUSAT & WAREHOUSE
+                    HEAD OFFICE KANTOR PUSAT 
                   </h3>
                   <p className="text-xs text-slate-500 mt-2 font-normal leading-relaxed">
                     Foresta Business Loft 7 (unit 6-7), Lengkong Kulon, Pagedangan, Tangerang Regency, Banten 15331.
@@ -345,11 +335,11 @@ export default function Contact() {
                 <div className="pt-4 border-t border-white/10 text-[10px] text-slate-400">
                   PT. Servistama Pro Indonesia © {new Date().getFullYear()} — All Rights Reserved
                 </div>
-              </div>
-            </PopReveal>
+            </div>
+          </PopReveal>
 
-          </div>
         </div>
+      </div>
       </section>
 
       {/* =====================================================

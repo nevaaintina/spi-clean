@@ -93,7 +93,7 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
     : defaultImages[explodedSystem];
 
   const currentParts = explodedPartsData[explodedSystem] || [
-    { no: "01", component: "Belum ada konfigurasi komponen", partNumber: "-", status: "Available" }
+    { no: "01", component: "Belum ada konfigurasi komponen" }
   ];
 
   const handleSearch = (e) => {
@@ -188,7 +188,7 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
       <Navbar />
 
       {/* HERO BANNER */}
-      <section className="relative w-full min-h-[650px] lg:min-h-[720px] flex items-center overflow-hidden">
+      <section className="relative w-full min-h-[380px] sm:min-h-[500px] lg:min-h-[720px] flex items-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
           style={{
@@ -197,33 +197,33 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
         />
         <div className="absolute inset-0 bg-[#071b38]/35" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#071b38]/70 via-[#071b38]/30 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#071b38]/60 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-24 sm:h-40 bg-gradient-to-t from-[#071b38]/60 to-transparent" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 xl:px-16 w-full py-24">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-12 xl:px-16 w-full py-16 sm:py-24">
           <FadeReveal className="max-w-3xl">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="w-9 h-[2px] bg-[#ffc107]" />
+            <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+              <span className="w-6 sm:w-9 h-[2px] bg-[#ffc107]" />
               <span className="text-[10px] md:text-xs uppercase tracking-[0.22em] text-[#ffc107] font-medium">
                 Spare Parts & Components
               </span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[66px] leading-[1.05] tracking-tight font-medium text-white drop-shadow-md">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-[66px] leading-[1.08] sm:leading-[1.05] tracking-tight font-medium text-white drop-shadow-md">
               Suku Cadang <br />
               <span className="text-[#ffc107]">Original XCMG</span>
             </h1>
 
-            <div className="mt-7 w-16 h-[3px] bg-[#ffc107]" />
+            <div className="mt-4 sm:mt-7 w-12 sm:w-16 h-[3px] bg-[#ffc107]" />
 
-            <p className="mt-7 text-sm md:text-base leading-7 text-slate-100 max-w-2xl font-normal drop-shadow">
+            <p className="mt-4 sm:mt-7 text-xs sm:text-sm md:text-base leading-relaxed sm:leading-7 text-slate-100 max-w-2xl font-normal drop-shadow">
               Temukan berbagai komponen dan suku cadang original untuk menjaga performa, keandalan dan produktivitas alat berat Anda.
             </p>
 
-            <div className="mt-9 flex flex-wrap gap-3">
+            <div className="mt-6 sm:mt-9 flex flex-wrap gap-2.5 sm:gap-3">
               <button
                 type="button"
                 onClick={handleDownloadCatalog}
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#ffc107] text-[#071b38] text-xs font-medium hover:bg-white transition-all duration-300 shadow-lg shadow-black/20 cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-xl bg-[#ffc107] text-[#071b38] text-[11px] sm:text-xs font-medium hover:bg-white transition-all duration-300 shadow-lg shadow-black/20 cursor-pointer"
               >
                 <DownloadIcon />
                 Download Katalog
@@ -231,7 +231,7 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
 
               <a
                 href="#katalog-section"
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl border border-white/30 bg-white/10 backdrop-blur-sm text-white text-xs font-medium hover:bg-white hover:text-[#071b38] transition-all duration-300"
+                className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-xl border border-white/30 bg-white/10 backdrop-blur-sm text-white text-[11px] sm:text-xs font-medium hover:bg-white hover:text-[#071b38] transition-all duration-300"
               >
                 <EyeIcon />
                 Lihat Daftar Part
@@ -242,17 +242,17 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
       </section>
 
       {/* CATALOG SECTION */}
-      <section id="katalog-section" className="relative bg-[#f7f9fc] py-16 md:py-20">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-16">
+      <section id="katalog-section" className="relative bg-[#f7f9fc] py-12 sm:py-16 md:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 xl:px-16">
           <FadeReveal>
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-7 mb-8">
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5 sm:gap-7 mb-6 sm:mb-8">
               <div className="max-w-2xl">
-                <div className="flex items-center gap-2.5 mb-3">
-                  <span className="w-7 h-[2px] bg-[#ffc107]" />
+                <div className="flex items-center gap-2 sm:gap-2.5 mb-2 sm:mb-3">
+                  <span className="w-6 sm:w-7 h-[2px] bg-[#ffc107]" />
                   <span className="text-[10px] uppercase tracking-[0.2em] text-[#a97800] font-medium">Parts Catalog</span>
                 </div>
-                <h2 className="text-3xl md:text-4xl text-[#071b38] font-medium tracking-tight">Daftar Suku Cadang</h2>
-                <p className="mt-3 text-sm leading-6 text-slate-500 max-w-xl">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl text-[#071b38] font-medium tracking-tight">Daftar Suku Cadang</h2>
+                <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-relaxed text-slate-500 max-w-xl">
                   Klik pada nama komponen atau baris part untuk melihat rincian lengkap beserta detail spesifikasi.
                 </p>
               </div>
@@ -263,15 +263,15 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
                   placeholder="Cari kode atau nama part..."
                   value={keyword}
                   onChange={(e) => setKeyword(e.target.value)}
-                  className="w-full h-11 pl-4 pr-11 rounded-xl bg-white border border-slate-200 text-xs text-[#071b38] outline-none focus:border-[#ffc107] focus:ring-2 focus:ring-[#ffc107]/10 transition"
+                  className="w-full h-10 sm:h-11 pl-4 pr-11 rounded-xl bg-white border border-slate-200 text-xs text-[#071b38] outline-none focus:border-[#ffc107] focus:ring-2 focus:ring-[#ffc107]/10 transition"
                 />
-                <button type="submit" className="absolute right-4 top-3.5 text-slate-400 cursor-pointer"><SearchIcon /></button>
+                <button type="submit" className="absolute right-4 top-3 sm:top-3.5 text-slate-400 cursor-pointer"><SearchIcon /></button>
               </form>
             </div>
           </FadeReveal>
 
           <FadeReveal delay={100}>
-            <div className="flex gap-2 overflow-x-auto pb-3 mb-7 scrollbar-hide">
+            <div className="flex gap-2 overflow-x-auto pb-3 mb-6 sm:mb-7 scrollbar-hide">
               {categories.map((category) => {
                 const active = activeCategory === category;
                 return (
@@ -279,7 +279,7 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
                     key={category}
                     type="button"
                     onClick={() => handleCategoryChange(category)}
-                    className={`shrink-0 px-4 py-2.5 rounded-lg text-xs font-normal transition-all duration-300 border cursor-pointer ${
+                    className={`shrink-0 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-lg text-[11px] sm:text-xs font-normal transition-all duration-300 border cursor-pointer ${
                       active ? "bg-[#071b38] border-[#071b38] text-[#ffc107]" : "bg-white border-slate-200 text-slate-500 hover:border-[#071b38] hover:text-[#071b38]"
                     }`}
                   >
@@ -291,7 +291,7 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
           </FadeReveal>
 
           <FadeReveal delay={150}>
-            <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+            <div className="rounded-xl sm:rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
               <div className="hidden lg:grid grid-cols-[220px_1fr_180px] bg-[#071b38] text-white divide-x divide-white/10">
                 <div className="px-6 py-4 text-[10px] uppercase tracking-[0.16em] text-[#ffc107]">Nomor Part</div>
                 <div className="px-6 py-4 text-[10px] uppercase tracking-[0.16em] text-slate-300">Nama Component</div>
@@ -308,26 +308,26 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
                     >
                       <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#ffc107] opacity-0 group-hover:opacity-100 transition-opacity" />
                       
-                      <div className="p-6">
+                      <div className="p-4 sm:p-6">
                         <p className="lg:hidden text-[9px] uppercase tracking-[0.16em] text-[#b27b00] font-medium mb-1">Nomor Part</p>
                         <p className="text-xs font-mono font-bold text-[#071b38]">{item.part_number}</p>
                       </div>
 
-                      <div className="p-6">
+                      <div className="p-4 sm:p-6">
                         <p className="lg:hidden text-[9px] uppercase tracking-[0.16em] text-slate-400 mb-1">Nama Component</p>
-                        <h3 className="text-sm text-[#071b38] font-medium leading-snug group-hover:text-[#b27b00] transition-colors">{item.name}</h3>
-                        <p className="text-[11px] text-slate-400 mt-1">{item.category} • {item.brand || 'XCMG'} • Klik untuk detail &rarr;</p>
+                        <h3 className="text-xs sm:text-sm text-[#071b38] font-medium leading-snug group-hover:text-[#b27b00] transition-colors">{item.name}</h3>
+                        <p className="text-[10px] sm:text-[11px] text-slate-400 mt-1">{item.category} • {item.brand || 'XCMG'} • Klik untuk detail &rarr;</p>
                       </div>
 
-                      <div className="p-6 flex justify-center">
-                        <div className="w-24 h-24 rounded-2xl border-2 border-slate-200 bg-slate-100 overflow-hidden shrink-0 shadow-sm flex items-center justify-center p-1">
+                      <div className="p-4 sm:p-6 flex justify-center">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border-2 border-slate-200 bg-slate-100 overflow-hidden shrink-0 shadow-sm flex items-center justify-center p-1">
                           <img src={item.image ? `/${item.image.replace(/^\//, '')}` : 'https://via.placeholder.com/150'} alt={item.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                         </div>
                       </div>
                     </Link>
                   ))
                 ) : (
-                  <div className="py-20 text-center">
+                  <div className="py-16 sm:py-20 text-center">
                     <div className="w-12 h-12 mx-auto rounded-full bg-slate-100 text-slate-400 flex items-center justify-center"><SearchIcon /></div>
                     <h3 className="mt-4 text-sm text-[#071b38] font-medium">Part tidak ditemukan</h3>
                     <p className="mt-1 text-xs text-slate-500">Coba gunakan kata kunci atau kategori lainnya.</p>
@@ -340,33 +340,33 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
       </section>
 
       {/* DIGITAL PARTS REFERENCE (DOWNLOAD & EXPLODED VIEW CARDS) */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-16">
+      <section className="py-12 sm:py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 xl:px-16">
           <FadeReveal>
-            <div className="max-w-2xl mb-12">
-              <div className="flex items-center gap-2.5 mb-3">
-                <span className="w-7 h-[2px] bg-[#ffc107]" />
+            <div className="max-w-2xl mb-8 sm:mb-12">
+              <div className="flex items-center gap-2 sm:gap-2.5 mb-2 sm:mb-3">
+                <span className="w-6 sm:w-7 h-[2px] bg-[#ffc107]" />
                 <span className="text-[10px] uppercase tracking-[0.22em] text-[#a97800] font-bold">
                   Digital Parts Reference
                 </span>
               </div>
-              <h2 className="text-3xl md:text-4xl text-[#071b38] font-bold tracking-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl text-[#071b38] font-bold tracking-tight">
                 Katalog & Exploded View
               </h2>
             </div>
           </FadeReveal>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             <FadeReveal delay={100}>
-              <div className="bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-sm flex flex-col justify-between h-full">
+              <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 border border-slate-200 shadow-sm flex flex-col justify-between h-full">
                 <div>
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-[#071b38] text-[#ffc107] flex items-center justify-center shadow-md">
+                  <div className="flex justify-between items-start mb-4 sm:mb-6">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-[#071b38] text-[#ffc107] flex items-center justify-center shadow-md">
                       <DownloadIcon />
                     </div>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold text-[#071b38] mb-3">Download Parts Catalog</h3>
-                  <p className="text-xs md:text-sm text-slate-500 leading-relaxed mb-8">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-[#071b38] mb-2 sm:mb-3">Download Parts Catalog</h3>
+                  <p className="text-xs md:text-sm text-slate-500 leading-relaxed mb-6 sm:mb-8">
                     Simpan daftar referensi suku cadang untuk kebutuhan pengecekan kode dan kompatibilitas unit.
                   </p>
                 </div>
@@ -374,7 +374,7 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
                   <button
                     type="button"
                     onClick={handleDownloadCatalog}
-                    className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#071b38] text-white hover:bg-[#ffc107] hover:text-[#071b38] font-bold text-xs transition-all shadow cursor-pointer"
+                    className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-[#071b38] text-white hover:bg-[#ffc107] hover:text-[#071b38] font-bold text-xs transition-all shadow cursor-pointer"
                   >
                     <DownloadIcon />
                     Download Catalog
@@ -384,15 +384,15 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
             </FadeReveal>
 
             <FadeReveal delay={200}>
-              <div className="bg-[#071b38] rounded-3xl p-8 md:p-10 text-white shadow-xl flex flex-col justify-between h-full">
+              <div className="bg-[#071b38] rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 text-white shadow-xl flex flex-col justify-between h-full">
                 <div>
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-[#ffc107] text-[#071b38] flex items-center justify-center shadow-md">
+                  <div className="flex justify-between items-start mb-4 sm:mb-6">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-[#ffc107] text-[#071b38] flex items-center justify-center shadow-md">
                       <EyeIcon />
                     </div>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold text-white mb-3">Exploded View</h3>
-                  <p className="text-xs md:text-sm text-slate-300 leading-relaxed mb-8">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-3">Exploded View</h3>
+                  <p className="text-xs md:text-sm text-slate-300 leading-relaxed mb-6 sm:mb-8">
                     Lihat struktur komponen secara lebih detail untuk membantu identifikasi posisi dan hubungan antar spare parts.
                   </p>
                 </div>
@@ -400,7 +400,7 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
                   <button
                     type="button"
                     onClick={handleExplodedView}
-                    className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-white text-[#071b38] hover:bg-[#ffc107] font-bold text-xs transition-all shadow cursor-pointer"
+                    className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-white text-[#071b38] hover:bg-[#ffc107] font-bold text-xs transition-all shadow cursor-pointer"
                   >
                     <EyeIcon />
                     Buka Exploded View
@@ -413,35 +413,35 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
       </section>
 
       {/* SECTION: EXPLODED VIEW INTERAKTIF DINAMIS */}
-      <section id="exploded-view-section" className="py-16 md:py-24 bg-[#f7f9fc]">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-16">
+      <section id="exploded-view-section" className="py-12 sm:py-16 md:py-24 bg-[#f7f9fc]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 xl:px-16">
           <FadeReveal>
-            <div className="mb-10">
-              <div className="flex items-center gap-2.5 mb-2">
-                <span className="w-7 h-[2px] bg-[#ffc107]" />
+            <div className="mb-8 sm:mb-10">
+              <div className="flex items-center gap-2 sm:gap-2.5 mb-2">
+                <span className="w-6 sm:w-7 h-[2px] bg-[#ffc107]" />
                 <span className="text-[10px] uppercase tracking-[0.22em] text-[#a97800] font-bold">
                   Exploded View
                 </span>
               </div>
-              <h2 className="text-3xl md:text-4xl text-[#071b38] font-bold tracking-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl text-[#071b38] font-bold tracking-tight">
                 Component Reference
               </h2>
             </div>
           </FadeReveal>
 
           <FadeReveal delay={100}>
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-              <div className="bg-[#071b38] px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+              <div className="bg-[#071b38] px-4 sm:px-6 py-4 sm:py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-[#ffc107] font-bold block mb-1">Assembly</span>
-                  <h3 className="text-lg md:text-xl font-bold text-white">{explodedSystem}</h3>
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-[#ffc107] font-bold block mb-0.5 sm:mb-1">Assembly</span>
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-white">{explodedSystem}</h3>
                 </div>
 
                 <div className="relative w-full sm:w-64">
                   <select
                     value={explodedSystem}
                     onChange={(e) => setExplodedSystem(e.target.value)}
-                    className="w-full bg-[#0f2b5c] text-white text-xs font-semibold px-4 py-3 rounded-xl border border-white/20 outline-none focus:border-[#ffc107] cursor-pointer appearance-none"
+                    className="w-full bg-[#0f2b5c] text-white text-xs font-semibold px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-white/20 outline-none focus:border-[#ffc107] cursor-pointer appearance-none"
                   >
                     {Object.keys(defaultImages).map((sys) => (
                       <option key={sys} value={sys} className="bg-[#071b38] text-white">
@@ -449,46 +449,37 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
                       </option>
                     ))}
                   </select>
-                  <span className="absolute right-4 top-3.5 text-[#ffc107] pointer-events-none text-xs">▼</span>
+                  <span className="absolute right-4 top-3 sm:top-3.5 text-[#ffc107] pointer-events-none text-xs">▼</span>
                 </div>
               </div>
 
-              <div className="p-6 md:p-8">
+              <div className="p-4 sm:p-6 md:p-8">
                 {/* Gambar Diagram Exploded View Dinamis dari Admin */}
-                <div className="relative w-full h-[320px] md:h-[450px] bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 flex items-center justify-center p-2">
+                <div className="relative w-full h-[240px] sm:h-[320px] md:h-[450px] bg-slate-100 rounded-xl sm:rounded-2xl overflow-hidden border border-slate-200 flex items-center justify-center p-2">
                   <img
                     src={currentImage}
                     alt={explodedSystem}
                     className="max-h-full max-w-full object-contain"
                   />
-                  <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg">
+                  <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-black/70 backdrop-blur-sm text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg">
                     Diagram Preview
                   </div>
                 </div>
 
-                {/* Tabel Komponen Interaktif Dinamis dari Session/DB */}
-                <div className="mt-8 overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
+                {/* Tabel Komponen Interaktif Dinamis dari Session/DB (Part Number dan Kategori Telah Dihapus) */}
+                <div className="mt-6 sm:mt-8 overflow-x-auto">
+                  <table className="w-full text-left border-collapse min-w-[300px]">
                     <thead>
                       <tr className="border-b border-slate-200 text-[10px] uppercase tracking-[0.16em] text-slate-400 font-bold">
-                        <th className="py-3 px-4 w-20">No.</th>
-                        <th className="py-3 px-4">Component</th>
-                        <th className="py-3 px-4">Part Number</th>
-                        <th className="py-3 px-4 text-right">Status</th>
+                        <th className="py-2.5 sm:py-3 px-3 sm:px-4 w-20">No.</th>
+                        <th className="py-2.5 sm:py-3 px-3 sm:px-4">Component</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-xs">
                       {currentParts.map((part, idx) => (
                         <tr key={idx} className="hover:bg-slate-50 transition">
-                          <td className="py-4 px-4 font-mono font-bold text-slate-400">{part.no}</td>
-                          <td className="py-4 px-4 font-bold text-[#071b38]">{part.component}</td>
-                          <td className="py-4 px-4 font-mono font-semibold text-[#0f2b5c]">{part.partNumber}</td>
-                          <td className="py-4 px-4 text-right">
-                            <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                              {part.status}
-                            </span>
-                          </td>
+                          <td className="py-3 sm:py-4 px-3 sm:px-4 font-mono font-bold text-slate-400">{part.no}</td>
+                          <td className="py-3 sm:py-4 px-3 sm:px-4 font-bold text-[#071b38]">{part.component}</td>
                         </tr>
                       ))}
                     </tbody>

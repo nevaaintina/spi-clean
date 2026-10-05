@@ -29,21 +29,21 @@ export default function Management({ managementTeam = [] }) {
   );
 
   return (
-    <div className="w-full pt-8">
-      <span className="mb-8 block text-center text-xs font-bold uppercase tracking-wider text-[#FFC107]">
+    <div className="w-full pt-6 sm:pt-8">
+      <span className="mb-6 sm:mb-8 block text-center text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#FFC107]">
         MANAGEMENT TEAM
       </span>
 
       {managementTeam.length === 0 ? (
         <p className="text-center text-slate-400 text-xs py-8">Belum ada data manajemen.</p>
       ) : (
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 space-y-6 sm:space-y-10">
           
           {/* ================= BARIS 1: CEO ================= */}
           {ceoMember && (
             <div className="flex w-full justify-center">
-              <div className="group relative w-full max-w-sm rounded-2xl border border-slate-200/80 bg-white p-3.5 shadow-md transition-all duration-300 hover:-translate-y-2 hover:border-[#FFC107] hover:shadow-2xl hover:shadow-amber-500/10">
-                <div className="relative h-[380px] w-full overflow-hidden rounded-xl bg-slate-100">
+              <div className="group relative w-full max-w-[220px] sm:max-w-sm rounded-xl sm:rounded-2xl border border-slate-200/80 bg-white p-2.5 sm:p-3.5 shadow-md transition-all duration-300 hover:-translate-y-2 hover:border-[#FFC107] hover:shadow-2xl hover:shadow-amber-500/10">
+                <div className="relative h-[220px] sm:h-[380px] w-full overflow-hidden rounded-lg sm:rounded-xl bg-slate-100">
                   <img
                     src={ceoMember.image_path ? `/${ceoMember.image_path}` : PLACEHOLDER_IMAGE}
                     alt={ceoMember.name}
@@ -52,12 +52,12 @@ export default function Management({ managementTeam = [] }) {
                   />
                 </div>
 
-                <div className="mt-3.5 flex items-center justify-between px-1 pb-1">
+                <div className="mt-2.5 sm:mt-3.5 flex items-center justify-between px-1 pb-1">
                   <div className="overflow-hidden pr-2">
-                    <h4 className="truncate text-base font-extrabold text-[#0F2B5C] transition-colors duration-300 group-hover:text-[#FFC107]">
+                    <h4 className="truncate text-xs sm:text-base font-extrabold text-[#0F2B5C] transition-colors duration-300 group-hover:text-[#FFC107]">
                       {ceoMember.name}
                     </h4>
-                    <p className="truncate text-xs font-medium text-slate-500">
+                    <p className="truncate text-[10px] sm:text-xs font-medium text-slate-500">
                       {ceoMember.role}
                     </p>
                   </div>
@@ -67,10 +67,10 @@ export default function Management({ managementTeam = [] }) {
                       href={ceoMember.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-400 transition-all duration-300 hover:scale-110 hover:bg-[#0077b5] hover:text-white"
+                      className="flex h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-400 transition-all duration-300 hover:scale-110 hover:bg-[#0077b5] hover:text-white"
                       title="LinkedIn Profile"
                     >
-                      <IconLinkedin className="h-4 w-4" />
+                      <IconLinkedin className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     </a>
                   )}
                 </div>
@@ -78,15 +78,15 @@ export default function Management({ managementTeam = [] }) {
             </div>
           )}
 
-          {/* ================= BARIS 2: DIREKTUR ================= */}
+          {/* ================= BARIS 2: DIREKTUR (1 Baris Sejajar di HP & Desktop) ================= */}
           {directors.length > 0 && (
-            <div className="mb-12 grid w-full grid-cols-1 items-start gap-6 sm:grid-cols-3 md:gap-8 lg:gap-10">
+            <div className="mb-8 sm:mb-12 grid w-full grid-cols-3 items-start gap-2 sm:gap-6 md:gap-8 lg:gap-10">
               {directors.map((member, idx) => (
                 <div
                   key={member.id || `director-${idx}`}
-                  className="group rounded-2xl border border-slate-200/80 bg-white p-3 shadow-md transition-all duration-300 hover:-translate-y-2 hover:border-[#FFC107] hover:shadow-2xl hover:shadow-amber-500/10"
+                  className="group rounded-lg sm:rounded-2xl border border-slate-200/80 bg-white p-2 sm:p-3 shadow-md transition-all duration-300 hover:-translate-y-2 hover:border-[#FFC107] hover:shadow-2xl hover:shadow-amber-500/10"
                 >
-                  <div className="relative h-[360px] w-full overflow-hidden rounded-xl bg-slate-100">
+                  <div className="relative h-[130px] sm:h-[260px] md:h-[360px] w-full overflow-hidden rounded-md sm:rounded-xl bg-slate-100">
                     <img
                       src={member.image_path ? `/${member.image_path}` : PLACEHOLDER_IMAGE}
                       alt={member.name}
@@ -95,12 +95,12 @@ export default function Management({ managementTeam = [] }) {
                     />
                   </div>
 
-                  <div className="mt-3.5 flex items-center justify-between px-1 pb-1">
-                    <div className="overflow-hidden pr-2">
-                      <h4 className="truncate text-sm font-extrabold text-[#0F2B5C] transition-colors duration-300 group-hover:text-[#FFC107]">
+                  <div className="mt-2 sm:mt-3.5 flex items-center justify-between px-0.5 sm:px-1 pb-1">
+                    <div className="overflow-hidden pr-1 sm:pr-2">
+                      <h4 className="truncate text-[10px] sm:text-sm font-extrabold text-[#0F2B5C] transition-colors duration-300 group-hover:text-[#FFC107]">
                         {member.name}
                       </h4>
-                      <p className="truncate text-xs font-medium text-slate-500">
+                      <p className="truncate text-[8px] sm:text-xs font-medium text-slate-500">
                         {member.role}
                       </p>
                     </div>
@@ -110,7 +110,7 @@ export default function Management({ managementTeam = [] }) {
                         href={member.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-400 transition-all duration-300 hover:scale-110 hover:bg-[#0077b5] hover:text-white"
+                        className="hidden sm:flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-400 transition-all duration-300 hover:scale-110 hover:bg-[#0077b5] hover:text-white"
                         title="LinkedIn Profile"
                       >
                         <IconLinkedin className="h-4 w-4" />
@@ -122,15 +122,15 @@ export default function Management({ managementTeam = [] }) {
             </div>
           )}
 
-          {/* ================= BARIS 3 & 4: MANAGER ================= */}
+          {/* ================= BARIS 3 & 4: MANAGER (Kecil-kecil Proporsional khusus Mobile, Normal di Desktop) ================= */}
           {managers.length > 0 && (
-            <div className="grid w-full grid-cols-1 items-start gap-6 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
+            <div className="grid w-full grid-cols-3 sm:grid-cols-2 md:grid-cols-4 items-start gap-2 sm:gap-6 md:gap-6">
               {managers.map((mgr, idx) => (
                 <div
                   key={mgr.id || `manager-${idx}`}
-                  className="group rounded-2xl border border-slate-200/80 bg-white p-3 shadow-md transition-all duration-300 hover:-translate-y-2 hover:border-[#FFC107] hover:shadow-2xl hover:shadow-amber-500/10"
+                  className="group rounded-lg sm:rounded-2xl border border-slate-200/80 bg-white p-2 sm:p-3 shadow-md transition-all duration-300 hover:-translate-y-2 hover:border-[#FFC107] hover:shadow-2xl hover:shadow-amber-500/10"
                 >
-                  <div className="relative h-[280px] w-full overflow-hidden rounded-xl bg-slate-100">
+                  <div className="relative h-[110px] sm:h-[200px] md:h-[280px] w-full overflow-hidden rounded-md sm:rounded-xl bg-slate-100">
                     <img
                       src={mgr.image_path ? `/${mgr.image_path}` : PLACEHOLDER_IMAGE}
                       alt={mgr.name}
@@ -139,12 +139,12 @@ export default function Management({ managementTeam = [] }) {
                     />
                   </div>
 
-                  <div className="mt-3 flex items-center justify-between px-1 pb-1">
-                    <div className="overflow-hidden pr-2">
-                      <h4 className="truncate text-xs font-extrabold text-[#0F2B5C] transition-colors duration-300 group-hover:text-[#FFC107]">
+                  <div className="mt-1.5 sm:mt-3 flex items-center justify-between px-0.5 sm:px-1 pb-1">
+                    <div className="overflow-hidden pr-1">
+                      <h4 className="truncate text-[10px] sm:text-xs font-extrabold text-[#0F2B5C] transition-colors duration-300 group-hover:text-[#FFC107]">
                         {mgr.name}
                       </h4>
-                      <p className="truncate text-[11px] font-medium text-slate-500">
+                      <p className="truncate text-[8px] sm:text-[11px] font-medium text-slate-500">
                         {mgr.role}
                       </p>
                     </div>
@@ -154,10 +154,10 @@ export default function Management({ managementTeam = [] }) {
                         href={mgr.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-400 transition-all duration-300 hover:scale-110 hover:bg-[#0077b5] hover:text-white"
+                        className="hidden sm:flex h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-400 transition-all duration-300 hover:scale-110 hover:bg-[#0077b5] hover:text-white"
                         title="LinkedIn Profile"
                       >
-                        <IconLinkedin className="h-4 w-4" />
+                        <IconLinkedin className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </a>
                     )}
                   </div>

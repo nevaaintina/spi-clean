@@ -101,7 +101,7 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
   // Data Statis Budaya Perusahaan
   const cultureList = [
     { title: "Integritas", description: "Selalu bertindak jujur, transparan dan profesional dalam setiap pekerjaan demi membangun kepercayaan." },
-    { title: "Safety First", description: "Penerapan standar K3 yang ketat untuk menciptakan lingkungan kerja yang aman, sehat dan bebas dari kecelakaan." },
+    { title: "Safety First", description: "Penerapan standar K3 yang ketat untuk menciptakan lingkungan kerja yang aman, sehat, dan bebas dari kecelakaan." },
     { title: "Innovation", description: "Mendorong ide kreatif dan penggunaan teknologi terbaru untuk memberikan solusi terbaik dan nilai tambah bagi pelanggan." },
   ];
 

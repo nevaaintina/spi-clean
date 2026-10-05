@@ -139,7 +139,7 @@ export default function OurCustomers({ customers = [] }) {
   };
 
   return (
-    <section className="mt-16 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+    <section className="mt-12 sm:mt-16 rounded-xl sm:rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 md:p-8 shadow-sm">
       {/* Inject Custom Style untuk Leaflet UI & Marker */}
       <style>{`
         .spi-leaflet-div-icon {
@@ -261,35 +261,35 @@ export default function OurCustomers({ customers = [] }) {
       `}</style>
 
       {/* Header Section */}
-      <div className="mb-8 text-center sm:text-left">
-        <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+      <div className="mb-6 sm:mb-8 text-center sm:text-left">
+        <span className="inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
           Our Nationwide Customers
         </span>
-        <h3 className="mt-1 text-2xl font-black text-[#0F2B5C] md:text-3xl">
+        <h3 className="mt-1 text-xl sm:text-2xl font-black text-[#0F2B5C] md:text-3xl">
           TRUSTED ACROSS INDONESIA
         </h3>
-        <p className="mt-2 text-xs leading-relaxed text-[#64748B] md:text-sm">
+        <p className="mt-1.5 sm:mt-2 text-[11px] sm:text-xs leading-relaxed text-[#64748B] md:text-sm">
           Klik pada kartu perusahaan di bawah untuk langsung memperbesar lokasi spesifiknya pada peta interaktif.
         </p>
       </div>
 
       {/* Real Interactive Map Container */}
-      <div className="relative mb-8 overflow-hidden rounded-2xl border border-slate-300 shadow-md">
-        <div className="absolute top-4 left-4 z-[500] flex items-center gap-2">
-          <div className="flex items-center gap-2 rounded-lg bg-white/95 px-3 py-1.5 shadow-md backdrop-blur-md border border-slate-200">
-            <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="text-xs font-bold text-[#0F2B5C]">Live Geographic Map</span>
+      <div className="relative mb-6 sm:mb-8 overflow-hidden rounded-xl sm:rounded-2xl border border-slate-300 shadow-md">
+        <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-[500] flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 rounded-lg bg-white/95 px-2.5 sm:px-3 py-1 sm:py-1.5 shadow-md backdrop-blur-md border border-slate-200">
+            <span className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="text-[10px] sm:text-xs font-bold text-[#0F2B5C]">Live Geographic Map</span>
           </div>
 
           <button
             onClick={handleResetView}
-            className="flex items-center gap-1.5 rounded-lg bg-[#0F2B5C] px-3 py-1.5 text-xs font-bold text-white shadow-md transition-all hover:bg-[#1E3A8A] hover:text-[#FFC107] active:scale-95 cursor-pointer"
+            className="flex items-center gap-1 rounded-lg bg-[#0F2B5C] px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs font-bold text-white shadow-md transition-all hover:bg-[#1E3A8A] hover:text-[#FFC107] active:scale-95 cursor-pointer"
           >
             Reset View
           </button>
         </div>
 
-        <div className="h-[360px] w-full sm:h-[420px] md:h-[480px]">
+        <div className="h-[260px] sm:h-[360px] md:h-[480px] w-full">
           <MapContainer
             center={INDONESIA_CENTER}
             zoom={DEFAULT_ZOOM}
@@ -318,10 +318,10 @@ export default function OurCustomers({ customers = [] }) {
                   icon={customIcon}
                 >
                   <Popup offset={[0, -10]}>
-                    <div className="p-3">
-                      <h5 className="text-xs font-black text-[#0F2B5C]">{client.name}</h5>
-                      <p className="text-[10px] text-amber-600 font-bold mt-0.5">{client.sector}</p>
-                      <p className="text-[10px] text-slate-500 mt-1">📍 {client.region}</p>
+                    <div className="p-2.5">
+                      <h5 className="text-[11px] font-black text-[#0F2B5C]">{client.name}</h5>
+                      <p className="text-[9px] text-amber-600 font-bold mt-0.5">{client.sector}</p>
+                      <p className="text-[9px] text-slate-500 mt-1">📍 {client.region}</p>
                     </div>
                   </Popup>
                 </Marker>
@@ -331,8 +331,8 @@ export default function OurCustomers({ customers = [] }) {
         </div>
       </div>
 
-      {/* Region Selector Tabs (Saat kategori/wilayah diklik, peta bergeser ke wilayah tersebut TANPA zoom in berlebihan) */}
-      <div className="grid grid-cols-2 gap-2.5 border-b border-slate-200 pb-4 sm:grid-cols-3 lg:grid-cols-6">
+      {/* Region Selector Tabs */}
+      <div className="grid grid-cols-2 gap-1.5 sm:gap-2.5 border-b border-slate-200 pb-4 sm:grid-cols-3 lg:grid-cols-6">
         {regionsList.map((reg) => {
           const isActive = activeRegion === reg;
           const count = formattedClients.filter(c => c.region.trim().toLowerCase() === reg.trim().toLowerCase()).length;
@@ -342,18 +342,17 @@ export default function OurCustomers({ customers = [] }) {
               onClick={() => {
                 setActiveRegion(reg);
                 setSelectedClientId(null);
-                // Mengarahkan peta ke koordinat wilayah tersebut dengan zoom 6 (luas / tidak zoom in)
                 setMapTarget({ coords: baseRegions[reg], zoom: 6 });
               }}
-              className={`flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3 text-xs font-extrabold transition-all duration-200 cursor-pointer ${
+              className={`flex w-full items-center justify-between gap-1 rounded-lg sm:rounded-xl px-2.5 py-2 sm:px-4 sm:py-3 text-[10px] sm:text-xs font-extrabold transition-all duration-200 cursor-pointer ${
                 isActive
                   ? "bg-[#0F2B5C] text-[#FFC107] shadow-lg scale-[1.02]"
                   : "bg-slate-100 text-[#64748B] hover:bg-slate-200 hover:text-[#0F2B5C]"
               }`}
             >
               <span className="truncate">{reg}</span>
-              <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${isActive ? "bg-[#FFC107] text-[#0B1220]" : "bg-slate-200 text-[#64748B]"}`}>
-                {count} Clients
+              <span className={`shrink-0 rounded-full px-2 py-0.5 text-[8px] sm:text-[10px] font-bold ${isActive ? "bg-[#FFC107] text-[#0B1220]" : "bg-slate-200 text-[#64748B]"}`}>
+                {count}
               </span>
             </button>
           );
@@ -361,28 +360,28 @@ export default function OurCustomers({ customers = [] }) {
       </div>
 
       {/* Selected Region Customer Details */}
-      <div className="mt-6">
-        <div className="mb-4 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+      <div className="mt-5 sm:mt-6">
+        <div className="mb-3 sm:mb-4 flex flex-col justify-between gap-1.5 sm:flex-row sm:items-center">
           <div>
-            <h4 className="text-lg font-bold text-[#0F2B5C]">
+            <h4 className="text-sm sm:text-lg font-bold text-[#0F2B5C]">
               Pelanggan Wilayah {activeRegion}
             </h4>
-            <p className="text-xs text-[#64748B]">Daftar mitra industri dan lokasi operasional.</p>
+            <p className="text-[10px] sm:text-xs text-[#64748B]">Daftar mitra industri dan lokasi operasional.</p>
           </div>
-          <span className="w-fit rounded-md bg-[#0F2B5C]/10 px-3 py-1 text-xs font-bold text-[#0F2B5C]">
+          <span className="w-fit rounded-md bg-[#0F2B5C]/10 px-2.5 py-0.5 text-[10px] sm:text-xs font-bold text-[#0F2B5C]">
             {filteredClients.length} Total Partner
           </span>
         </div>
 
-        {/* Customer Cards Grid (Bentuk Persegi Pas / aspect-square) */}
+        {/* Customer Cards Grid (Kecil-kecil khusus mobile, ukuran normal di desktop) */}
         {filteredClients.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+          <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 sm:p-8 text-center">
             <p className="text-xs text-slate-400 italic">
               Belum ada data pelanggan untuk wilayah {activeRegion}. Silakan tambahkan melalui Dashboard Admin.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-3 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 sm:gap-5">
             {filteredClients.map((client) => {
               const isSelected = selectedClientId === client.id;
 
@@ -390,11 +389,11 @@ export default function OurCustomers({ customers = [] }) {
                 <div
                   key={client.id}
                   onClick={() => handleClientClick(client)}
-                  className={`group relative w-full overflow-hidden rounded-2xl shadow-md transition-all duration-500 hover:-translate-y-2 hover:shadow-xl bg-white border flex flex-col justify-between p-4 cursor-pointer ${isSelected ? "border-2 border-amber-500 ring-4 ring-amber-100" : "border-slate-200 hover:border-amber-400"}`}
+                  className={`group relative w-full overflow-hidden rounded-xl sm:rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl bg-white border flex flex-col justify-between p-2 sm:p-4 cursor-pointer ${isSelected ? "border-2 border-amber-500 ring-2 ring-amber-100" : "border-slate-200 hover:border-amber-400"}`}
                   title="Klik untuk zoom lokasi PT ini di peta"
                 >
-                  {/* Container Logo Persegi Pas (aspect-square) */}
-                  <div className="aspect-square w-full bg-slate-50 rounded-xl border border-slate-100 p-3 flex items-center justify-center overflow-hidden mb-3">
+                  {/* Container Logo Persegi */}
+                  <div className="aspect-square w-full bg-slate-50 rounded-lg sm:rounded-xl border border-slate-100 p-1.5 sm:p-3 flex items-center justify-center overflow-hidden mb-1.5 sm:mb-3">
                     <img
                       src={client.image}
                       alt={client.name}
@@ -403,10 +402,10 @@ export default function OurCustomers({ customers = [] }) {
                   </div>
 
                   <div>
-                    <h5 className="text-sm font-extrabold text-[#0F2B5C] truncate">
+                    <h5 className="text-[10px] sm:text-sm font-extrabold text-[#0F2B5C] truncate">
                       {client.name}
                     </h5>
-                    <p className="text-[11px] font-semibold text-amber-600 mt-0.5 truncate">
+                    <p className="text-[8px] sm:text-[11px] font-semibold text-amber-600 mt-0.5 truncate">
                       {client.sector}
                     </p>
                   </div>

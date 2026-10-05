@@ -16,7 +16,6 @@ class SparePart extends Model
         'brand',
         'image',
         'gallery',
-        'description',
         'catalog_pdf',
         'exploded_images',
         'delivery_time',
@@ -24,7 +23,6 @@ class SparePart extends Model
         'product_origin',
         'package_type',
         'shipping_methods',
-        'rating',
     ];
 
     protected $casts = [

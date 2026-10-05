@@ -85,8 +85,8 @@ export default function Show({ article, relatedArticles = [] }) {
             <Navbar />
 
             <main>
-                {/* ================= ARTICLE HERO ================= */}
-                <section className="bg-white px-6 pb-10 pt-12 sm:px-10 lg:px-16">
+                {/* ================= ARTICLE HERO (DITAMBAHKAN PADDING ATAS AGAR TIDAK TERTUTUP NAVBAR) ================= */}
+                <section className="bg-white px-6 pb-10 pt-24 sm:px-10 sm:pt-28 lg:px-16 lg:pt-32">
                     <div className="mx-auto max-w-[960px]">
         
                         <h1 className="mt-3 text-3xl font-extrabold leading-tight text-[#0F2B5C] sm:text-4xl lg:text-[2.75rem]">
@@ -138,7 +138,7 @@ export default function Show({ article, relatedArticles = [] }) {
                     </div>
                 </section>
 
-                {/* ================= ARTICLE CONTENT (DIPERBAIKI AGAR FORMAT PARAGRAF & ENTER RAPI) ================= */}
+                {/* ================= ARTICLE CONTENT ================= */}
                 <section className="bg-white px-6 py-12 sm:px-10 lg:px-16">
                     <div className="mx-auto max-w-[820px]">
                         {article.excerpt && (
@@ -147,7 +147,6 @@ export default function Show({ article, relatedArticles = [] }) {
                             </p>
                         )}
 
-                        {/* Menggunakan white-space: pre-line agar enter/spasi dari database tampil sempurna */}
                         <div 
                             className="text-base leading-[1.9] text-[#334155] space-y-4"
                             style={{ whiteSpace: 'pre-line' }}
@@ -235,9 +234,7 @@ export default function Show({ article, relatedArticles = [] }) {
 
                     <div className="relative mx-auto flex max-w-[1440px] flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                            <span className="mb-4 flex h-11 w-11 items-center justify-center rounded-full border border-[#FFC107]/40 text-[#FFC107]">
-                                <IconWrench className="h-5 w-5" />
-                            </span>
+                            
                             <h2 className="text-2xl font-extrabold leading-tight text-white sm:text-3xl">
                                 Butuh Dukungan Teknis untuk Alat Anda?
                             </h2>

@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
 
-// 1. KOMPONEN HERO BANNER (DURASI MASUK LAMA & TEGAS)
+// 1. KOMPONEN HERO BANNER (DURASI MASUK LAMA & TEGAS DENGAN OVERLAY BIRU SPI)
 function AnimatedHeroBanner() {
     const [isVisible, setIsVisible] = useState(false);
 
@@ -15,7 +15,7 @@ function AnimatedHeroBanner() {
     }, []);
 
     return (
-        <section className="relative h-screen w-full flex items-center justify-start overflow-hidden border-b-2 border-slate-300">
+        <section className="relative h-[80vh] sm:h-screen w-full flex items-center justify-start overflow-hidden border-b-2 border-slate-300">
             {/* Background Zoom-Out Halus */}
             <img 
                 src="/images/hero-esg.png" 
@@ -24,9 +24,10 @@ function AnimatedHeroBanner() {
                     isVisible ? 'scale-100' : 'scale-115'
                 }`}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/60 to-transparent" />
+            {/* Overlay Gradien Biru SPI menggantikan warna hitam */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#071b38]/90 via-[#071b38]/60 to-transparent" />
             
-            <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 w-full pt-16">
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-12 lg:px-16 w-full pt-16">
                 <div 
                     className={`transition-all duration-[2000ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${
                         isVisible 
@@ -34,8 +35,7 @@ function AnimatedHeroBanner() {
                             : 'opacity-0 translate-y-24 scale-95'
                     }`}
                 >
-                    {/* Diubah dari text-[#0284c7] menjadi text-white */}
-                    <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight drop-shadow-2xl leading-tight text-white">
+                    <h1 className="text-4xl sm:text-7xl md:text-8xl font-black tracking-tight drop-shadow-2xl leading-tight text-white">
                         Safety First
                     </h1>
                 </div>
@@ -47,7 +47,7 @@ function AnimatedHeroBanner() {
                             : 'opacity-0 translate-y-20'
                     }`}
                 >
-                    <p className="mt-4 text-base sm:text-xl text-slate-100 max-w-2xl font-light leading-relaxed drop-shadow">
+                    <p className="mt-3 sm:mt-4 text-xs sm:text-xl text-slate-100 max-w-2xl font-light leading-relaxed drop-shadow">
                         Prioritas utama PT Servistama Pro Indonesia adalah keselamatan setiap pekerja, kepatuhan regulasi lingkungan, dan kesehatan operasional tanpa kompromi.
                     </p>
                 </div>
@@ -87,7 +87,7 @@ function AnimatedHseSection({ program, isEven }) {
     return (
         <section 
             ref={sectionRef}
-            className="relative min-h-screen w-full flex items-center justify-center py-20 px-6 sm:px-12 lg:px-16 overflow-hidden"
+            className="relative min-h-auto sm:min-h-screen w-full flex items-center justify-center py-12 sm:py-20 px-4 sm:px-12 lg:px-16 overflow-hidden"
         >
             {/* 1. Background Image Full Screen */}
             <img 
@@ -104,7 +104,7 @@ function AnimatedHseSection({ program, isEven }) {
 
             {/* 4. Konten dengan Durasi Masuk 2000ms - 2200ms */}
             <div className="relative z-10 max-w-7xl mx-auto w-full">
-                <div className={`flex flex-col lg:items-center gap-12 lg:gap-20 ${
+                <div className={`flex flex-col lg:items-center gap-8 sm:gap-12 lg:gap-20 ${
                     isEven ? 'lg:flex-row-reverse' : 'lg:flex-row'
                 }`}>
                     
@@ -114,11 +114,11 @@ function AnimatedHseSection({ program, isEven }) {
                             isVisible 
                                 ? 'opacity-100 translate-x-0 scale-100' 
                                 : isEven 
-                                    ? 'opacity-0 translate-x-36 scale-90' 
-                                    : 'opacity-0 -translate-x-36 scale-90'
+                                    ? 'opacity-100 sm:opacity-0 sm:translate-x-36 sm:scale-90' 
+                                    : 'opacity-100 sm:opacity-0 sm:-translate-x-36 sm:scale-90'
                         }`}
                     >
-                        <div className="relative w-full max-w-[500px] p-6 sm:p-8">
+                        <div className="relative w-full max-w-[500px] p-3 sm:p-8">
                             {/* Garis Aksen Kuning Di Luar Foto */}
                             <svg 
                                 className={`absolute -top-1 -bottom-1 ${isEven ? '-right-1 -left-3' : '-left-1 -right-3'} h-[calc(100%+8px)] w-[calc(100%+16px)] pointer-events-none transition-transform duration-1000 ease-in-out ${
@@ -139,7 +139,7 @@ function AnimatedHseSection({ program, isEven }) {
                             </svg>
 
                             {/* Kotak Foto Utama */}
-                            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] bg-slate-200 group z-10">
+                            <div className="relative rounded-xl sm:rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] bg-slate-200 group z-10">
                                 <img 
                                     src={program.image} 
                                     alt={program.heading}
@@ -154,14 +154,14 @@ function AnimatedHseSection({ program, isEven }) {
                         className={`w-full lg:w-1/2 flex flex-col justify-center transition-all duration-[2200ms] delay-200 ease-[cubic-bezier(0.12,1,0.2,1)] ${
                             isVisible 
                                 ? 'opacity-100 translate-y-0' 
-                                : 'opacity-0 translate-y-28'
+                                : 'opacity-100 sm:opacity-0 sm:translate-y-28'
                         }`}
                     >
-                        <h2 className="text-2xl sm:text-4xl lg:text-4xl xl:text-5xl font-black text-[#0f2b5c] leading-tight mb-6">
+                        <h2 className="text-xl sm:text-4xl lg:text-4xl xl:text-5xl font-black text-[#0f2b5c] leading-tight mb-3 sm:mb-6">
                             {program.heading}
                         </h2>
 
-                        <p className="text-sm sm:text-base lg:text-lg text-slate-700 leading-relaxed font-normal text-justify">
+                        <p className="text-xs sm:text-base lg:text-lg text-slate-700 leading-relaxed font-normal text-justify">
                             {program.desc}
                         </p>
                     </div>
@@ -198,37 +198,37 @@ function HseGallerySection() {
     };
 
     return (
-        <section className="relative w-full bg-white py-20 px-6 sm:px-12 lg:px-16 border-t border-slate-200">
+        <section className="relative w-full bg-white py-12 sm:py-20 px-4 sm:px-12 lg:px-16 border-t border-slate-200">
             <div className="max-w-7xl mx-auto w-full">
                 
                 {/* Header Galeri & Tombol Navigasi Scroll */}
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center justify-between mb-6 sm:mb-8">
                     <div>
-                        <span className="text-xs font-black tracking-widest text-[#0284c7] uppercase bg-sky-50 px-3 py-1 rounded-none border-l-4 border-[#0284c7] inline-block mb-2">
+                        <span className="text-[10px] sm:text-xs font-black tracking-widest text-[#0284c7] uppercase bg-sky-50 px-2.5 sm:px-3 py-1 rounded-none border-l-4 border-[#0284c7] inline-block mb-1 sm:mb-2">
                             Dokumentasi
                         </span>
-                        <h2 className="text-2xl sm:text-4xl font-black text-[#0f2b5c] tracking-tight">
+                        <h2 className="text-xl sm:text-4xl font-black text-[#0f2b5c] tracking-tight">
                             Galeri HSE
                         </h2>
                     </div>
 
                     {/* Tombol Panah Kiri dan Kanan (Sudut Lancip) */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                         <button 
                             onClick={() => scroll('left')}
                             aria-label="Scroll Sebelumnya"
-                            className="w-11 h-11 bg-white text-[#0f2b5c] border-2 border-slate-300 hover:border-[#0f2b5c] hover:bg-[#0f2b5c] hover:text-white rounded-none flex items-center justify-center transition-all duration-300 shadow-sm active:scale-95 cursor-pointer"
+                            className="w-9 h-9 sm:w-11 sm:h-11 bg-white text-[#0f2b5c] border-2 border-slate-300 hover:border-[#0f2b5c] hover:bg-[#0f2b5c] hover:text-white rounded-none flex items-center justify-center transition-all duration-300 shadow-sm active:scale-95 cursor-pointer"
                         >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
                             </svg>
                         </button>
                         <button 
                             onClick={() => scroll('right')}
                             aria-label="Scroll Selanjutnya"
-                            className="w-11 h-11 bg-white text-[#0f2b5c] border-2 border-slate-300 hover:border-[#0f2b5c] hover:bg-[#0f2b5c] hover:text-white rounded-none flex items-center justify-center transition-all duration-300 shadow-sm active:scale-95 cursor-pointer"
+                            className="w-9 h-9 sm:w-11 sm:h-11 bg-white text-[#0f2b5c] border-2 border-slate-300 hover:border-[#0f2b5c] hover:bg-[#0f2b5c] hover:text-white rounded-none flex items-center justify-center transition-all duration-300 shadow-sm active:scale-95 cursor-pointer"
                         >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M9 5l7 7-7 7" />
                             </svg>
                         </button>
@@ -238,13 +238,13 @@ function HseGallerySection() {
                 {/* Baris Foto Bersih (Tampil 3 Foto di Layar Desktop, Total 6 Foto, Sudut Lancip) */}
                 <div 
                     ref={galleryScrollRef}
-                    className="flex overflow-x-auto gap-6 scroll-smooth snap-x snap-mandatory pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                    className="flex overflow-x-auto gap-4 sm:gap-6 scroll-smooth snap-x snap-mandatory pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                 >
                     {galleryImages.map((imgSrc, idx) => (
                         <div 
                             key={idx}
                             onClick={() => setSelectedImage(imgSrc)}
-                            className="flex-shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-start group cursor-pointer"
+                            className="flex-shrink-0 w-[80%] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-start group cursor-pointer"
                         >
                             {/* Kotak Foto Polos, Sudut Lancip (rounded-none), Border Persegi */}
                             <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden rounded-none border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300">
@@ -273,9 +273,9 @@ function HseGallerySection() {
                     <button 
                         onClick={() => setSelectedImage(null)}
                         aria-label="Tutup Tampilan Penuh"
-                        className="absolute top-6 right-6 text-white hover:text-[#ffc107] bg-white/10 hover:bg-white/20 w-12 h-12 rounded-none flex items-center justify-center transition-all duration-200 border border-white/20 cursor-pointer z-50"
+                        className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white hover:text-[#ffc107] bg-white/10 hover:bg-white/20 w-10 h-10 sm:w-12 sm:h-12 rounded-none flex items-center justify-center transition-all duration-200 border border-white/20 cursor-pointer z-50"
                     >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>

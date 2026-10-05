@@ -83,16 +83,16 @@ function Reveal({ children, className = "", delay = 0, direction = "up" }) {
 
   const getDirectionClasses = () => {
     if (direction === "left") {
-      return isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-20";
+      return isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10 sm:-translate-x-20";
     }
     if (direction === "right") {
-      return isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-20";
+      return isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10 sm:translate-x-20";
     }
     if (direction === "scale") {
       return isVisible ? "opacity-100 scale-100" : "opacity-0 scale-90";
     }
     // Default up
-    return isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20";
+    return isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 sm:translate-y-20";
   };
 
   return (
@@ -336,9 +336,9 @@ export default function Index({ milestones = [], managementTeam = [], customers 
       <Head title="About Us - PT Servistama Pro Indonesia" />
       <Navbar />
 
-      {/* ============================== HERO (DURASI SANTAI, PANJANG & MEWAH) ============================== */}
+      {/* ============================== HERO (DURASI SANTAI, PANJANG & MEWAH - COMPACT MOBILE) ============================== */}
       <section
-        className="relative flex min-h-[600px] w-full items-center overflow-hidden md:min-h-[700px]"
+        className="relative flex min-h-[380px] sm:min-h-[500px] w-full items-center overflow-hidden md:min-h-[700px]"
         style={{  
           backgroundImage: `linear-gradient(180deg, rgba(7,27,56,0.15) 0%, rgba(7,27,56,0.30) 50%, rgba(7,27,56,0.20) 100%), url('/images/about-hero.png')`,
           backgroundSize: "cover",
@@ -346,11 +346,11 @@ export default function Index({ milestones = [], managementTeam = [], customers 
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="mx-auto flex w-full max-w-7xl flex-col justify-center px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto flex w-full max-w-7xl flex-col justify-center px-4 py-12 sm:px-6 sm:py-20 lg:px-8">
           <div className="flex flex-col justify-center">
             
             <span 
-              className={`mb-4 inline-block w-fit text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107] transition-all duration-[1800ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${
+              className={`mb-2 sm:mb-4 inline-block w-fit text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107] transition-all duration-[1800ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${
                 isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-6"
               }`}
             >
@@ -358,7 +358,7 @@ export default function Index({ milestones = [], managementTeam = [], customers 
             </span>
 
             <h1 
-              className={`text-3xl font-extrabold leading-[1.15] text-white sm:text-4xl md:text-5xl transition-all duration-[1900ms] delay-300 ease-[cubic-bezier(0.12,1,0.2,1)] ${
+              className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-[1.15] text-white transition-all duration-[1900ms] delay-300 ease-[cubic-bezier(0.12,1,0.2,1)] ${
                 isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >
@@ -366,7 +366,7 @@ export default function Index({ milestones = [], managementTeam = [], customers 
             </h1>
 
             <p 
-              className={`mt-5 max-w-lg text-sm leading-relaxed text-white/95 md:text-base transition-all duration-[2000ms] delay-500 ease-[cubic-bezier(0.12,1,0.2,1)] ${
+              className={`mt-3 sm:mt-5 max-w-lg text-xs sm:text-sm md:text-base leading-relaxed text-white/95 transition-all duration-[2000ms] delay-500 ease-[cubic-bezier(0.12,1,0.2,1)] ${
                 isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >
@@ -374,29 +374,29 @@ export default function Index({ milestones = [], managementTeam = [], customers 
             </p> 
 
             <div 
-              className={`mt-8 flex flex-wrap items-center gap-4 transition-all duration-[2000ms] delay-700 ease-[cubic-bezier(0.12,1,0.2,1)] ${
+              className={`mt-5 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-4 transition-all duration-[2000ms] delay-700 ease-[cubic-bezier(0.12,1,0.2,1)] ${
                 isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >
               <a 
                 href="#company-profile"
-                className="group inline-flex items-center gap-2 rounded-md bg-[#FFC107] px-6 py-3 text-sm font-bold text-[#0B1220] transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#e6ac00] hover:shadow-lg"
+                className="group inline-flex items-center gap-2 rounded-md bg-[#FFC107] px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-[#0B1220] transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#e6ac00] hover:shadow-lg"
               >
                 Company Profile
-                <IconArrow className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
+                <IconArrow className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-500 group-hover:translate-x-1" />
               </a> 
               <Link
                 href="/services"
-                className="group inline-flex items-center gap-2 rounded-md border border-white/40 px-6 py-3 text-sm font-bold text-white transition-all duration-500 hover:-translate-y-0.5 hover:border-white hover:bg-white/10"
+                className="group inline-flex items-center gap-2 rounded-md border border-white/40 px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-white transition-all duration-500 hover:-translate-y-0.5 hover:border-white hover:bg-white/10"
               >
                 Our Services
-                <IconArrow className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
+                <IconArrow className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-500 group-hover:translate-x-1" />
               </Link>
             </div>
 
             {/* STATISTIK DI HERO BANNER */}
             <div 
-              className={`mt-12 grid grid-cols-2 gap-6 border-t border-white/20 pt-8 sm:grid-cols-4 transition-all duration-[2200ms] delay-[900ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${
+              className={`mt-8 sm:mt-12 grid grid-cols-2 gap-4 sm:gap-6 border-t border-white/20 pt-6 sm:pt-8 sm:grid-cols-4 transition-all duration-[2200ms] delay-[900ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${
                 isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
               }`}
             >
@@ -408,11 +408,11 @@ export default function Index({ milestones = [], managementTeam = [], customers 
                     href="#why-choose-us"
                     className="group flex flex-col items-start transition-all duration-500 hover:-translate-y-1 cursor-pointer"
                   >
-                    <Icon className="h-7 w-7 text-[#FFC107] transition-transform duration-500 group-hover:scale-110" />
-                    <p className="mt-2 text-2xl font-extrabold text-white sm:text-3xl">
+                    <Icon className="h-5 w-5 sm:h-7 sm:w-7 text-[#FFC107] transition-transform duration-500 group-hover:scale-110" />
+                    <p className="mt-1 sm:mt-2 text-xl sm:text-2xl md:text-3xl font-extrabold text-white">
                       <CounterNumber value={s.value} />
                     </p>
-                    <p className="text-xs font-medium text-white/90 transition-colors group-hover:text-white sm:text-sm" translate="no">
+                    <p className="text-[10px] sm:text-xs md:text-sm font-medium text-white/90 transition-colors group-hover:text-white" translate="no">
                       {s.label}
                     </p>
                   </a>
@@ -426,8 +426,8 @@ export default function Index({ milestones = [], managementTeam = [], customers 
 
       {/* ============================== WHY CHOOSE US ============================== */}
       <div id="why-choose-us" className="scroll-mt-24">
-        <section className="bg-white py-16 md:py-20 overflow-hidden">
-          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-14 lg:px-8">
+        <section className="bg-white py-12 sm:py-16 md:py-20 overflow-hidden">
+          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 sm:gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-14 lg:px-8">
             
             {/* Foto Masuk Mengalir Santai dari Kiri */}
             <Reveal direction="left">
@@ -435,7 +435,7 @@ export default function Index({ milestones = [], managementTeam = [], customers 
                 <img
                   src="/images/we-are.png"
                   alt="SPI Engineer"
-                  className="w-full rounded-2xl object-cover shadow-xl transition-transform duration-700 group-hover:scale-[1.02]"
+                  className="w-full rounded-xl sm:rounded-2xl object-cover shadow-xl transition-transform duration-700 group-hover:scale-[1.02]"
                 />
               </div>
             </Reveal>
@@ -443,29 +443,29 @@ export default function Index({ milestones = [], managementTeam = [], customers 
             {/* Teks Masuk Mengalir Santai dari Kanan */}
             <Reveal direction="right">
               <div>
-                <span className="mb-3 inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+                <span className="mb-2 sm:mb-3 inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
                   Who We Are
                 </span>
-                <h2 className="text-2xl font-extrabold leading-tight text-[#0F2B5C] sm:text-3xl md:text-4xl">
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold leading-tight text-[#0F2B5C]">
                   Trusted Heavy Equipment Service Company
                 </h2>
-                <p className="mt-4 max-w-xl text-sm leading-relaxed text-[#64748B] md:text-base whitespace-pre-line">
+                <p className="mt-3 sm:mt-4 max-w-xl text-xs sm:text-sm md:text-base leading-relaxed text-[#64748B] whitespace-pre-line">
                   Sebagai Dealer Servis Resmi Mesin Pertambangan XCMG di Indonesia sejak tahun 2022, PT Servistama Pro Indonesia mengedepankan 
                   kompetensi inti di bidang alat berat untuk membangun keandalan dan kepercayaan pelanggan. Kami menghadirkan dukungan produk yang komprehensif, 
                   layanan purnajual prima, serta komitmen penuh dalam menjaga kinerja operasional dan keberlanjutan industri Anda.
                 </p>
                 
                 {/* 4 Statistik Who We Are */}
-                <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4">
+                <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-4 sm:gap-6 sm:grid-cols-4">
                   {whoWeAreStats.map((s, i) => {
                     const Icon = s.icon;
                     return (
                       <div key={i} className="transition-transform duration-500 hover:-translate-y-1">
-                        <Icon className="h-6 w-6 text-[#FFC107]" />
-                        <p className="mt-2 text-xl font-extrabold text-[#0F2B5C] sm:text-2xl">
+                        <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-[#FFC107]" />
+                        <p className="mt-1.5 sm:mt-2 text-lg sm:text-xl md:text-2xl font-extrabold text-[#0F2B5C]">
                           <CounterNumber value={s.value} />
                         </p>
-                        <p className="text-xs text-[#64748B]" translate="no">{s.label}</p>
+                        <p className="text-[10px] sm:text-xs text-[#64748B]" translate="no">{s.label}</p>
                       </div>
                     );
                   })}
@@ -478,7 +478,7 @@ export default function Index({ milestones = [], managementTeam = [], customers 
       </div>
 
       {/* ============================== COMPANY PROFILE ============================== */}
-      <section id="company-profile" className="relative overflow-hidden pt-8 pb-16 md:pt-10 md:pb-20">
+      <section id="company-profile" className="relative overflow-hidden py-12 sm:pt-8 sm:pb-16 md:pt-10 md:pb-20">
         <div className="absolute inset-0 z-0">
           <img 
             src="/images/com-profile.jpg" 
@@ -491,30 +491,30 @@ export default function Index({ milestones = [], managementTeam = [], customers 
 
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal direction="up">
-            <div className="mb-6">
-              <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+            <div className="mb-4 sm:mb-6">
+              <span className="inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
                 Company Profile
               </span>
             </div>
           </Reveal>
 
           {/* Grid Card dengan Staggered Delay Santai */}
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {companyProfile.map((row, i) => {
               const Icon = row.icon;
               return (
                 <Reveal key={i} delay={i * 200} direction="up">
                   <div
-                    className="group flex items-center gap-4 rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-lg transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-2xl"
+                    className="group flex items-center gap-3 sm:gap-4 rounded-xl sm:rounded-2xl border border-[#E2E8F0] bg-white p-4 sm:p-5 shadow-lg transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-2xl"
                   >
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#0F2B5C]/5 text-[#0F2B5C] transition-all duration-500 group-hover:bg-[#FFC107] group-hover:text-[#0F2B5C]">
-                      <Icon className="h-6 w-6" />
+                    <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-[#0F2B5C]/5 text-[#0F2B5C] transition-all duration-500 group-hover:bg-[#FFC107] group-hover:text-[#0F2B5C]">
+                      <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] transition-colors group-hover:text-[#0F2B5C]">
+                      <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#64748B] transition-colors group-hover:text-[#0F2B5C]">
                         {row.label}
                       </p>
-                      <p className="mt-0.5 text-sm font-bold text-[#0F2B5C]">
+                      <p className="mt-0.5 text-xs sm:text-sm font-bold text-[#0F2B5C] truncate">
                         {row.value}
                       </p>
                     </div>
@@ -527,28 +527,28 @@ export default function Index({ milestones = [], managementTeam = [], customers 
       </section>
 
       {/* ============================== COMPANY HISTORY ============================== */}
-      <section className="bg-white pt-8 pb-16 md:pt-10 md:pb-20 overflow-hidden">
+      <section className="bg-white py-12 sm:pt-8 sm:pb-16 md:pt-10 md:pb-20 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal direction="up">
-            <span className="mb-4 inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+            <span className="mb-3 sm:mb-4 inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
               Company History
             </span>
           </Reveal>
 
-          <div className="relative mt-4">
+          <div className="relative mt-3 sm:mt-4">
             <div className="absolute left-0 right-0 top-6 hidden h-0.5 bg-[#E2E8F0] sm:block" />
 
-            <div className="grid grid-cols-2 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
+            <div className="grid grid-cols-2 gap-y-8 sm:gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
               {historyTimeline.map((item, i) => (
                 <Reveal key={i} delay={i * 220} direction="up">
                   <div className="group relative flex cursor-pointer flex-col items-center text-center">
-                    <div className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-[#0F2B5C] text-xs font-extrabold text-white shadow-md transition-all duration-700 group-hover:scale-110 group-hover:bg-[#FFC107] group-hover:text-[#0B1220] group-hover:shadow-lg group-hover:shadow-[#FFC107]/40">
+                    <div className="z-10 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#0F2B5C] text-[11px] sm:text-xs font-extrabold text-white shadow-md transition-all duration-700 group-hover:scale-110 group-hover:bg-[#FFC107] group-hover:text-[#0B1220] group-hover:shadow-lg group-hover:shadow-[#FFC107]/40">
                       {item.year ? item.year.toString().slice(-2) : ""}
                     </div>
-                    <p className="mt-3 text-sm font-extrabold text-[#0F2B5C] transition-colors duration-500 group-hover:text-[#FFC107]">
+                    <p className="mt-2 sm:mt-3 text-xs sm:text-sm font-extrabold text-[#0F2B5C] transition-colors duration-500 group-hover:text-[#FFC107]">
                       {item.year}
                     </p>
-                    <p className="mt-1 max-w-[110px] text-xs text-[#64748B] transition-colors duration-500 group-hover:text-[#0F2B5C]">
+                    <p className="mt-1 max-w-[120px] text-[11px] sm:text-xs text-[#64748B] transition-colors duration-500 group-hover:text-[#0F2B5C]">
                       {item.title}
                     </p>
                   </div>
@@ -568,7 +568,7 @@ export default function Index({ milestones = [], managementTeam = [], customers 
 
       {/* ============================== COMPANY STATISTICS ============================== */}
       <section
-        className="relative overflow-hidden bg-[#0B1220] py-16 md:py-20"
+        className="relative overflow-hidden bg-[#0B1220] py-12 sm:py-16 md:py-20"
         style={{
           backgroundImage: "linear-gradient(to right, rgba(11,18,32,0.95), rgba(15,43,92,0.85)), url('https://placehold.co/1920x600/0B1220/0B1220?text=+')",
           backgroundSize: "cover",
@@ -577,22 +577,22 @@ export default function Index({ milestones = [], managementTeam = [], customers 
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal direction="up">
-            <span className="mb-8 inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+            <span className="mb-6 sm:mb-8 inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
               Company Statistics
             </span>
           </Reveal>
           
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-6 sm:gap-8 sm:grid-cols-4">
             {companyStats.map((s, i) => {
               const Icon = s.icon;
               return (
                 <Reveal key={i} delay={i * 200} direction="scale">
                   <div className="text-center sm:text-left transition-transform duration-500 hover:-translate-y-1">
-                    <Icon className="mx-auto h-7 w-7 text-[#FFC107] sm:mx-0" />
-                    <p className="mt-3 text-3xl font-extrabold text-white md:text-4xl text-[#FFC107]">
+                    <Icon className="mx-auto h-6 w-6 sm:h-7 sm:w-7 text-[#FFC107] sm:mx-0" />
+                    <p className="mt-2 sm:mt-3 text-2xl sm:text-3xl font-extrabold text-white md:text-4xl text-[#FFC107]">
                       <CounterNumber value={s.value} />
                     </p>
-                    <p className="mt-2 text-xs font-bold text-white" translate="no">{s.label}</p>
+                    <p className="mt-1 sm:mt-2 text-[10px] sm:text-xs font-bold text-white" translate="no">{s.label}</p>
                   </div>
                 </Reveal>
               );
@@ -602,55 +602,55 @@ export default function Index({ milestones = [], managementTeam = [], customers 
       </section>
 
       {/* ===================== MILESTONE / ORG STRUCTURE / MANAGEMENT ===================== */}
-      <section className="bg-slate-50 py-16 border-t border-slate-200 overflow-hidden">
+      <section className="bg-slate-50 py-12 sm:py-16 border-t border-slate-200 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
           {/* MILESTONES (Dinamis dari Database) */}
           <Reveal direction="up">
-            <div className="text-center mb-10">
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+            <div className="text-center mb-8 sm:mb-10">
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
                 Company Milestone
               </span>
-              <h2 className="mt-1 text-2xl font-black text-[#0F2B5C]">
+              <h2 className="mt-1 text-xl sm:text-2xl font-black text-[#0F2B5C]">
                 OUR JOURNEY & ACHIEVEMENTS
               </h2>
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-20">
+          <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-12 sm:mb-20">
             {milestones.length === 0 ? (
               <p className="text-center text-slate-400 text-xs col-span-3 py-6">Belum ada data milestone.</p>
             ) : (
               milestones.map((m, i) => (
                 <Reveal key={m.id} delay={i * 220} direction="up">
                   <div
-                    className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl flex flex-col justify-between h-full"
+                    className="group relative overflow-hidden rounded-xl sm:rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl flex flex-col justify-between h-full"
                   >
                     <div>
                       {m.image_path ? (
-                        <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-slate-100 mb-4">
+                        <div className="relative aspect-square w-full overflow-hidden rounded-lg sm:rounded-xl bg-slate-100 mb-3 sm:mb-4">
                           <img
                             src={`/${m.image_path}`}
                             alt={m.title}
                             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                           />
-                          <div className="absolute top-3 left-3">
-                            <span className="inline-block rounded-lg bg-[#0F2B5C]/90 backdrop-blur-sm px-3 py-1 text-xs font-extrabold text-[#FFC107] shadow">
+                          <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3">
+                            <span className="inline-block rounded-md sm:rounded-lg bg-[#0F2B5C]/90 backdrop-blur-sm px-2.5 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs font-extrabold text-[#FFC107] shadow">
                               {m.year}
                             </span>
                           </div>
                         </div>
                       ) : (
-                        <div className="mb-4">
-                          <span className="inline-block rounded-lg bg-[#0F2B5C] px-3 py-1 text-xs font-extrabold text-[#FFC107] shadow">
+                        <div className="mb-3 sm:mb-4">
+                          <span className="inline-block rounded-md sm:rounded-lg bg-[#0F2B5C] px-2.5 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs font-extrabold text-[#FFC107] shadow">
                             {m.year}
                           </span>
                         </div>
                       )}
-                      <h4 className="text-base font-extrabold text-[#0F2B5C] line-clamp-1">
+                      <h4 className="text-sm sm:text-base font-extrabold text-[#0F2B5C] line-clamp-1">
                         {m.title}
                       </h4>
-                      <p className="mt-2 text-xs leading-relaxed text-slate-600 line-clamp-3">
+                      <p className="mt-1.5 sm:mt-2 text-[11px] sm:text-xs leading-relaxed text-slate-600 line-clamp-3">
                         {m.description}
                       </p>
                     </div>
@@ -662,7 +662,7 @@ export default function Index({ milestones = [], managementTeam = [], customers 
 
           {/* ================= STRUKTUR ORGANISASI ================= */}
           <Reveal direction="scale">
-            <section className="w-full overflow-hidden bg-white py-16 rounded-3xl border border-slate-200 shadow-sm mb-16">
+            <section className="w-full overflow-hidden bg-white py-10 sm:py-16 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm mb-12 sm:mb-16">
               <div className="w-full overflow-x-auto overflow-y-hidden">
                 <div className="relative mx-auto min-w-[1380px] w-[1380px] h-[370px] bg-white">
 
@@ -772,27 +772,27 @@ export default function Index({ milestones = [], managementTeam = [], customers 
 
       {/* ============================== COMPANY CULTURE + GOVERNANCE ============================== */}
       <section className="bg-[#F8FAFC] pt-6 pb-12 border-t border-slate-200 overflow-hidden">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8 items-stretch">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 sm:gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8 items-stretch">
           
           <Reveal direction="left" className="flex flex-col h-full">
-            <span className="mb-5 inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+            <span className="mb-3 sm:mb-5 inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
               Company Culture
             </span>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 flex-1">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 flex-1">
               {cultureItems.map((c, i) => {
                 const Icon = c.icon;
                 return (
                   <div
                     key={i}
-                    className="group flex flex-col items-center justify-center rounded-xl border border-[#E2E8F0] bg-white p-4 text-center shadow-sm transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl"
+                    className="group flex flex-col items-center justify-center rounded-xl border border-[#E2E8F0] bg-white p-3 sm:p-4 text-center shadow-sm transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl"
                   >
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#0F2B5C]/5 text-[#0F2B5C] transition-colors duration-500 group-hover:bg-[#FFC107]">
-                      <Icon className="h-5 w-5" />
+                    <span className="flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full bg-[#0F2B5C]/5 text-[#0F2B5C] transition-colors duration-500 group-hover:bg-[#FFC107]">
+                      <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
                     </span>
-                    <p className="mt-2.5 text-xs font-bold leading-tight text-[#0F2B5C]">
+                    <p className="mt-2 text-[11px] sm:text-xs font-bold leading-tight text-[#0F2B5C]">
                       {c.title}
                     </p>
-                    <p className="mt-1 text-[10px] leading-snug text-[#64748B]">
+                    <p className="mt-1 text-[9px] sm:text-[10px] leading-snug text-[#64748B]">
                       {c.desc}
                     </p>
                   </div>
@@ -802,30 +802,30 @@ export default function Index({ milestones = [], managementTeam = [], customers 
           </Reveal>
 
           <Reveal direction="right" className="flex flex-col h-full">
-            <span className="mb-5 inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+            <span className="mb-3 sm:mb-5 inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
               Corporate Governance
             </span>
-            <div className="flex flex-col justify-between flex-1 h-full rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-sm transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl md:p-7">
-              <p className="mb-6 text-sm leading-relaxed text-[#64748B]">
+            <div className="flex flex-col justify-between flex-1 h-full rounded-2xl border border-[#E2E8F0] bg-white p-5 sm:p-6 shadow-sm transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl md:p-7">
+              <p className="mb-4 sm:mb-6 text-xs sm:text-sm leading-relaxed text-[#64748B]">
                 Kami berkomitmen menerapkan prinsip Good Corporate Governance (GCG) secara konsisten demi memberikan pelayanan servis alat berat terbaik, terpercaya, dan profesional di Indonesia.
               </p>
 
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 my-auto">
+              <div className="grid grid-cols-1 gap-4 sm:gap-5 sm:grid-cols-2 my-auto">
                 {governancePrinciples.map((g, i) => {
                   const Icon = g.icon;
                   return (
                     <div 
                       key={i} 
-                      className="group flex items-start gap-3 rounded-xl p-2 transition-all duration-500 hover:bg-[#F8FAFC]"
+                      className="group flex items-start gap-2.5 sm:gap-3 rounded-xl p-2 transition-all duration-500 hover:bg-[#F8FAFC]"
                     >
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#FFC107]/15 text-[#0F2B5C] transition-all duration-500 group-hover:bg-[#FFC107] group-hover:scale-105">
-                        <Icon className="h-5 w-5" />
+                      <span className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg bg-[#FFC107]/15 text-[#0F2B5C] transition-all duration-500 group-hover:bg-[#FFC107] group-hover:scale-105">
+                        <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
                       </span>
                       <div>
-                        <p className="text-sm font-bold text-[#0F2B5C]">
+                        <p className="text-xs sm:text-sm font-bold text-[#0F2B5C]">
                           {g.title}
                         </p>
-                        <p className="mt-0.5 text-xs leading-snug text-[#64748B]">
+                        <p className="mt-0.5 text-[11px] sm:text-xs leading-snug text-[#64748B]">
                           {g.desc}
                         </p>
                       </div>
@@ -843,7 +843,7 @@ export default function Index({ milestones = [], managementTeam = [], customers 
       <Reveal direction="scale">
         <section className="grid grid-cols-1 md:grid-cols-2">
           <div
-            className="relative flex min-h-[280px] items-center overflow-hidden px-8 py-14 sm:px-12"
+            className="relative flex min-h-[220px] sm:min-h-[280px] items-center overflow-hidden px-6 py-10 sm:px-8 sm:py-14"
             style={{
               backgroundImage: "linear-gradient(to bottom, rgba(11,18,32,0.70), rgba(11,18,32,0.85)), url('https://img.youtube.com/vi/qIVMKITIV7o/maxresdefault.jpg')",
               backgroundSize: "cover",
@@ -851,10 +851,10 @@ export default function Index({ milestones = [], managementTeam = [], customers 
             }}
           >
             <div>
-              <h3 className="max-w-md text-xl font-extrabold uppercase leading-tight text-white sm:text-2xl md:text-3xl">
+              <h3 className="max-w-md text-base sm:text-xl md:text-2xl lg:text-3xl font-extrabold uppercase leading-tight text-white">
                 BUILDING THE FUTURE OF HEAVY EQUIPMENT SERVICES
               </h3>
-              <p className="mt-3 text-sm font-semibold text-[#FFC107]">
+              <p className="mt-2 sm:mt-3 text-xs sm:text-sm font-semibold text-[#FFC107]">
                 Menjadi fondasi menuju Smart Mining Service Ecosystem.
               </p>
 
@@ -862,15 +862,15 @@ export default function Index({ milestones = [], managementTeam = [], customers 
                 type="button"
                 onClick={() => setIsVideoOpen(true)}
                 aria-label="Play company video"
-                className="mt-6 flex h-14 w-14 items-center justify-center rounded-full border-2 border-white/70 bg-[#0B1220]/40 text-white backdrop-blur-sm transition-all duration-500 hover:scale-110 hover:bg-white hover:text-[#0B1220] cursor-pointer"
+                className="mt-4 sm:mt-6 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full border-2 border-white/70 bg-[#0B1220]/40 text-white backdrop-blur-sm transition-all duration-500 hover:scale-110 hover:bg-white hover:text-[#0B1220] cursor-pointer"
               >
-                <IconPlay className="ml-1 h-5 w-5" />
+                <IconPlay className="ml-0.5 sm:ml-1 h-4 w-4 sm:h-5 sm:w-5" />
               </button>
             </div>
           </div>
 
           <div
-            className="relative flex min-h-[280px] items-center overflow-hidden bg-[#FFC107] px-8 py-14 sm:px-12"
+            className="relative flex min-h-[220px] sm:min-h-[280px] items-center overflow-hidden bg-[#FFC107] px-6 py-10 sm:px-8 sm:py-14"
             style={{
               backgroundImage: "linear-gradient(to left, rgba(255,193,7,0.35), rgba(255,193,7,0.92)), url('https://placehold.co/960x480/FFC107/FFC107?text=+')",
               backgroundSize: "cover",
@@ -878,27 +878,27 @@ export default function Index({ milestones = [], managementTeam = [], customers 
             }}
           >
             <div>
-              <h3 className="max-w-sm text-xl font-extrabold uppercase leading-tight text-[#0B1220] sm:text-2xl md:text-3xl">
+              <h3 className="max-w-sm text-base sm:text-xl md:text-2xl lg:text-3xl font-extrabold uppercase leading-tight text-[#0B1220]">
                 LET'S BUILD A BETTER FUTURE TOGETHER
               </h3>
-              <p className="mt-3 max-w-sm text-sm leading-relaxed text-[#0B1220]/80">
+              <p className="mt-2 sm:mt-3 max-w-sm text-xs sm:text-sm leading-relaxed text-[#0B1220]/80">
                 We are ready to support your business with our best services and solutions.
               </p>
-              <div className="mt-6 flex flex-wrap gap-4">
+              <div className="mt-4 sm:mt-6 flex flex-wrap gap-3 sm:gap-4">
                 <a
                   href="https://wa.me/6282258013177?text=Halo%20PT.%20Servistama%20Pro%20Indonesia,%20saya%20tertarik%20untuk%20menghubungi%20Anda."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-md bg-[#0B1220] px-6 py-3 text-sm font-bold text-white transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#0F2B5C] hover:shadow-lg"
+                  className="inline-flex items-center gap-2 rounded-md bg-[#0B1220] px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-white transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#0F2B5C] hover:shadow-lg"
                 >
                   Contact Us
-                  <IconArrow className="h-4 w-4" />
+                  <IconArrow className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </a>
                 <a
                   href="https://mail.google.com/mail/?view=cm&fs=1&to=info@servistamapro.com&su=Request%20Consultation%20-%20PT.%20Servistama%20Pro%20Indonesia"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-md border-2 border-[#0B1220] px-6 py-3 text-sm font-bold text-[#0B1220] transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#0B1220] hover:text-white"
+                  className="inline-flex items-center gap-2 rounded-md border-2 border-[#0B1220] px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-[#0B1220] transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#0B1220] hover:text-white"
                 >
                   Request Consultation
                 </a>

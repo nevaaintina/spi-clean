@@ -19,7 +19,6 @@ return new class extends Migration
                 $table->json('gallery')->nullable(); // Untuk multi-upload foto tambahan
                 $table->string('catalog_pdf')->nullable(); // File PDF download katalog utama
                 $table->json('exploded_images')->nullable(); // Gambar diagram exploded view per assembly
-                $table->text('description')->nullable();
                 
                 // Kolom spesifikasi detail tambahan sesuai form admin & controller
                 $table->string('delivery_time')->nullable();
@@ -27,7 +26,6 @@ return new class extends Migration
                 $table->string('product_origin')->nullable();
                 $table->string('package_type')->nullable();
                 $table->string('shipping_methods')->nullable();
-                $table->string('rating')->nullable();
                 
                 $table->timestamps();
             });

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, Head } from '@inertiajs/react';
 import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 /* -------------------------------------------------------------------------- */
 /* Inline SVG Icons                                                           */
@@ -46,26 +48,26 @@ const getCategoryDesign = (index) => {
 /* -------------------------------------------------------------------------- */
 function Hero() {
     return (
-        <section className="relative flex h-screen w-full items-center overflow-hidden bg-[#071b38] pt-16">
-            <div className="absolute inset-0">
+        <section className="relative flex h-[380px] sm:h-[500px] lg:h-screen w-full items-center overflow-hidden bg-[#071b38] pt-16">
+            <div className="absolute inset-0" data-aos="fade" data-aos-duration="3000">
                 <img
                     src="/images/hero-service.png"
                     alt="SPI technician inspecting heavy equipment"
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover scale-105 transition-transform duration-[4000ms]"
                 />
                 {/* Gradasi warna biru SPI menggantikan gradasi hitam */}
                 <div className="absolute inset-0 bg-gradient-to-r from-[#071b38]/90 via-[#071b38]/50 to-transparent" />
             </div>
 
             <div className="relative mx-auto w-full max-w-[1440px] px-6 lg:px-10">
-                <div className="max-w-2xl">
-                    <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
+                <div className="max-w-2xl" data-aos="fade-up" data-aos-duration="2400">
+                    <h1 className="text-3xl sm:text-5xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight text-white">
                         OUR SERVICE
                         <br />
                         <span className="text-[#FDC02F]">SOLUTIONS</span>
                     </h1>
 
-                    <p className="mt-6 max-w-lg text-base leading-relaxed text-gray-300 sm:text-lg">
+                    <p className="mt-3 sm:mt-6 max-w-lg text-xs sm:text-base lg:text-lg leading-relaxed text-gray-300">
                         Comprehensive service solutions designed to keep your heavy equipment performing at its best.
                     </p>
                 </div>
@@ -76,13 +78,13 @@ function Hero() {
 
 function ExploreHeading() {
     return (
-        <div className="mx-auto max-w-2xl px-6 pb-14 pt-20 text-center lg:pt-24">
-            <span className="text-xs font-bold tracking-[0.2em] text-[#FDC02F]">WHAT WE OFFER</span>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#0B1B32] sm:text-4xl">
+        <div className="mx-auto max-w-2xl px-6 pb-10 pt-14 sm:pb-14 sm:pt-20 text-center lg:pt-24" data-aos="fade-up" data-aos-duration="2200">
+            <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-[#FDC02F]" translate="no">WHAT WE OFFER</span>
+            <h2 className="mt-2 sm:mt-3 text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0B1B32] sm:text-4xl">
                 Explore Our Service Solutions
             </h2>
-            <span className="mx-auto mt-4 block h-1 w-14 rounded-full bg-[#FDC02F]" />
-            <p className="mt-5 text-sm leading-relaxed text-gray-500 sm:text-base">
+            <span className="mx-auto mt-3 sm:mt-4 block h-1 w-12 sm:w-14 rounded-full bg-[#FDC02F]" />
+            <p className="mt-3 sm:mt-5 text-xs sm:text-sm leading-relaxed text-gray-500 sm:text-base">
                 From preventive maintenance to advanced diagnostics, we provide
                 end-to-end service solutions to maximize your equipment uptime and
                 performance.
@@ -98,31 +100,34 @@ function CategoryCard({ category, index }) {
     return (
         <Link
             href={`/services/${encodeURIComponent(category.name)}`}
-            className="group relative flex flex-col rounded-2xl border border-gray-200 bg-white p-7 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-[#FDC02F] hover:shadow-xl"
+            className="group relative flex flex-col rounded-xl sm:rounded-2xl border border-gray-200 bg-white p-4 sm:p-7 shadow-sm transition-all duration-500 ease-out hover:-translate-y-2 hover:border-[#FDC02F] hover:shadow-2xl"
+            data-aos="fade-up"
+            data-aos-delay={index * 200}
+            data-aos-duration="2200"
         >
-            <span className={`grid h-14 w-14 place-items-center rounded-xl ${design.iconBg} ${design.iconColor} transition-transform duration-300 group-hover:scale-105`}>
-                <Icon className="h-6 w-6" />
+            <span className={`grid h-10 w-10 sm:h-14 sm:w-14 place-items-center rounded-lg sm:rounded-xl ${design.iconBg} ${design.iconColor} transition-transform duration-500 group-hover:scale-110`}>
+                <Icon className="h-4 w-4 sm:h-6 sm:w-6" />
             </span>
 
-            <h3 className="mt-6 text-lg font-bold leading-snug text-[#0B1B32]">
+            <h3 className="mt-3 sm:mt-6 text-base sm:text-lg font-bold leading-snug text-[#0B1B32]">
                 {category.name}
             </h3>
-            <p className="mt-3 flex-1 text-sm leading-relaxed text-gray-500">
+            <p className="mt-2 sm:mt-3 flex-1 text-xs sm:text-sm leading-relaxed text-gray-500">
                 {category.description}
             </p>
 
-            <span className={`mt-6 block h-0.5 w-8 rounded-full ${design.accentBar}`} />
+            <span className={`mt-4 sm:mt-6 block h-0.5 w-6 sm:w-8 rounded-full ${design.accentBar}`} />
 
-            <div className="mt-5 flex items-center justify-between">
+            <div className="mt-4 sm:mt-5 flex items-center justify-between">
                 <span>
-                    <span className={`block text-2xl font-extrabold ${design.accent}`}>
+                    <span className={`block text-xl sm:text-2xl font-extrabold ${design.accent}`}>
                         {category.services_count}
                     </span>
-                    <span className="block text-xs font-medium text-gray-400">Sub-Services</span>
+                    <span className="block text-[10px] sm:text-xs font-medium text-gray-400" translate="no">Sub-Services</span>
                 </span>
-                <span className="flex items-center gap-1.5 text-sm font-semibold text-[#0B1B32] transition-colors duration-300 group-hover:text-[#FDC02F]">
+                <span className="flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#0B1B32] transition-colors duration-300 group-hover:text-[#FDC02F]">
                     View Services
-                    <IconArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    <IconArrowRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </span>
             </div>
         </Link>
@@ -130,12 +135,12 @@ function CategoryCard({ category, index }) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Technical Support & CTA Statis                                            */
+/* Technical Support & CTA Statis                                             */
 /* -------------------------------------------------------------------------- */
 function TechnicalSupportCTA() {
     return (
-        <section className="mx-6 mb-20 overflow-hidden rounded-2xl bg-[#0B1B32] lg:mx-10">
-            <div className="relative flex flex-col items-start gap-8 px-8 py-12 sm:flex-row sm:items-center sm:justify-between sm:px-12">
+        <section className="mx-4 sm:mx-6 mb-16 sm:mb-20 overflow-hidden rounded-xl sm:rounded-2xl bg-[#0B1B32] lg:mx-10" data-aos="fade-up" data-aos-duration="2400">
+            <div className="relative flex flex-col items-start gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-12 sm:py-12">
                 <div
                     className="pointer-events-none absolute right-0 top-0 hidden h-full w-64 opacity-20 lg:block"
                     style={{
@@ -145,15 +150,15 @@ function TechnicalSupportCTA() {
                     }}
                 />
 
-                <div className="flex items-start gap-5">
-                    <span className="grid h-14 w-14 shrink-0 place-items-center rounded-xl border border-[#FDC02F]/50 text-[#FDC02F]">
-                        <IconHeadset className="h-6 w-6" />
+                <div className="flex items-start gap-3 sm:gap-5">
+                    <span className="grid h-10 w-10 sm:h-14 sm:w-14 shrink-0 place-items-center rounded-lg sm:rounded-xl border border-[#FDC02F]/50 text-[#FDC02F]">
+                        <IconHeadset className="h-5 w-5 sm:h-6 sm:w-6" />
                     </span>
                     <div>
-                        <h3 className="text-xl font-extrabold text-white sm:text-2xl">
+                        <h3 className="text-base sm:text-xl font-extrabold text-white sm:text-2xl">
                             Need Technical Support or Service Consultation?
                         </h3>
-                        <p className="mt-2 text-sm text-gray-300 sm:text-base">
+                        <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-300 sm:text-base">
                             Our technical team is ready to help you 24/7.
                         </p>
                     </div>
@@ -162,10 +167,10 @@ function TechnicalSupportCTA() {
                 <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
                     <Link
                         href="/contact-us"
-                        className="flex items-center justify-center gap-2 rounded-full bg-[#FDC02F] px-6 py-3 text-xs font-bold tracking-wide text-[#0B1B32] transition-transform duration-200 hover:scale-105"
+                        className="flex items-center justify-center gap-2 rounded-full bg-[#FDC02F] px-5 sm:px-6 py-2.5 sm:py-3 text-[11px] sm:text-xs font-bold tracking-wide text-[#0B1B32] transition-all duration-300 hover:scale-105 shadow-md"
                     >
                         TALK TO OUR EXPERT
-                        <IconArrowRight className="h-3.5 w-3.5" />
+                        <IconArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                     </Link>
                 </div>
             </div>
@@ -174,6 +179,15 @@ function TechnicalSupportCTA() {
 }
 
 export default function Index({ categories = [] }) {
+    // Inisialisasi AOS dengan durasi animasi santai (2.2 detik)
+    useEffect(() => {
+        AOS.init({
+            duration: 2200,
+            once: false,
+            easing: 'cubic-bezier(0.12, 1, 0.2, 1)',
+        });
+    }, []);
+
     // 5 Kategori Utama Layanan beserta deskripsi bawaannya
     const defaultCategories = [
         {
@@ -226,15 +240,15 @@ export default function Index({ categories = [] }) {
                 <main>
                     <ExploreHeading />
 
-                    <section className="mx-auto max-w-[1440px] px-6 lg:px-10">
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+                    <section className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10">
+                        <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-5">
                             {dynamicCategories.map((category, index) => (
                                 <CategoryCard key={category.id} category={category} index={index} />
                             ))}
                         </div>
                     </section>
 
-                    <div className="mt-16">
+                    <div className="mt-12 sm:mt-16">
                         <TechnicalSupportCTA />
                     </div>
                 </main>

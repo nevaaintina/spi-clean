@@ -69,7 +69,6 @@ export default function Show({ sparePart }) {
     window.open(`https://wa.me/6281122233344?text=${encodeURIComponent(message)}`, '_blank');
   };
 
-  // Fungsi Download Brosur: Mengambil semua foto inputan admin (foto utama + galeri) dan menggabungkannya menjadi 1 PDF cetak
   const handleDownloadBrochure = () => {
     const printWindow = window.open('', '_blank');
     if (!printWindow) {
@@ -232,23 +231,7 @@ export default function Show({ sparePart }) {
                     <span className="font-semibold text-[#071b38]">{sparePart.shipping_methods}</span>
                   </div>
 
-                  <div className="flex items-center gap-2 pt-2">
-                    <span className="text-[#ffc107] font-bold">»</span>
-                    <span className="font-bold text-slate-500 w-36 shrink-0">Rating:</span>
-                    <div className="flex items-center gap-1 text-amber-400 text-sm">
-                      ★★★★★
-                    </div>
-                    <span className="text-xs text-slate-500 font-medium ml-2">{sparePart.rating}</span>
-                  </div>
-
                 </div>
-
-                {sparePart.description && (
-                  <div className="text-xs text-slate-600 bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6">
-                    <p className="font-bold text-[#0f2b5c] mb-1">Deskripsi:</p>
-                    {sparePart.description}
-                  </div>
-                )}
 
               </div>
 
@@ -280,17 +263,7 @@ export default function Show({ sparePart }) {
         </div>
       </main>
 
-      <div className="fixed bottom-6 right-6 z-40">
-        <button
-          type="button"
-          onClick={() => window.open('https://wa.me/6281122233344?text=Halo%20Servistama%20Pro%20Indonesia,%20saya%20ingin%20berkonsultasi%20mengenai%20kebutuhan%20spare%20part.', '_blank')}
-          className="flex items-center gap-2.5 bg-[#071b38] hover:bg-[#0f2b5c] text-white px-5 py-3 rounded-full shadow-2xl font-bold text-xs uppercase tracking-wider transition-all hover:scale-105 cursor-pointer border border-white/20"
-        >
-          <ChatIcon />
-          <span>CHAT WITH US</span>
-          <span className="text-[#ffc107] text-sm">▲</span>
-        </button>
-      </div>
+      
 
       <Footer />
     </div>

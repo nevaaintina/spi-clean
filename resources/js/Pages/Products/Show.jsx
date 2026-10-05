@@ -349,7 +349,7 @@ export default function ProductShow({ product }) {
               {/* Tombol Konsultasi Produk di Kanan */}
               <div className="w-full lg:w-auto shrink-0">
                 <a
-                  href={`https://wa.me/6281122233344?text=Halo%20SPI,%20saya%20ingin%20berkonsultasi%20mengenai%20produk%20${encodeURIComponent(product.name)}`}
+                  href={`https://wa.me/6282258013177?text=Halo%20SPI,%20saya%20ingin%20berkonsultasi%20mengenai%20produk%20${encodeURIComponent(product.name)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-[340px] h-[58px] rounded-2xl bg-[#ffc107] hover:bg-[#eaae00] text-[#0f2b5c] font-black text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer"

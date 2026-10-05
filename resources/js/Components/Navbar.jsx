@@ -5,6 +5,11 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // State untuk expand/collapse dropdown di versi mobile
+  const [mobileHomeOpen, setMobileHomeOpen] = useState(false);
+  const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
+
   const [currentPath, setCurrentPath] = useState('');
 
   // Ambil locale dan translations dari Inertia shared props backend Laravel
@@ -61,7 +66,6 @@ export default function Navbar() {
     if (translations && translations[key]) {
       return translations[key];
     }
-    // Fallback dictionary darurat jika key belum ada di file JSON Laravel
     const fallbackDict = {
       id: {
         home: "Home", homeTop: "Top of Home", homeIntro: "Pengenalan Perusahaan", homeStats: "Statistik Perusahaan", homeStrength: "Keunggulan Perusahaan", homeServices: "Layanan Unggulan", homeTestimonials: "Testimoni Pelanggan", homeProjects: "Galeri Proyek", homeNews: "Berita Terbaru", homeContact: "Informasi Kontak", homeBranch: "Kantor Cabang",
@@ -84,15 +88,15 @@ export default function Navbar() {
       <div 
         className={`transition-all duration-300 border-b ${
           isScrolled 
-            ? 'bg-white/60 backdrop-blur-md border-slate-200/30 shadow-xs py-2.5' 
-            : 'bg-white/85 backdrop-blur-sm border-slate-100 shadow-sm py-3.5'
+            ? 'bg-white/60 backdrop-blur-md border-slate-200/30 shadow-xs py-2 sm:py-2.5' 
+            : 'bg-white/85 backdrop-blur-sm border-slate-100 shadow-sm py-2.5 sm:py-3.5'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 flex items-center justify-between">
           
-          {/* LOGO & NAMA PT SISI KIRI (TANPA TEKS HEAVY EQUIPMENT) */}
-          <a href="/" className="flex items-center gap-3 group shrink-0 lg:mr-6 notranslate">
-            <div className="h-9 md:h-10 flex items-center shrink-0">
+          {/* LOGO & NAMA PT SISI KIRI (RESPONSIF MOBILE & DESKTOP) */}
+          <a href="/" className="flex items-center gap-2 sm:gap-3 group shrink-0 lg:mr-6 notranslate">
+            <div className="h-7 sm:h-9 md:h-10 flex items-center shrink-0">
               <img 
                 src="/images/logo.png" 
                 alt="Logo PT. Servistama Pro Indonesia" 
@@ -100,13 +104,13 @@ export default function Navbar() {
               />
             </div>
             <div className="flex flex-col justify-center">
-              <span className="text-sm md:text-base font-black text-[#0f2b5c] tracking-tight leading-none group-hover:text-[#ffc107] transition-colors">
+              <span className="text-xs sm:text-sm md:text-base font-black text-[#0f2b5c] tracking-tight leading-none group-hover:text-[#ffc107] transition-colors">
                 PT. Servistama Pro Indonesia
               </span>
             </div>
           </a>
 
-          {/* MENU UTAMA */}
+          {/* MENU UTAMA (DESKTOP) */}
           <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2 font-bold text-xs md:text-sm text-[#0f2b5c]">
             
             {/* Home Dropdown */}
@@ -199,7 +203,7 @@ export default function Navbar() {
             </a>
           </nav>
 
-          {/* BENDERA SAJA (DESKTOP) - TANPA TEKS ID/EN */}
+          {/* BENDERA SAJA (DESKTOP) */}
           <div className="hidden lg:flex items-center space-x-2.5 text-sm shrink-0">
             <button 
               onClick={() => changeLanguage('id')} 
@@ -220,10 +224,10 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* MOBILE TOGGLE BUTTON */}
+          {/* MOBILE TOGGLE BUTTON (PROPORSIONAL) */}
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-2xl font-black text-[#0f2b5c] focus:outline-none"
+            className="lg:hidden p-1.5 text-xl sm:text-2xl font-black text-[#0f2b5c] focus:outline-none"
           >
             {isMobileMenuOpen ? '✕' : '☰'}
           </button>
@@ -231,27 +235,57 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* MOBILE MENU DRAWER */}
+      {/* MOBILE MENU DRAWER (COLLAPSIBLE DROPDOWN / SEMBUNYI) */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-white/95 backdrop-blur-md text-[#0f2b5c] border-b border-slate-200 shadow-xl p-6 font-bold text-sm max-h-[85vh] overflow-y-auto">
-          <div className="flex flex-col space-y-3">
-            <a href="/" className="py-2 border-b border-slate-100">{t('home', 'Home')}</a>
-            <a href="/#about" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeIntro', 'Company Introduction')}</a>
-            <a href="/#statistics" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeStats', 'Company Statistics')}</a>
-            <a href="/#strength" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeStrength', 'Company Strength')}</a>
-            <a href="/#services" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeServices', 'Featured Services')}</a>
-            <a href="/#testimonials" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeTestimonials', 'Customer Testimonials')}</a>
-            <a href="/#projects" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeProjects', 'Project Gallery')}</a>
-            <a href="/#news" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeNews', 'Latest News')}</a>
-            <a href="/#contact" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeContact', 'Contact Information')}</a>
-            <a href="/#operational-area" className="py-2 border-b border-slate-100 pl-4 text-xs font-normal">{t('homeBranch', 'Branch Office')}</a>
+        <div className="lg:hidden bg-white/95 backdrop-blur-md text-[#0f2b5c] border-b border-slate-200 shadow-xl px-5 py-4 font-bold text-xs sm:text-sm max-h-[80vh] overflow-y-auto">
+          <div className="flex flex-col space-y-2.5">
+            
+            {/* Home Dropdown Mobile (Collapsible) */}
+            <div className="border-b border-slate-100 pb-2">
+              <div className="flex items-center justify-between py-1">
+                <a href="/" className="flex-1">{t('home', 'Home')}</a>
+                <button 
+                  onClick={() => setMobileHomeOpen(!mobileHomeOpen)}
+                  className="px-2 py-0.5 text-xs text-slate-500 focus:outline-none"
+                >
+                  {mobileHomeOpen ? '▲' : '▼'}
+                </button>
+              </div>
+              {mobileHomeOpen && (
+                <div className="flex flex-col space-y-1.5 pl-3 pt-2 bg-slate-50/70 rounded-lg p-2 mt-1 text-[11px] sm:text-xs font-normal">
+                  <a href="/" className="hover:text-[#ffc107] font-black">{t('homeTop', 'Top of Home')}</a>
+                  <a href="/#about" className="hover:text-[#ffc107]">{t('homeIntro', 'Company Introduction')}</a>
+                  <a href="/#statistics" className="hover:text-[#ffc107]">{t('homeStats', 'Company Statistics')}</a>
+                  <a href="/#strength" className="hover:text-[#ffc107]">{t('homeStrength', 'Company Strength')}</a>
+                  <a href="/#services" className="hover:text-[#ffc107]">{t('homeServices', 'Featured Services')}</a>
+                  <a href="/#testimonials" className="hover:text-[#ffc107]">{t('homeTestimonials', 'Customer Testimonials')}</a>
+                  <a href="/#projects" className="hover:text-[#ffc107]">{t('homeProjects', 'Project Gallery')}</a>
+                  <a href="/#news" className="hover:text-[#ffc107]">{t('homeNews', 'Latest News')}</a>
+                  <a href="/#contact" className="hover:text-[#ffc107]">{t('homeContact', 'Contact Information')}</a>
+                  <a href="/#operational-area" className="hover:text-[#ffc107]">{t('homeBranch', 'Branch Office')}</a>
+                </div>
+              )}
+            </div>
 
-            <div className="py-2 border-b border-slate-100 flex flex-col space-y-2">
-              <span className="text-slate-400 font-semibold">{t('about', 'About Us')}</span>
-              <a href="/about" className="pl-4 text-xs text-[#0f2b5c] font-black">{t('aboutOverview', 'Company Profile Overview')}</a>
-              <a href="/why-choose-us" className="pl-4 text-xs text-[#0f2b5c] font-extrabold">{t('aboutWhy', 'Why Choose Us')}</a>
-              <a href="/esg" className="pl-4 text-xs text-[#15803d] font-extrabold">{t('aboutEsg', 'Environment, Social & Governance (ESG)')}</a>
-              <a href="/hse" className="pl-4 text-xs text-[#0284c7] font-extrabold">{t('aboutHse', 'Health, Safety & Environment (HSE)')}</a>
+            {/* About Us Dropdown Mobile (Collapsible) */}
+            <div className="border-b border-slate-100 pb-2">
+              <div className="flex items-center justify-between py-1">
+                <span className="flex-1 text-[#0f2b5c]">{t('about', 'About Us')}</span>
+                <button 
+                  onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
+                  className="px-2 py-0.5 text-xs text-slate-500 focus:outline-none"
+                >
+                  {mobileAboutOpen ? '▲' : '▼'}
+                </button>
+              </div>
+              {mobileAboutOpen && (
+                <div className="flex flex-col space-y-1.5 pl-3 pt-2 bg-slate-50/70 rounded-lg p-2 mt-1 text-[11px] sm:text-xs font-semibold">
+                  <a href="/about" className="text-[#0f2b5c] hover:text-[#ffc107] font-black">{t('aboutOverview', 'Company Profile Overview')}</a>
+                  <a href="/why-choose-us" className="text-[#0f2b5c] hover:opacity-80 font-extrabold">{t('aboutWhy', 'Why Choose Us')}</a>
+                  <a href="/esg" className="text-[#15803d] hover:opacity-80 font-extrabold">{t('aboutEsg', 'Environment, Social & Governance (ESG)')}</a>
+                  <a href="/hse" className="text-[#0284c7] hover:opacity-80 font-extrabold">{t('aboutHse', 'Health, Safety & Environment (HSE)')}</a>
+                </div>
+              )}
             </div>
             
             <a href="/products" className="py-2 border-b border-slate-100">{t('products', 'Products')}</a>
@@ -262,9 +296,9 @@ export default function Navbar() {
             <a href="/career" className="py-2 border-b border-slate-100">{t('career', 'Career')}</a>
             <a href="/contact-us" className="py-2">{t('contact', 'Contact')}</a>
 
-            {/* Pilihan Bahasa Versi Mobile (Hanya Bendera) */}
-            <div className="pt-4 border-t border-slate-200 flex items-center gap-4">
-              <span className="text-xs text-slate-400">{t('bahasa', 'Language:')}</span>
+            {/* Pilihan Bahasa Versi Mobile */}
+            <div className="pt-3 border-t border-slate-200 flex items-center gap-3">
+              <span className="text-[11px] sm:text-xs text-slate-400">{t('bahasa', 'Language:')}</span>
               
               <button 
                 onClick={() => changeLanguage('id')} 
