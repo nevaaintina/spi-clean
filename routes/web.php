@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+use App\Models\User;
 use App\Models\HomeSetting;
 use App\Models\Project;
 use App\Models\Branch;
@@ -21,7 +25,7 @@ use App\Models\Setting;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\JobApplicationController;
 
-// Rute untuk Halaman Utama (Home) - Dinamis dari Database (Testimoni Kategori Customer)
+// Rute untuk Halaman Utama (Home)
 Route::get('/', function () {
     return Inertia::render('Home', [
         'homeSetting'  => HomeSetting::first(),
@@ -38,7 +42,7 @@ Route::get('/contact-us', function () {
     return Inertia::render('Contact');
 });
 
-// Rute Halaman Career - Mengirim lowongan pekerjaan, testimoni karyawan, dan anak magang
+// Rute Halaman Career
 Route::get('/career', function () {
     return Inertia::render('Career', [
         'jobVacancies'       => JobVacancy::latest()->get(),
@@ -49,7 +53,7 @@ Route::get('/career', function () {
 // Rute untuk Memproses Kirim Lamaran Pekerjaan
 Route::post('/career/apply', [JobApplicationController::class, 'store'])->name('career.apply');
 
-// Rute Halaman Media Gallery (mendukung /media dan /media-gallery)
+// Rute Halaman Media Gallery
 Route::get('/media', function () {
     return Inertia::render('Media', [
         'mediaGalleries' => MediaGallery::all()
@@ -62,7 +66,7 @@ Route::get('/media-gallery', function () {
     ]);
 });
 
-// Rute Halaman Katalog Produk (Index) - Mengambil PDF katalog produk permanen dari database
+// Rute Halaman Katalog Produk
 Route::get('/products', function () {
     $productCatalog = Setting::where('key', 'product_catalog_pdf')->first();
 
@@ -72,7 +76,7 @@ Route::get('/products', function () {
     ]);
 });
 
-// Rute Halaman Detail Produk (Show)
+// Rute Halaman Detail Produk
 Route::get('/products/{product}', function (Product $product) {
     return Inertia::render('Products/Show', [
         'product' => $product,
@@ -84,7 +88,6 @@ Route::get('/services', [ServiceController::class, 'index']);
 
 Route::get('/services/{categoryName}', function ($categoryName) {
     $decodedName = urldecode($categoryName);
-    
     $services = Service::where('category', 'LIKE', "%{$decodedName}%")->get();
 
     $descriptions = [
@@ -126,12 +129,11 @@ Route::get('/knowledge/{article}', function (Article $article) {
     ]);
 });
 
-// Rute Halaman Why Choose Us
+// Rute Halaman Lainnya
 Route::get('/why-choose-us', function () {
     return Inertia::render('WhyChooseUs');
 });
 
-// Rute Halaman Featured Services Detail
 Route::get('/featured-services/{slug}', function ($slug) {
     return Inertia::render('ShowFeatured', [
         'slug' => $slug
@@ -146,7 +148,6 @@ Route::get('/hse', function () {
     return Inertia::render('About/Hse');
 });
 
-// Rute Halaman About Us
 Route::get('/about', function () {
     return Inertia::render('About/Index', [
         'milestones'     => Milestone::orderBy('year', 'asc')->get(),
@@ -192,6 +193,33 @@ Route::get('/spare-parts/{sparePart}', function (SparePart $sparePart) {
 });
 
 
+// ==================== RUTE AUTHENTICATION ====================
+Route::get('/login', function () {
+    return Inertia::render('Admin/Login');
+})->name('login');
+
+// Memproses data login dengan ValidationException standar Inertia
+Route::post('/login', function (Request $request) {
+    $credentials = $request->validate([
+        'username' => ['required', 'string'],
+        'password' => ['required'],
+    ]);
+
+    $user = User::where('username', $credentials['username'])->first();
+
+    if (!$user || !Hash::check($credentials['password'], $user->password)) {
+        throw ValidationException::withMessages([
+            'username' => '⚠️ Maaf, username atau kata sandi yang Anda masukkan salah.',
+        ]);
+    }
+
+    Auth::login($user, $request->boolean('remember'));
+    $request->session()->regenerate();
+
+    return redirect()->intended('/admin');
+});
+
+
 // ==================== RUTE DASHBOARD ADMIN ====================
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HomeSettingController;
@@ -208,61 +236,46 @@ use App\Http\Controllers\Admin\MediaGalleryController;
 use App\Http\Controllers\Admin\JobVacancyController;
 use App\Http\Controllers\Admin\CatalogController;
 
-// Rute Utama Admin
-Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
+Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware(['auth']);
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    // Homepage settings (Video Hero)
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::get('/home/hero', [HomeSettingController::class, 'index'])->name('home.hero');
     Route::post('/home/hero', [HomeSettingController::class, 'update'])->name('home.hero.update');
     Route::delete('/home/hero', [HomeSettingController::class, 'deleteHero'])->name('home.hero.delete');
 
-    // Rute Poster
     Route::post('/posters', [HomeSettingController::class, 'storePoster'])->name('posters.store');
     Route::delete('/posters/{poster}', [HomeSettingController::class, 'destroyPoster'])->name('posters.destroy');
 
-    // Projects & Branches
     Route::resource('projects', ProjectController::class);
     Route::resource('branches', BranchController::class);
 
-    // Products & Testimonials
     Route::resource('products', ProductController::class);
     Route::resource('testimonials', TestimonialController::class);
 
-    // Resource Admin untuk About
     Route::resource('milestones', MilestoneController::class);
     Route::resource('team-members', TeamMemberController::class);
     Route::resource('customers', CustomerController::class);
 
-    // Rute Admin untuk Services (Tambah, Update/Edit, Hapus)
     Route::post('/services', [ServiceController::class, 'store'])->name('services.store');
     Route::put('/services/{service}', [ServiceController::class, 'update'])->name('services.update');
     Route::delete('/services/{service}', [ServiceController::class, 'destroy'])->name('services.destroy');
 
-    // Rute Admin untuk Articles / Knowledge (Tambah, Update/Edit, Hapus)
     Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
-    Route::put('/articles/{article}', [ArticleController::class, 'update'])->name('articles.update'); // 👈 Rute Edit / Update Artikel Knowledge
+    Route::put('/articles/{article}', [ArticleController::class, 'update'])->name('articles.update');
     Route::delete('/articles/{article}', [ArticleController::class, 'destroy'])->name('articles.destroy');
 
-    // Rute Admin untuk Media Gallery
     Route::post('/media', [MediaGalleryController::class, 'store'])->name('media.store');
     Route::delete('/media/{media}', [MediaGalleryController::class, 'destroy'])->name('media.destroy');
 
-    // Rute Admin untuk Job Vacancy
     Route::post('/job-vacancies', [JobVacancyController::class, 'store'])->name('job-vacancies.store');
+    Route::put('/job-vacancies/{jobVacancy}', [JobVacancyController::class, 'update'])->name('job-vacancies.update');
     Route::delete('/job-vacancies/{jobVacancy}', [JobVacancyController::class, 'destroy'])->name('job-vacancies.destroy');
 
-    // Rute Admin untuk Katalog PDF Utama (Update & Delete secara Permanen)
     Route::post('/catalogs/update', [CatalogController::class, 'update'])->name('catalogs.update');
     Route::delete('/catalogs/delete', [CatalogController::class, 'destroy'])->name('catalogs.destroy');
 
-    // Rute Admin untuk Spare Parts Katalog & Konfigurasi Katalog PDF / Exploded View
     Route::post('/spare-parts', [AdminSparePartController::class, 'store'])->name('spare-parts.store');
     Route::post('/spare-parts/catalog-config', [AdminSparePartController::class, 'storeCatalogConfig'])->name('spare-parts.catalog-config');
-    
-    // Rute Hapus Konfigurasi Exploded View
     Route::delete('/spare-parts/catalog-config/{assemblyName}', [AdminSparePartController::class, 'destroyCatalogConfig'])->name('spare-parts.catalog-config.destroy');
-
-    // Rute Hapus Spare Parts
     Route::delete('/spare-parts/{sparePart}', [AdminSparePartController::class, 'destroy'])->name('spare-parts.destroy');
 });
