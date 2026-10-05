@@ -3,10 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-use App\Models\User;
 use App\Models\HomeSetting;
 use App\Models\Project;
 use App\Models\Branch;
@@ -22,10 +18,12 @@ use App\Models\Customer;
 use App\Models\JobVacancy;
 use App\Models\Service;
 use App\Models\Setting;
+use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\JobApplicationController;
 
-// Rute untuk Halaman Utama (Home)
+// ==================== RUTE HALAMAN UTAMA & PUBLIK ====================
+
 Route::get('/', function () {
     return Inertia::render('Home', [
         'homeSetting'  => HomeSetting::first(),
@@ -37,12 +35,10 @@ Route::get('/', function () {
     ]);
 });
 
-// Rute untuk Halaman Contact
 Route::get('/contact-us', function () {
     return Inertia::render('Contact');
 });
 
-// Rute Halaman Career
 Route::get('/career', function () {
     return Inertia::render('Career', [
         'jobVacancies'       => JobVacancy::latest()->get(),
@@ -50,10 +46,8 @@ Route::get('/career', function () {
     ]);
 });
 
-// Rute untuk Memproses Kirim Lamaran Pekerjaan
 Route::post('/career/apply', [JobApplicationController::class, 'store'])->name('career.apply');
 
-// Rute Halaman Media Gallery
 Route::get('/media', function () {
     return Inertia::render('Media', [
         'mediaGalleries' => MediaGallery::all()
@@ -66,7 +60,6 @@ Route::get('/media-gallery', function () {
     ]);
 });
 
-// Rute Halaman Katalog Produk
 Route::get('/products', function () {
     $productCatalog = Setting::where('key', 'product_catalog_pdf')->first();
 
@@ -76,7 +69,6 @@ Route::get('/products', function () {
     ]);
 });
 
-// Rute Halaman Detail Produk
 Route::get('/products/{product}', function (Product $product) {
     return Inertia::render('Products/Show', [
         'product' => $product,
@@ -194,30 +186,9 @@ Route::get('/spare-parts/{sparePart}', function (SparePart $sparePart) {
 
 
 // ==================== RUTE AUTHENTICATION ====================
-Route::get('/login', function () {
-    return Inertia::render('Admin/Login');
-})->name('login');
-
-// Memproses data login dengan ValidationException standar Inertia
-Route::post('/login', function (Request $request) {
-    $credentials = $request->validate([
-        'username' => ['required', 'string'],
-        'password' => ['required'],
-    ]);
-
-    $user = User::where('username', $credentials['username'])->first();
-
-    if (!$user || !Hash::check($credentials['password'], $user->password)) {
-        throw ValidationException::withMessages([
-            'username' => '⚠️ Maaf, username atau kata sandi yang Anda masukkan salah.',
-        ]);
-    }
-
-    Auth::login($user, $request->boolean('remember'));
-    $request->session()->regenerate();
-
-    return redirect()->intended('/admin');
-});
+Route::get('/login', [AuthController::class, 'create'])->name('login'); // PENTING: name('login') wajib ada!
+Route::post('/login', [AuthController::class, 'store']);
+Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
 
 
 // ==================== RUTE DASHBOARD ADMIN ====================
@@ -236,6 +207,7 @@ use App\Http\Controllers\Admin\MediaGalleryController;
 use App\Http\Controllers\Admin\JobVacancyController;
 use App\Http\Controllers\Admin\CatalogController;
 
+// Rute utama /admin diamankan dengan middleware 'auth'
 Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware(['auth']);
 
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {

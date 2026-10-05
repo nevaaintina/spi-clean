@@ -466,7 +466,7 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
                   </div>
                 </div>
 
-                {/* Tabel Komponen Interaktif Dinamis dari Session/DB (Part Number dan Kategori Telah Dihapus) */}
+                {/* Tabel Komponen Interaktif Dinamis dari Session/DB (Part Number dan Status Telah Dihapus) */}
                 <div className="mt-6 sm:mt-8 overflow-x-auto">
                   <table className="w-full text-left border-collapse min-w-[300px]">
                     <thead>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Head, router } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
+import axios from 'axios';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -9,24 +10,33 @@ export default function Login() {
   const [showAlertModal, setShowAlertModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
     setLoading(true);
 
-    router.post('/login', {
-      username,
-      password,
-    }, {
-      onError: (errors) => {
-        setLoading(false);
-        // Menangkap error dari Laravel baik key-nya 'username', 'password', maupun 'email' / 'general'
-        const msg = errors.username || errors.password || errors.email || Object.values(errors)[0] || '⚠️ Maaf, username atau kata sandi yang Anda masukkan salah.';
-        setErrorMessage(msg);
-        setShowAlertModal(true); // Memunculkan Pop-Up Peringatan Melayang
-      },
-      onFinish: () => setLoading(false),
-    });
+    try {
+      const response = await axios.post('/login', {
+        username,
+        password,
+      });
+
+      if (response.data.redirect) {
+        window.location.href = response.data.redirect;
+      }
+    } catch (error) {
+      setLoading(false);
+      
+      const msg = 
+        error.response?.data?.message || 
+        error.response?.data?.errors?.username?.[0] || 
+        '⚠️ Maaf, username atau kata sandi yang Anda masukkan salah.';
+
+      setErrorMessage(msg);
+      setShowAlertModal(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,6 +72,7 @@ export default function Login() {
           <p className="text-xs text-slate-500 mt-1">PT Servistama Pro Indonesia</p>
         </div>
 
+        {/* Menggunakan autoComplete="off" pada form */}
         <form onSubmit={submit} className="space-y-5" autoComplete="off">
           {/* Input Username */}
           <div>
@@ -72,6 +83,8 @@ export default function Login() {
               onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-[#ffc107]"
               placeholder="Masukkan username..."
+              autoComplete="off"
+              name="random_username_field"
               required
             />
           </div>
@@ -86,6 +99,8 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 pr-12 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-[#ffc107]"
                 placeholder="••••••••"
+                autoComplete="new-password"
+                name="random_password_field"
                 required
               />
               <button
@@ -110,7 +125,11 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 rounded-xl bg-[#0b2348] text-white text-xs font-black hover:bg-[#ffc107] hover:text-[#0b2348] transition-all duration-300 shadow-md cursor-pointer"
+            className={`w-full py-3.5 rounded-xl text-xs font-black transition-all duration-300 shadow-md ${
+              loading 
+                ? 'bg-slate-400 text-white cursor-not-allowed' 
+                : 'bg-[#0b2348] text-white hover:bg-[#ffc107] hover:text-[#0b2348] cursor-pointer'
+            }`}
           >
             {loading ? 'Memproses...' : 'Masuk Dashboard →'}
           </button>
