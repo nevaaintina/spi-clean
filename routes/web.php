@@ -20,7 +20,7 @@ use App\Models\Service;
 use App\Models\Setting;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ServiceController;
-use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\Admin\JobApplicationController;
 
 // ==================== RUTE HALAMAN UTAMA & PUBLIK ====================
 
@@ -45,8 +45,6 @@ Route::get('/career', function () {
         'careerTestimonials' => Testimonial::whereIn('category', ['employee', 'intern'])->get()
     ]);
 });
-
-Route::post('/career/apply', [JobApplicationController::class, 'store'])->name('career.apply');
 
 Route::get('/media', function () {
     return Inertia::render('Media', [
@@ -186,7 +184,7 @@ Route::get('/spare-parts/{sparePart}', function (SparePart $sparePart) {
 
 
 // ==================== RUTE AUTHENTICATION ====================
-Route::get('/login', [AuthController::class, 'create'])->name('login'); // PENTING: name('login') wajib ada!
+Route::get('/login', [AuthController::class, 'create'])->name('login'); 
 Route::post('/login', [AuthController::class, 'store']);
 Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
 
@@ -207,7 +205,6 @@ use App\Http\Controllers\Admin\MediaGalleryController;
 use App\Http\Controllers\Admin\JobVacancyController;
 use App\Http\Controllers\Admin\CatalogController;
 
-// Rute utama /admin diamankan dengan middleware 'auth'
 Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware(['auth']);
 
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {

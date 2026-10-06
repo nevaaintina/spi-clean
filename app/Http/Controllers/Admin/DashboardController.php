@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ use App\Models\TeamMember;
 use App\Models\Customer;
 use App\Models\JobVacancy;
 use App\Models\Service;
-use App\Models\Setting; // 👈 Model Setting diimpor untuk membaca path PDF katalog utama
+use App\Models\Setting;
 
 class DashboardController extends Controller
 {
@@ -29,30 +30,32 @@ class DashboardController extends Controller
         $productCatalog = Setting::where('key', 'product_catalog_pdf')->first();
         $sparePartCatalog = Setting::where('key', 'spare_part_catalog_pdf')->first();
 
+        
+
         return Inertia::render('Admin/Dashboard', [
-            'homeSetting'          => HomeSetting::first(),
-            'projects'             => Project::latest()->get(),
-            'branches'             => Branch::all(),
-            'products'             => Product::all(),
-            'spareParts'           => SparePart::all(),
-            'articles'             => Article::latest()->get(), 
-            'mediaGalleries'       => MediaGallery::all(),
-            'testimonials'         => Testimonial::latest()->get(),
-            'activePoster'         => Poster::where('is_active', true)->latest()->first(),
-            'posters'              => Poster::latest()->get(),
-            'milestones'           => Milestone::latest()->get(),
-            'teamMembers'          => TeamMember::all(),
-            'customers'            => Customer::all(),
-            'jobVacancies'         => JobVacancy::latest()->get(),
-            'services'             => Service::latest()->get(),
+            'homeSetting'           => HomeSetting::first(),
+            'projects'              => Project::latest()->get(),
+            'branches'              => Branch::all(),
+            'products'              => Product::all(),
+            'spareParts'            => SparePart::all(),
+            'articles'              => Article::latest()->get(), 
+            'mediaGalleries'        => MediaGallery::all(),
+            'testimonials'          => Testimonial::latest()->get(),
+            'activePoster'          => Poster::where('is_active', true)->latest()->first(),
+            'posters'               => Poster::latest()->get(),
+            'milestones'            => Milestone::latest()->get(),
+            'teamMembers'           => TeamMember::all(),
+            'customers'             => Customer::all(),
+            'jobVacancies'          => JobVacancy::latest()->get(),
+            'services'              => Service::latest()->get(),
             
             // Menyediakan data katalog PDF utama secara terpisah untuk Produk dan Spare Part
-            'productCatalogPdf'    => $productCatalog ? $productCatalog->value : null,
-            'sparePartCatalogPdf'  => $sparePartCatalog ? $sparePartCatalog->value : null,
+            'productCatalogPdf'     => $productCatalog ? $productCatalog->value : null,
+            'sparePartCatalogPdf'   => $sparePartCatalog ? $sparePartCatalog->value : null,
             
             // Variabel pendukung lainnya
-            'explodedImagesMap'    => session('spare_part_exploded_images', []),
-            'explodedPartsDataMap' => session('spare_part_exploded_parts_data', []),
+            'explodedImagesMap'     => session('spare_part_exploded_images', []),
+            'explodedPartsDataMap'  => session('spare_part_exploded_parts_data', []),
         ]);
     }
 }

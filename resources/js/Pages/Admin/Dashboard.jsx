@@ -16,8 +16,8 @@ export default function AdminDashboard({
   testimonials = [],
   jobVacancies = [],
   services = [],
-  productCatalogPdf = null,       // 👈 Katalog Produk Utama
-  sparePartCatalogPdf = null,     // 👈 Katalog Spare Part Utama
+  productCatalogPdf = null,
+  sparePartCatalogPdf = null,
   explodedImagesMap = {}, 
   explodedPartsDataMap = {} 
 }) {
@@ -274,6 +274,14 @@ export default function AdminDashboard({
 
   const mapRef = useRef(null);
   const markerRef = useRef(null);
+
+  // FUNGSI HANDLE LOGOUT
+  const handleLogout = (e) => {
+    e.preventDefault();
+    if (confirm("Apakah Anda yakin ingin keluar dari sistem admin?")) {
+      router.post('/logout');
+    }
+  };
 
   useEffect(() => {
     if (activeTab === "homepage" && window.L) {
@@ -1241,9 +1249,19 @@ export default function AdminDashboard({
 
       {/* SIDEBAR NAVIGATION */}
       <aside className="w-72 bg-[#071b38] text-white flex flex-col shrink-0 min-h-screen sticky top-0 shadow-xl">
-        <div className="p-6 border-b border-white/10">
-          <h1 className="text-sm font-black uppercase tracking-widest text-[#ffc107]">Servistama Admin</h1>
-          <p className="text-[10px] text-slate-400 mt-1">Management & Control Panel</p>
+        <div className="p-6 border-b border-white/10 space-y-4">
+          <div>
+            <h1 className="text-sm font-black uppercase tracking-widest text-[#ffc107]">Servistama Admin</h1>
+            <p className="text-[10px] text-slate-400 mt-1">Management & Control Panel</p>
+          </div>
+
+          {/* TOMBOL LOGOUT DI BAGIAN ATAS SIDEBAR */}
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center py-2.5 px-4 bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white rounded-xl text-xs font-bold transition border border-red-500/30 cursor-pointer shadow-sm"
+          >
+            Logout / Keluar
+          </button>
         </div>
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto text-xs font-bold">
