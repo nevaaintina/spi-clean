@@ -293,11 +293,11 @@ export default function ProductShow({ product }) {
 
             {/* 3. SLIDER FOTO UTAMA */}
             <div className="relative overflow-hidden rounded-[28px] bg-slate-900 border border-slate-200 shadow-lg group">
-              <div className="relative h-[420px] sm:h-[550px] lg:h-[640px] w-full overflow-hidden flex items-center justify-center bg-slate-900">
+              <div className="relative h-[280px] sm:h-[640px] w-full overflow-hidden flex items-center justify-center bg-slate-900">
                 <img
                   src={galleryImages[activeImage] || galleryImages[0]}
                   alt={product.name}
-                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover sm:object-cover transition-all duration-700 group-hover:scale-105"
                 />
 
                 {/* Counter Badge */}

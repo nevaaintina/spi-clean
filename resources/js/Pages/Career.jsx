@@ -107,10 +107,10 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
 
   // Data Statis Jenjang Karier
   const pathList = [
-    { level: "01", title: "Junior / Staff", description: "Memulai perjalanan karier dari dasar dengan mendapatkan pengalaman langsung, mengembangkan keterampilan dan belajar bersama para profesional berpengalaman. Kesempatan untuk terus belajar, berkontribusi dan berkembang bersama PT Servistamapro Indonesia." },
-    { level: "02", title: "Specialist / Senior Staff", description: "Mengembangkan keahlian dan pengalaman yang lebih mendalam, mengambil tanggung jawab yang lebih besar, serta memberikan kontribusi melalui kompetensi dan pengalaman untuk mendukung pencapaian perusahaan." },
-    { level: "03", title: "Supervisor / Leader", description: "Memimpin tim dengan tanggung jawab yang lebih besar, mengembangkan potensi anggota tim, serta memastikan setiap pekerjaan berjalan efektif untuk mencapai target dan tujuan perusahaan." },
-    { level: "04", title: "Manager / Head of Dept", description: "Memimpin strategi dan operasional dalam lingkup yang lebih luas, mengambil keputusan secara strategis, serta mengarahkan tim untuk mencapai target dan mendukung pertumbuhan serta keberhasilan perusahaan." },
+    { level: "01", title: "Junior / Staff", description: "Memulai perjalanan karier dari dasar dengan mendapatkan pengalaman langsung, mengembangkan keterampilan dan belajar bersama para profesional berpengalaman." },
+    { level: "02", title: "Specialist / Senior Staff", description: "Mengembangkan keahlian dan pengalaman yang lebih mendalam, mengambil tanggung jawab yang lebih besar, serta memberikan kontribusi melalui kompetensi." },
+    { level: "03", title: "Supervisor / Leader", description: "Memimpin tim dengan tanggung jawab yang lebih besar, mengembangkan potensi anggota tim, serta memastikan setiap pekerjaan berjalan efektif." },
+    { level: "04", title: "Manager / Head of Dept", description: "Memimpin strategi dan operasional dalam lingkup yang lebih luas, mengambil keputusan secara strategis, serta mengarahkan tim." },
   ];
 
   return (
@@ -201,31 +201,22 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
       </section>
 
       {/* =========================================================
-          OUR CULTURE
+          OUR CULTURE (Diatur Grid 2 Kolom Menyamping di HP)
       ========================================================= */}
       <section id="culture" className="relative bg-white py-20 md:py-24 overflow-hidden border-t border-slate-200">
-        <div
-          className="absolute left-0 top-10 w-32 h-32 opacity-50 pointer-events-none"
-          style={{
-            backgroundImage:
-              "radial-gradient(#d9dee7 1.5px, transparent 1.5px)",
-            backgroundSize: "18px 18px",
-          }}
-        />
-
         <div className="max-w-[1240px] mx-auto px-6 md:px-10 lg:px-12 relative">
           <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_1.55fr] gap-10 lg:gap-14 mb-14 md:mb-16">
             
             <FadeReveal>
-              <div className="relative min-h-[620px] flex flex-col">
-                <div className="flex items-center gap-3 mb-7">
+              <div className="relative flex flex-col">
+                <div className="flex items-center gap-3 mb-5">
                   <span className="text-[10px] md:text-[11px] font-bold tracking-[0.16em] uppercase text-[#b07b00]">
                     OUR CULTURE
                   </span>
                   <span className="w-8 h-[2px] bg-[#dca500]" />
                 </div>
 
-                <h2 className="text-[42px] md:text-[48px] lg:text-[50px] font-black leading-[1.08] tracking-[-0.025em] text-[#0b2348]">
+                <h2 className="text-3xl md:text-[48px] lg:text-[50px] font-black leading-[1.08] tracking-[-0.025em] text-[#0b2348]">
                   Where People
                   <br />
                   <span className="text-[#dca500]">
@@ -233,52 +224,45 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
                   </span>
                 </h2>
 
-                <div className="w-10 h-[2px] bg-[#dca500] mt-7 mb-6" />
+                <div className="w-10 h-[2px] bg-[#dca500] mt-5 mb-5" />
 
-                <p className="max-w-[430px] text-[13px] md:text-[14px] text-[#536782] leading-[1.9]">
+                <p className="max-w-[430px] text-xs md:text-[14px] text-[#536782] leading-[1.8]">
                   Di SPI, kami percaya bahwa kesuksesan perusahaan dibangun oleh manusia yang bertumbuh bersama. Budaya kerja kami mencerminkan komitmen terhadap integritas, keselamatan, kolaborasi dan inovasi berkelanjutan dalam setiap langkah.
                 </p>
-
-                <div className="absolute left-[-48px] right-[-30px] bottom-[-55px] h-[320px] pointer-events-none overflow-hidden">
-                  <img
-                    src="/images/our-culture.png"
-                    alt="Open pit mining with heavy equipment"
-                    className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-b from-white via-white/20 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/80" />
-                </div>
               </div>
             </FadeReveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {/* Grid 2 kolom di HP (grid-cols-2) agar tidak menumpuk memanjang ke bawah */}
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
               {cultureList.map((item, index) => (
                 <FadeReveal key={index} delay={index * 150}>
-                  <div className="group relative bg-white rounded-[18px] border border-[#edf0f4] shadow-[0_5px_25px_rgba(11,35,72,0.07)] min-h-[475px] px-7 pt-9 pb-7 flex flex-col overflow-hidden hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(11,35,72,0.15)] transition-all duration-300">
+                  <div className={`group relative bg-white rounded-xl sm:rounded-[18px] border border-[#edf0f4] shadow-sm min-h-[320px] sm:min-h-[475px] p-4 sm:pt-9 sm:pb-7 sm:px-7 flex flex-col justify-between overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all duration-300 ${index === 2 ? 'col-span-2 lg:col-span-1 max-w-[280px] sm:max-w-none mx-auto w-full' : ''}`}>
                     <div className="absolute bottom-0 left-0 right-0 h-[6px] bg-[#e5ad00] group-hover:h-[8px] transition-all" />
-                    <div className="flex items-start justify-between">
-                      <div
-                        className="w-[92px] h-[92px] bg-[#0b2348] flex items-center justify-center shadow-md relative transform group-hover:rotate-6 transition-transform duration-300"
-                        style={{
-                          clipPath: "polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%)",
-                        }}
-                      >
-                        <svg className="w-10 h-10 text-[#ffc107]" fill="none" stroke="currentColor" strokeWidth="1.7" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                        </svg>
+                    <div>
+                      <div className="flex items-start justify-between">
+                        <div
+                          className="w-12 h-12 sm:w-[92px] sm:h-[92px] bg-[#0b2348] flex items-center justify-center shadow-md relative transform group-hover:rotate-6 transition-transform duration-300 shrink-0"
+                          style={{
+                            clipPath: "polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%)",
+                          }}
+                        >
+                          <svg className="w-5 h-5 sm:w-10 sm:h-10 text-[#ffc107]" fill="none" stroke="currentColor" strokeWidth="1.7" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                          </svg>
+                        </div>
+                        <div className="pt-1 sm:pt-2 text-right">
+                          <span className="text-xl sm:text-[30px] font-black text-[#b17d00]">{String(index + 1).padStart(2, "0")}</span>
+                          <div className="w-6 sm:w-9 h-[2px] bg-[#dca500] mt-1 sm:mt-3 ml-auto" />
+                        </div>
                       </div>
-                      <div className="pt-2">
-                        <span className="text-[30px] font-black text-[#b17d00]">{String(index + 1).padStart(2, "0")}</span>
-                        <div className="w-9 h-[2px] bg-[#dca500] mt-3" />
-                      </div>
+                      <h3 className="mt-4 sm:mt-9 text-sm sm:text-[20px] font-black text-[#0b2348]">
+                        {item.title}
+                      </h3>
+                      <div className="w-8 sm:w-11 h-[2px] bg-[#e1ad00] mt-2 sm:mt-4 mb-3 sm:mb-6" />
+                      <p className="text-[11px] sm:text-[13px] leading-relaxed sm:leading-[2] text-[#62728a]">
+                        {item.description}
+                      </p>
                     </div>
-                    <h3 className="mt-9 text-[20px] font-black text-[#0b2348]">
-                      {item.title}
-                    </h3>
-                    <div className="w-11 h-[2px] bg-[#e1ad00] mt-4 mb-6" />
-                    <p className="text-[13px] leading-[2] text-[#62728a]">
-                      {item.description}
-                    </p>
                   </div>
                 </FadeReveal>
               ))}
@@ -439,7 +423,7 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
       </section>
 
       {/* =========================================================
-          CAREER PATH
+          CAREER PATH (Diatur Grid 2 Kolom Menyamping di HP)
       ========================================================= */}
       <section className="py-24 md:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-16">
@@ -462,19 +446,21 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
           <div className="relative">
             <div className="hidden lg:block absolute top-7 left-[12%] right-[12%] h-[1px] bg-slate-200" />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
               {pathList.map((path, index) => (
                 <FadeReveal key={index} delay={index * 150}>
-                  <div className="relative text-center group">
-                    <div className="relative z-10 mx-auto w-14 h-14 rounded-full bg-[#0b2348] border-4 border-white shadow-lg flex items-center justify-center text-[#ffc107] font-black text-sm group-hover:scale-110 group-hover:bg-[#ffc107] group-hover:text-[#0b2348] transition-all duration-300">
-                      {path.level}
+                  <div className="relative text-center group bg-slate-50/60 p-4 sm:p-0 rounded-xl sm:rounded-none border border-slate-200/50 sm:border-0 h-full flex flex-col justify-between">
+                    <div>
+                      <div className="relative z-10 mx-auto w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-[#0b2348] border-4 border-white shadow-lg flex items-center justify-center text-[#ffc107] font-black text-xs sm:text-sm group-hover:scale-110 group-hover:bg-[#ffc107] group-hover:text-[#0b2348] transition-all duration-300">
+                        {path.level}
+                      </div>
+
+                      <h3 className="mt-3 sm:mt-6 font-extrabold text-xs sm:text-base text-[#0b2348]">
+                        {path.title}
+                      </h3>
                     </div>
 
-                    <h3 className="mt-6 font-extrabold text-[#0b2348]">
-                      {path.title}
-                    </h3>
-
-                    <p className="mt-3 text-xs leading-6 text-slate-500 max-w-xs mx-auto">
+                    <p className="mt-2 sm:mt-3 text-[11px] sm:text-xs leading-relaxed sm:leading-6 text-slate-500 max-w-xs mx-auto">
                       {path.description}
                     </p>
                   </div>
@@ -486,7 +472,7 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
       </section>
 
       {/* =========================================================
-          EMPLOYEE STORIES
+          EMPLOYEE STORIES (Diatur Grid 2 Kolom Menyamping di HP)
       ========================================================= */}
       <section className="relative py-24 md:py-28 bg-[#071b38] overflow-hidden border-t border-b border-slate-800">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -515,26 +501,26 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
             </div>
           </FadeReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-7xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-5 max-w-7xl mx-auto">
             {activeStories.map((story, index) => {
               const imgUrl = story.image_path ? (story.image_path.startsWith('http') ? story.image_path : `/${story.image_path}`) : (story.image || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=90");
               return (
                 <FadeReveal key={story.id || index} delay={index * 150}>
                   <div
-                    className="group relative bg-white border border-slate-200 rounded-2xl p-6 md:p-7 shadow-[0_10px_30px_rgba(0,0,0,0.15)] hover:shadow-2xl hover:border-[#ffc107] hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between h-full"
+                    className={`group relative bg-white border border-slate-200 rounded-xl sm:rounded-2xl p-4 sm:p-7 shadow-lg hover:shadow-2xl hover:border-[#ffc107] hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between h-full ${index === 2 ? 'col-span-2 md:col-span-1 max-w-[285px] sm:max-w-none mx-auto w-full' : ''}`}
                   >
                     <div>
-                      <div className="absolute top-5 right-6 text-4xl font-serif text-[#ffc107]/40">
+                      <div className="absolute top-3 right-4 sm:top-5 sm:right-6 text-3xl sm:text-4xl font-serif text-[#ffc107]/40">
                         “
                       </div>
 
-                      <p className="text-xs md:text-sm text-slate-600 leading-6 pr-6">
+                      <p className="text-[11px] sm:text-sm text-slate-600 leading-relaxed sm:leading-6 pr-4 sm:pr-6">
                         "{story.quote}"
                       </p>
                     </div>
 
-                    <div className="mt-6 pt-5 border-t border-slate-100 flex items-center gap-3.5">
-                      <div className="w-13 h-13 rounded-full overflow-hidden ring-2 ring-[#ffc107] shrink-0 shadow-sm">
+                    <div className="mt-4 sm:mt-6 pt-3 sm:pt-5 border-t border-slate-100 flex items-center gap-3">
+                      <div className="w-10 h-10 sm:w-13 sm:h-13 rounded-full overflow-hidden ring-2 ring-[#ffc107] shrink-0 shadow-sm">
                         <img
                           src={imgUrl}
                           alt={story.name}
@@ -542,10 +528,10 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
                         />
                       </div>
                       <div>
-                        <h4 className="font-extrabold text-xs text-[#0b2348]">
+                        <h4 className="font-extrabold text-[11px] sm:text-xs text-[#0b2348] truncate">
                           {story.name}
                         </h4>
-                        <p className="text-[10px] font-medium text-[#b27b00] mt-0.5">
+                        <p className="text-[9px] sm:text-[10px] font-medium text-[#b27b00] mt-0.5 line-clamp-1">
                           {story.role}
                         </p>
                       </div>
@@ -564,19 +550,20 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
       <section className="py-20 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-16">
           <FadeReveal>
-            <div className="relative overflow-hidden min-h-[520px] md:min-h-[560px] bg-slate-50 border border-slate-200/80 rounded-[2rem]">
+            <div className="relative overflow-hidden bg-slate-50 border border-slate-200/80 rounded-[2rem] lg:min-h-[560px]">
               <div className="absolute left-0 bottom-0 w-[250px] h-[180px] bg-[#0b2348]/5 rounded-tr-[100px] opacity-70 pointer-events-none" />
 
-              <div className="relative z-10 max-w-[1600px] mx-auto min-h-[520px] md:min-h-[560px]">
-                <div className="relative z-20 w-full lg:w-[52%] px-8 md:px-12 lg:px-16 xl:px-24 py-16 md:py-20 lg:py-24">
-                  <div className="flex items-center gap-4 mb-7">
+              <div className="relative z-10 flex flex-col lg:flex-row items-stretch min-h-[520px] md:min-h-[560px]">
+                
+                <div className="relative z-20 w-full lg:w-[52%] px-6 sm:px-10 lg:px-16 xl:px-24 py-12 md:py-16 lg:py-24 flex flex-col justify-center">
+                  <div className="flex items-center gap-4 mb-5 sm:mb-7">
                     <span className="w-12 h-[2px] bg-[#ffc107]" />
-                    <span className="text-[11px] md:text-xs font-bold tracking-[0.22em] uppercase text-[#0b2348]">
+                    <span className="text-[10px] md:text-xs font-bold tracking-[0.22em] uppercase text-[#0b2348]">
                       INTERNSHIP PROGRAM
                     </span>
                   </div>
 
-                  <h2 className="text-4xl md:text-5xl lg:text-[58px] xl:text-[64px] font-black leading-[1.02] tracking-[-0.03em] text-[#0b2348]">
+                  <h2 className="text-3xl sm:text-4xl lg:text-[58px] xl:text-[64px] font-black leading-[1.08] lg:leading-[1.02] tracking-[-0.03em] text-[#0b2348]">
                     Start Your Career
                     <br />
                     <span className="text-[#b27b00]">
@@ -584,12 +571,12 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
                     </span>
                   </h2>
 
-                  <p className="mt-7 max-w-[600px] text-sm md:text-base lg:text-[16px] leading-7 text-slate-600">
+                  <p className="mt-5 sm:mt-7 max-w-[600px] text-xs sm:text-sm md:text-base lg:text-[16px] leading-6 sm:leading-7 text-slate-600">
                     Kesempatan bagi mahasiswa dan fresh graduate untuk mengembangkan kompetensi serta merasakan pengalaman kerja nyata di industri alat berat bersama PT Servistama Pro Indonesia.
                     Belajar hari ini, berkembang untuk masa depan.
                   </p>
 
-                  <div className="mt-8 flex flex-col xl:flex-row xl:items-center gap-8">
+                  <div className="mt-7 sm:mt-8 flex flex-col xl:flex-row xl:items-center gap-6 sm:gap-8">
                     <a
                       href="https://mail.google.com/mail/?view=cm&fs=1&to=hr_recruitment@servistamapro.com&su=Pendaftaran%20Internship%20Program"
                       target="_blank"
@@ -633,10 +620,9 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
                   </div>
                 </div>
 
-                <div className="absolute top-0 right-0 w-full lg:w-[52%] h-full pointer-events-none">
+                <div className="relative w-full lg:absolute lg:top-0 lg:right-0 lg:w-[52%] h-[280px] lg:h-full pointer-events-none">
                   <div
-                    className="absolute inset-0 overflow-hidden"
-                    style={{ clipPath: "polygon(16% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
+                    className="absolute inset-0 overflow-hidden lg:[clip-path:polygon(16%_0%,100%_0%,100%_100%,0%_100%)]"
                   >
                     <img
                       src="/images/magang.jpeg"
@@ -646,6 +632,7 @@ export default function Career({ jobVacancies = [], careerTestimonials = [] }) {
                     <div className="absolute inset-0 bg-[#0b2348]/15" />
                   </div>
                 </div>
+
               </div>
             </div>
           </FadeReveal>

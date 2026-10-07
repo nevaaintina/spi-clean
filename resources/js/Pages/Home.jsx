@@ -114,11 +114,11 @@ function TestimonialsSlider({ testimonials }) {
           const profileImg = t.image_path ? (t.image_path.startsWith('http') ? t.image_path : `/${t.image_path}`) : null;
           return (
             <div key={t.id || idx} className="w-full flex justify-center">
-              <div className="group relative flex flex-col justify-between p-6 sm:p-8 rounded-[20px] sm:rounded-[24px] bg-slate-50/80 shadow-[0_10px_30px_rgba(15,43,92,0.06)] border border-slate-200/60 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(15,43,92,0.12)] hover:bg-white w-full max-w-[380px] min-h-[320px] sm:min-h-[360px]">
+              <div className="group relative flex flex-col justify-between p-4 sm:p-8 rounded-[16px] sm:rounded-[24px] bg-slate-50/80 shadow-[0_10px_30px_rgba(15,43,92,0.06)] border border-slate-200/60 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(15,43,92,0.12)] hover:bg-white w-full max-w-[360px] sm:max-w-[380px] min-h-[220px] sm:min-h-[360px]">
                 
                 <div className="overflow-hidden">
-                  <div className="text-[#ffc107] mb-1 sm:mb-2 text-3xl sm:text-4xl font-serif font-black leading-none select-none">“</div>
-                  <p className="text-slate-600 text-[11px] sm:text-xs md:text-sm leading-relaxed mb-6 font-normal break-words overflow-hidden">
+                  <div className="text-[#ffc107] mb-1 sm:mb-2 text-2xl sm:text-4xl font-serif font-black leading-none select-none">“</div>
+                  <p className="text-slate-600 text-xs sm:text-xs md:text-sm leading-relaxed mb-4 sm:mb-6 font-normal break-words overflow-hidden">
                     {t.quote}
                   </p>
                 </div>
@@ -128,7 +128,7 @@ function TestimonialsSlider({ testimonials }) {
                     <img src={profileImg} alt={t.name} className="w-9 h-9 sm:w-11 sm:h-11 rounded-full object-cover border border-slate-200 shrink-0 shadow-sm" />
                   )}
                   <div>
-                    <h4 className="font-extrabold text-[11px] sm:text-xs md:text-sm text-[#0f2b5c] truncate">
+                    <h4 className="font-extrabold text-xs sm:text-xs md:text-sm text-[#0f2b5c] truncate">
                       {t.name}
                     </h4>
                     <p className="text-[10px] sm:text-[11px] font-medium text-slate-500 mt-0.5 truncate">
@@ -281,7 +281,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
       <Navbar />
 
       {/* 2. HERO BANNER DINAMIS */}
-      <section id="home" className="relative w-full h-[380px] sm:h-[500px] lg:h-[720px] bg-slate-900 overflow-hidden pb-16 sm:pb-24">
+      <section id="home" className="relative w-full h-[320px] sm:h-[500px] lg:h-[720px] bg-slate-900 overflow-hidden pb-16 sm:pb-24">
         <div className="absolute inset-0 w-full h-full overflow-hidden bg-slate-900" data-aos="fade" data-aos-duration="2000">
           {homeSetting?.video_path ? (
             <video 
@@ -310,9 +310,9 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
       </section>
 
       {/* 3. COMPANY INTRODUCTION & SERVICES */}
-      <section id="about" className="relative w-full bg-[#f8fafc]/60 overflow-hidden py-12 sm:py-20 border-b border-slate-200">
+      <section id="about" className="relative w-full bg-[#f8fafc]/60 overflow-hidden py-28 sm:py-20 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 xl:px-16 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center mb-12 sm:mb-16" data-aos="fade-up">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 items-center mb-16 sm:mb-16" data-aos="fade-up">
             <div className="lg:col-span-6 flex flex-col justify-center" data-aos="fade-right" data-aos-delay="150">
               <div className="mb-3">
                 <span className="text-[10px] sm:text-[11px] font-bold text-slate-700 bg-slate-200/80 px-3 py-1 rounded-full border border-slate-300 uppercase tracking-wider" translate="no">
@@ -363,7 +363,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             </div>
 
             <div className="lg:col-span-6 relative flex justify-center items-center" data-aos="fade-left" data-aos-delay="300">
-              <div className="relative w-full h-[260px] sm:h-[350px] md:h-[400px] rounded-[24px] sm:rounded-[36px] overflow-hidden shadow-xl border border-slate-200/60 group">
+              <div className="relative w-full h-[200px] sm:h-[350px] md:h-[400px] rounded-[20px] sm:rounded-[36px] overflow-hidden shadow-xl border border-slate-200/60 group">
                 <div 
                   className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                   style={{ backgroundImage: `url('/images/layanan-kami.png')` }}
@@ -372,46 +372,46 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             </div>
           </div>
 
-          {/* 3 CARD LAYANAN BESAR */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto" data-aos="fade-up" data-aos-duration="2000">
-            <div className="relative p-6 sm:p-8 bg-white border border-slate-200 rounded-2xl sm:rounded-3xl shadow-sm transition-all duration-500 hover:shadow-2xl flex flex-col justify-end group overflow-hidden h-[260px] sm:h-[340px]" data-aos="fade-up" data-aos-delay="100">
+          {/* 3 CARD LAYANAN BESAR (Tersusun 3 Kolom di Desktop, 2 Kolom Compact di Mobile) */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-8 max-w-5xl mx-auto" data-aos="fade-up" data-aos-duration="2000">
+            <div className="relative p-3.5 sm:p-8 bg-white border border-slate-200 rounded-xl sm:rounded-3xl shadow-sm transition-all duration-500 hover:shadow-2xl flex flex-col justify-end group overflow-hidden h-[160px] sm:h-[340px]" data-aos="fade-up" data-aos-delay="100">
               <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url('/images/suku-cadang.png')` }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:bg-[#0f2b5c]/90 transition-colors duration-500" />
               <div className="relative z-10 transition-all duration-500 transform group-hover:-translate-y-2 text-center">
-                <h3 className="font-black text-lg sm:text-xl text-white drop-shadow-md mb-1">Suku Cadang</h3>
+                <h3 className="font-black text-xs sm:text-xl text-white drop-shadow-md mb-1">Suku Cadang</h3>
                 <div className="opacity-0 group-hover:opacity-100 transition-all duration-500 max-h-0 group-hover:max-h-40 overflow-hidden">
-                  <p className="text-slate-200 text-xs leading-relaxed mb-3 mt-1">Suku cadang original dengan kualitas terjamin dan bergaransi.</p>
-                  <Link href="/spare-parts" className="text-xs font-bold text-[#ffc107] hover:underline inline-flex items-center gap-1">Selengkapnya <span>→</span></Link>
+                  <p className="text-slate-200 text-[10px] sm:text-xs leading-relaxed mb-3 mt-1">Suku cadang original dengan kualitas terjamin dan bergaransi.</p>
+                  <Link href="/spare-parts" className="text-[10px] sm:text-xs font-bold text-[#ffc107] hover:underline inline-flex items-center gap-1">Selengkapnya <span>→</span></Link>
                 </div>
               </div>
             </div>
 
-            <div className="relative p-6 sm:p-8 bg-white border border-slate-200 rounded-2xl sm:rounded-3xl shadow-sm transition-all duration-500 hover:shadow-2xl flex flex-col justify-end group overflow-hidden h-[260px] sm:h-[340px]" data-aos="fade-up" data-aos-delay="250">
+            <div className="relative p-3.5 sm:p-8 bg-white border border-slate-200 rounded-xl sm:rounded-3xl shadow-sm transition-all duration-500 hover:shadow-2xl flex flex-col justify-end group overflow-hidden h-[160px] sm:h-[340px]" data-aos="fade-up" data-aos-delay="250">
               <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url('/images/layanan-purnajual.png')` }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:bg-[#0f2b5c]/90 transition-colors duration-500" />
               <div className="relative z-10 transition-all duration-500 transform group-hover:-translate-y-2 text-center">
-                <h3 className="font-black text-lg sm:text-xl text-white drop-shadow-md mb-1">Layanan Purna Jual</h3>
+                <h3 className="font-black text-xs sm:text-xl text-white drop-shadow-md mb-1">Layanan Purna Jual</h3>
                 <div className="opacity-0 group-hover:opacity-100 transition-all duration-500 max-h-0 group-hover:max-h-40 overflow-hidden">
-                  <p className="text-slate-200 text-xs leading-relaxed mb-3 mt-1">Perawatan dan perbaikan alat berat oleh teknisi berpengalaman.</p>
-                  <Link href="/services" className="text-xs font-bold text-[#ffc107] hover:underline inline-flex items-center gap-1">Selengkapnya <span>→</span></Link>
+                  <p className="text-slate-200 text-[10px] sm:text-xs leading-relaxed mb-3 mt-1">Perawatan dan perbaikan alat berat oleh teknisi berpengalaman.</p>
+                  <Link href="/services" className="text-[10px] sm:text-xs font-bold text-[#ffc107] hover:underline inline-flex items-center gap-1">Selengkapnya <span>→</span></Link>
                 </div>
               </div>
             </div>
 
-            <div className="relative p-6 sm:p-8 bg-white border border-slate-200 rounded-2xl sm:rounded-3xl shadow-sm transition-all duration-500 hover:shadow-2xl flex flex-col justify-end group overflow-hidden h-[260px] sm:h-[340px]" data-aos="fade-up" data-aos-delay="400">
+            <div className="relative p-3.5 sm:p-8 bg-white border border-slate-200 rounded-xl sm:rounded-3xl shadow-sm transition-all duration-500 hover:shadow-2xl flex flex-col justify-end group overflow-hidden h-[160px] sm:h-[340px] col-span-2 md:col-span-1 max-w-[280px] mx-auto md:max-w-none w-full" data-aos="fade-up" data-aos-delay="400">
               <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style={{ backgroundImage: `url('/images/kemitraan.png')` }} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:bg-[#0f2b5c]/90 transition-colors duration-500" />
               <div className="relative z-10 transition-all duration-500 transform group-hover:-translate-y-2 text-center">
-                <h3 className="font-black text-lg sm:text-xl text-white drop-shadow-md mb-1">Kemitraan</h3>
+                <h3 className="font-black text-xs sm:text-xl text-white drop-shadow-md mb-1">Kemitraan</h3>
                 <div className="opacity-0 group-hover:opacity-100 transition-all duration-500 max-h-0 group-hover:max-h-40 overflow-hidden">
-                  <p className="text-slate-200 text-xs leading-relaxed mb-3 mt-1">Bersinergi bersama mitra untuk pertumbuhan berkelanjutan.</p>
-                  <Link href="/contact-us" className="text-xs font-bold text-[#ffc107] hover:underline inline-flex items-center gap-1">Selengkapnya <span>→</span></Link>
+                  <p className="text-slate-200 text-[10px] sm:text-xs leading-relaxed mb-3 mt-1">Bersinergi bersama mitra untuk pertumbuhan berkelanjutan.</p>
+                  <Link href="/contact-us" className="text-[10px] sm:text-xs font-bold text-[#ffc107] hover:underline inline-flex items-center gap-1">Selengkapnya <span>→</span></Link>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="text-center mt-8 sm:mt-12" data-aos="fade-up" data-aos-delay="150">
+          <div className="text-center mt-10 sm:mt-12" data-aos="fade-up" data-aos-delay="150">
             <a href="/services" className="inline-flex items-center gap-2 px-6 sm:px-7 py-2.5 sm:py-3 border-2 border-[#0f2b5c] text-[#0f2b5c] hover:bg-[#0f2b5c] hover:text-white font-bold text-xs rounded-full transition-all duration-500 shadow-sm hover:shadow-md transform hover:-translate-y-0.5">
               <span>Lihat Semua Layanan</span>
               <span>→</span>
@@ -420,8 +420,8 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
         </div>
       </section>
 
-      {/* 4. SECTION COMPANY STATISTICS */}
-      <section id="statistics" className="relative w-full bg-[#0f2b5c] text-white py-16 sm:py-24 overflow-hidden">
+      {/* 4. SECTION COMPANY STATISTICS (Diatur 2 Kolom Menyamping di HP) */}
+      <section id="statistics" className="relative w-full bg-[#0f2b5c] text-white py-28 sm:py-24 overflow-hidden">
         {/* Gambar Latar Belakang */}
         <div className="absolute inset-0 bg-cover bg-center pointer-events-none scale-105" style={{ backgroundImage: `url('/images/statistik.png')` }} data-aos="zoom-out" data-aos-duration="2500" />
         
@@ -429,7 +429,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
         <div className="absolute inset-0 bg-[#071b38]/50 pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 xl:px-16 relative z-10">
-          <div className="text-center max-w-5xl mx-auto mb-10 sm:mb-16" data-aos="fade-up">
+          <div className="text-center max-w-5xl mx-auto mb-14 sm:mb-16" data-aos="fade-up">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
               Rekam Jejak &{' '}
               <span className="relative inline-block mx-1">
@@ -443,52 +443,52 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             </p>
           </div> 
           
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 mb-10 sm:mb-16">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 mb-14 sm:mb-16">
             
             <div className="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="100">
-              <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-500">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-none mb-1" translate="no">
+              <div className="relative w-28 h-28 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-500">
+                <div className="text-xl sm:text-3xl md:text-4xl font-black text-white leading-none mb-1" translate="no">
                   100%
                 </div>
-                <div className="text-[10px] sm:text-xs font-bold text-[#ffc107] px-2 text-center" translate="no">Dukungan Teknis</div>
+                <div className="text-[9px] sm:text-xs font-bold text-[#ffc107] px-1 text-center" translate="no">Dukungan Teknis</div>
               </div>
-              <p className="text-white text-[10px] sm:text-xs leading-relaxed mt-3 sm:mt-4 max-w-[180px] sm:max-w-[200px]">
+              <p className="text-white text-[10px] sm:text-xs leading-relaxed mt-3 sm:mt-4 max-w-[160px]">
                 Komitmen memberikan layanan teknis untuk setiap kebutuhan pelanggan.
               </p>
             </div>
 
             <div className="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="250">
-              <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-500">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-none mb-1 flex items-center">
+              <div className="relative w-28 h-28 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-500">
+                <div className="text-xl sm:text-3xl md:text-4xl font-black text-white leading-none mb-1 flex items-center">
                   <AnimatedCounter targetNumber={4} suffix="+" />
                 </div>
-                <div className="text-[10px] sm:text-xs font-bold text-[#ffc107] px-2 text-center" translate="no">Tahun Pengalaman</div>
+                <div className="text-[9px] sm:text-xs font-bold text-[#ffc107] px-1 text-center" translate="no">Tahun Pengalaman</div>
               </div>
-              <p className="text-white text-[10px] sm:text-xs leading-relaxed mt-3 sm:mt-4 max-w-[180px] sm:max-w-[200px]">
+              <p className="text-white text-[10px] sm:text-xs leading-relaxed mt-3 sm:mt-4 max-w-[160px]">
                 Berpengalaman dalam memberikan solusi terbaik di bidangnya.
               </p>
             </div>
 
             <div className="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="400">
-              <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-500">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-none mb-1 flex items-center">
+              <div className="relative w-28 h-28 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-500">
+                <div className="text-xl sm:text-3xl md:text-4xl font-black text-white leading-none mb-1 flex items-center">
                   <AnimatedCounter targetNumber={99} suffix="%" />
                 </div>
-                <div className="text-[10px] sm:text-xs font-bold text-[#ffc107] px-2 text-center" translate="no">Kepuasan Pelanggan</div>
+                <div className="text-[9px] sm:text-xs font-bold text-[#ffc107] px-1 text-center" translate="no">Kepuasan Pelanggan</div>
               </div>
-              <p className="text-white text-[10px] sm:text-xs leading-relaxed mt-3 sm:mt-4 max-w-[180px] sm:max-w-[200px]">
+              <p className="text-white text-[10px] sm:text-xs leading-relaxed mt-3 sm:mt-4 max-w-[160px]">
                 Siap memberikan dukungan teknis kapan pun dibutuhkan.
               </p>
             </div>
 
             <div className="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="550">
-              <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-500">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-none mb-1" translate="no">
+              <div className="relative w-28 h-28 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-500">
+                <div className="text-xl sm:text-3xl md:text-4xl font-black text-white leading-none mb-1" translate="no">
                   100%
                 </div>
-                <div className="text-[10px] sm:text-xs font-bold text-[#ffc107] px-2 text-center" translate="no">Layanan Terpercaya</div>
+                <div className="text-[9px] sm:text-xs font-bold text-[#ffc107] px-1 text-center" translate="no">Layanan Terpercaya</div>
               </div>
-              <p className="text-white text-[10px] sm:text-xs leading-relaxed mt-3 sm:mt-4 max-w-[180px] sm:max-w-[200px]">
+              <p className="text-white text-[10px] sm:text-xs leading-relaxed mt-3 sm:mt-4 max-w-[160px]">
                 Memberikan layanan dengan mengutamakan profesionalisme dan tanggung jawab.
               </p>
             </div>
@@ -505,10 +505,10 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
         </div>
       </section>
 
-      {/* 5. SECTION COMPANY STRENGTH */}
-      <section id="strength" className="relative w-full bg-[#f8fafc]/80 py-16 sm:py-24 overflow-hidden border-b border-slate-200">
+      {/* 5. SECTION COMPANY STRENGTH (Diatur 2 Kolom Menyamping di HP) */}
+      <section id="strength" className="relative w-full bg-[#f8fafc]/80 py-28 sm:py-24 overflow-hidden border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 xl:px-16 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16" data-aos="fade-up">
+          <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16" data-aos="fade-up">
             <div className="flex items-center justify-center gap-3 mb-3">
               <span className="w-6 sm:w-8 h-[2px] bg-[#ffc107]"></span>
               <span className="text-[10px] sm:text-[11px] font-black tracking-widest text-[#ffc107] uppercase" translate="no">COMPANY STRENGTH</span>
@@ -521,7 +521,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
               Dengan pengalaman, sumber daya dan dedikasi tinggi, kami siap menjadi mitra terbaik dalam setiap proyek Anda.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5 mb-10 sm:mb-16" data-aos="fade-up" data-aos-duration="2000">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-5 mb-14 sm:mb-16" data-aos="fade-up" data-aos-duration="2000">
             {[
               { label: "Tahun Pengalaman", desc: "Melayani kebutuhan alat berat di berbagai proyek nasional." },
               { label: "Unit Terawat", desc: "Dukungan armada unit handal dan siap operasional." },
@@ -529,12 +529,12 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
               { label: "Kepuasan Pelanggan", desc: "Komitmen memberikan pelayanan terbaik bagi mitra." },
               { label: "Professional", desc: "Tim solid yang berpengalaman menangani proyek besar." },
             ].map((item, i) => (
-              <div key={i} className="p-5 sm:p-6 bg-white border border-slate-200/90 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between relative overflow-hidden group" data-aos="fade-up" data-aos-delay={i * 150}>
+              <div key={i} className={`p-3.5 sm:p-6 bg-white border border-slate-200/90 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between relative overflow-hidden group ${i === 4 ? 'col-span-2 sm:col-span-1 max-w-[280px] sm:max-w-none mx-auto w-full' : ''}`} data-aos="fade-up" data-aos-delay={i * 150}>
                 <div className="absolute bottom-0 right-0 w-6 h-6 bg-[#0f2b5c]" style={{ clipPath: 'polygon(100% 0, 0 100%, 100% 100%)' }}></div>
                 <div className="w-full h-1 bg-[#0f2b5c] absolute bottom-0 left-0"></div>
                 <div>
-                  <h3 className="font-bold text-xs text-[#0f2b5c] uppercase tracking-wider mb-2 sm:mb-3">{item.label}</h3>
-                  <p className="text-slate-500 text-[11px] leading-relaxed">{item.desc}</p>
+                  <h3 className="font-bold text-[11px] sm:text-xs text-[#0f2b5c] uppercase tracking-wider mb-1.5 sm:mb-3">{item.label}</h3>
+                  <p className="text-slate-500 text-[10px] sm:text-[11px] leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -554,14 +554,14 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
       </section>
 
      {/* 6. SECTION FEATURED SERVICES */}
-      <section id="featured-services" className="relative w-full py-16 sm:py-24 overflow-hidden border-b border-slate-800 bg-[#0f2b5c]">
+     <section id="featured-services" className="relative w-full py-28 sm:py-24 overflow-hidden border-b border-slate-800 bg-[#0f2b5c]">
         <div className="absolute inset-0 pointer-events-none overflow-hidden" data-aos="fade" data-aos-duration="2500">
           <img src="/images/featured-service.jpg" alt="Featured Services Background" className="absolute inset-0 w-full h-full object-cover scale-105" />
           <div className="absolute inset-0 bg-[#0f2b5c]/40" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 xl:px-16 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16" data-aos="fade-up">
+          <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16" data-aos="fade-up">
             <div className="flex items-center justify-center gap-3 mb-3">
               <span className="w-6 sm:w-8 h-[2px] bg-[#ffc107]"></span>
               <span className="text-[10px] sm:text-[11px] font-black tracking-widest text-[#ffc107] uppercase" translate="no">OUR SERVICES</span>
@@ -575,7 +575,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
               Kami menyediakan berbagai layanan unggulan untuk mendukung kebutuhan proyek pertambangan dan konstruksi Anda.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10 sm:mb-16" data-aos="fade-up" data-aos-duration="2000">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-14 sm:mb-16" data-aos="fade-up" data-aos-duration="2000">
             {[
               {
                 id: 1,
@@ -606,14 +606,18 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
                 image_path: "/images/featured-service4.jpg"
               }
             ].map((srv, idx) => (
-              <div key={srv.id} className="group relative h-[320px] sm:h-[360px] w-full rounded-2xl overflow-hidden shadow-lg border border-slate-200/40 bg-slate-900 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay={idx * 150}>
+              <div key={srv.id} className="group relative h-[220px] sm:h-[360px] w-full rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-slate-200/40 bg-slate-900 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay={idx * 150}>
+                {/* Gambar selalu tampil penuh */}
                 <img src={srv.image_path} alt={srv.title} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                <div className="absolute inset-0 z-10 flex flex-col justify-end p-5 sm:p-6 text-white bg-[#0f2b5c]/90 backdrop-blur-sm sm:translate-y-full transition-transform duration-500 group-hover:translate-y-0">
-                  <span className="inline-block text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-[#ffc107] mb-1" translate="no">LAYANAN UNGGULAN</span>
-                  <h3 className="text-sm sm:text-base font-extrabold text-white leading-snug mb-2">{srv.title}</h3>
-                  <div className="w-8 h-[2px] bg-[#ffc107] mb-2 sm:mb-3 rounded-full" />
-                  <p className="text-slate-200 text-[11px] sm:text-xs leading-relaxed mb-4 sm:mb-5 line-clamp-3">{srv.description}</p>
-                  <Link href={`/featured-services/${srv.slug}`} className="inline-flex items-center gap-2 text-xs font-bold text-[#ffc107]">Pelajari Selengkapnya →</Link>
+                
+                {/* Di Mobile pakai gradasi bawah yang tipis agar gambar terlihat, di Desktop (sm:) kembali menggunakan latar belakang biru solid yang muncul saat di-hover */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent sm:bg-transparent sm:inset-x-0 sm:bottom-0 sm:top-auto sm:h-full" />
+                <div className="absolute inset-0 z-10 flex flex-col justify-end p-3 sm:p-6 text-white sm:bg-[#0f2b5c]/90 sm:backdrop-blur-sm sm:translate-y-full sm:group-hover:translate-y-0 transition-transform duration-500">
+                  <span className="inline-block text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-[#ffc107] mb-0.5 sm:mb-1" translate="no">LAYANAN UNGGULAN</span>
+                  <h3 className="text-xs sm:text-base font-extrabold text-white leading-snug mb-1 sm:mb-2">{srv.title}</h3>
+                  <div className="w-5 sm:w-8 h-[2px] bg-[#ffc107] mb-1 sm:mb-3 rounded-full" />
+                  <p className="text-slate-200 text-[9px] sm:text-xs leading-relaxed mb-2 sm:mb-5 line-clamp-2 sm:line-clamp-3">{srv.description}</p>
+                  <Link href={`/featured-services/${srv.slug}`} className="inline-flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs font-bold text-[#ffc107]">Pelajari Selengkapnya →</Link>
                 </div>
               </div>
             ))}
@@ -622,9 +626,9 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
       </section>
 
       {/* 7. SECTION CUSTOMER TESTIMONIALS (DINAMIS DARI DATABASE) */}
-      <section id="testimonials" className="relative w-full overflow-hidden bg-white py-16 sm:py-24 md:py-32" data-aos="fade-up" data-aos-duration="2000">
+      <section id="testimonials" className="relative w-full overflow-hidden bg-white py-28 sm:py-24 md:py-32" data-aos="fade-up" data-aos-duration="2000">
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 md:px-10 xl:px-14">
-          <div className="mx-auto max-w-3xl text-center mb-12 sm:mb-16" data-aos="fade-up">
+          <div className="mx-auto max-w-3xl text-center mb-14 sm:mb-16" data-aos="fade-up">
             <div className="mb-3 sm:mb-4 flex items-center justify-center gap-3 sm:gap-4">
               <span className="h-[2px] w-6 sm:w-8 bg-[#ffc107]"></span>
               <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-[#ffc107]" translate="no">CUSTOMER TESTIMONIALS</span>
@@ -642,15 +646,15 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
         </div>
       </section>
 
-      {/* 8. SECTION PROJECT GALLERY (DINAMIS DATABASE + BACKGROUND STATIS) */}
-      <section id="projects" className="relative w-full text-slate-800 py-16 sm:py-24 overflow-hidden border-b border-slate-200 bg-[#0f2b5c]">
+      {/* 8. SECTION PROJECT GALLERY (Diatur 2 Kolom Menyamping di HP) */}
+      <section id="projects" className="relative w-full text-slate-800 py-28 sm:py-24 overflow-hidden border-b border-slate-200 bg-[#0f2b5c]">
         <div className="absolute inset-0 pointer-events-none overflow-hidden" data-aos="fade" data-aos-duration="2500">
           <img src="/images/back-project.png" alt="Projects Background" className="absolute inset-0 w-full h-full object-cover scale-105" />
           <div className="absolute inset-0 bg-[#0f2b5c]/50" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 xl:px-16 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14" data-aos="fade-up"> 
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14" data-aos="fade-up"> 
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
               Proyek yang Telah <span className="text-[#ffc107]">Kami Kerjakan</span>
             </h2>
@@ -663,20 +667,20 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
           {projects.length === 0 ? (
             <p className="text-center text-slate-300 text-xs">Belum ada proyek yang ditambahkan.</p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12" data-aos="fade-up" data-aos-duration="2000">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mb-10 sm:mb-12" data-aos="fade-up" data-aos-duration="2000">
               {projects.map((proj, idx) => {
                 if (!showAll && idx >= 6) return null;
                 return (
-                  <div key={proj.id || idx} className="group relative h-[220px] sm:h-[260px] rounded-2xl overflow-hidden shadow-lg border border-slate-200/40 bg-slate-900 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay={(idx % 3) * 120}>
+                  <div key={proj.id || idx} className="group relative h-[160px] sm:h-[260px] rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-slate-200/40 bg-slate-900 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay={(idx % 3) * 120}>
                     <div 
                       className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110" 
                       style={{ backgroundImage: `url('/${proj.image}')` }}
                       loading="lazy"
                     ></div>
-                    <div className="absolute inset-x-0 bottom-0 top-1/2 z-10 flex flex-col justify-end p-4 sm:p-5 text-slate-900 bg-white/95 backdrop-blur-md sm:translate-y-full transition-transform duration-500 group-hover:translate-y-0">
-                      <h3 className="font-extrabold text-xs text-[#0f2b5c] mb-1.5 sm:mb-2 leading-snug line-clamp-1">{proj.title}</h3>
-                      <div className="w-8 h-[2px] bg-[#ffc107] mb-2 rounded-full"></div>
-                      <div className="flex items-center justify-between text-[10px] font-bold text-slate-500">
+                    <div className="absolute inset-x-0 bottom-0 top-1/2 z-10 flex flex-col justify-end p-2.5 sm:p-5 text-slate-900 bg-white/95 backdrop-blur-md sm:translate-y-full transition-transform duration-500 group-hover:translate-y-0">
+                      <h3 className="font-extrabold text-[10px] sm:text-xs text-[#0f2b5c] mb-1 sm:mb-2 leading-snug line-clamp-1">{proj.title}</h3>
+                      <div className="w-5 sm:w-8 h-[2px] bg-[#ffc107] mb-1 sm:mb-2 rounded-full"></div>
+                      <div className="flex items-center justify-between text-[8px] sm:text-[10px] font-bold text-slate-500">
                         <span>{proj.location}</span>
                         <span>{proj.year}</span> 
                       </div>
@@ -698,9 +702,9 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
       </section>
 
       {/* 9. SECTION LATEST NEWS */}
-      <section id="news" className="relative w-full bg-white text-slate-800 py-16 sm:py-24 overflow-hidden border-b border-slate-200" data-aos="fade-up" data-aos-duration="2000">
+      <section id="news" className="relative w-full bg-white text-slate-800 py-28 sm:py-24 overflow-hidden border-b border-slate-200" data-aos="fade-up" data-aos-duration="2000">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 xl:px-16 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12" data-aos="fade-up">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-12" data-aos="fade-up">
             <div className="flex items-center justify-center gap-3 mb-3">
               <span className="w-6 sm:w-8 h-[2px] bg-[#ffc107]"></span>
               <span className="text-[10px] sm:text-[11px] font-black tracking-widest text-[#ffc107] uppercase" translate="no">LATEST NEWS</span>
@@ -726,18 +730,18 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             <p className="text-center text-slate-400 text-xs py-10">Belum ada berita atau artikel knowledge terbaru.</p>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch" data-aos="fade-up" data-aos-duration="2000">
-              <div className="lg:col-span-7 relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl min-h-[350px] sm:min-h-[420px] md:min-h-[520px] flex flex-col justify-end p-6 sm:p-8 md:p-10 group" data-aos="fade-right" data-aos-duration="2000">
+              <div className="lg:col-span-7 relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl min-h-[320px] sm:min-h-[420px] md:min-h-[520px] flex flex-col justify-end p-6 sm:p-8 md:p-10 group" data-aos="fade-right" data-aos-duration="2000">
                 <div 
                   className="absolute inset-0 w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700 z-0" 
                   style={{ backgroundImage: `url('${latestPosts[0].thumbnail ? (latestPosts[0].thumbnail.startsWith('http') ? latestPosts[0].thumbnail : `/${latestPosts[0].thumbnail}`) : 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=800&q=80'}')` }}
                 ></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/50 to-transparent z-10"></div>
                 <div className="relative z-20 text-white">
-                  <span className="text-[11px] sm:text-xs text-slate-300 block mb-2 flex items-center gap-1.5">
-                    <svg className="w-3.5 h-3.5 text-[#ffc107]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  <span className="text-xs sm:text-xs text-slate-300 block mb-2 sm:mb-2 flex items-center gap-1.5">
+                    <svg className="w-3.5 h-3.5 sm:w-3.5 sm:h-3.5 text-[#ffc107]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     {new Date(latestPosts[0].created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}
                   </span>
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white leading-snug mb-2 sm:mb-3">{latestPosts[0].title}</h3>
+                  <h3 className="text-lg sm:text-2xl md:text-3xl font-black text-white leading-snug mb-2 sm:mb-3">{latestPosts[0].title}</h3>
                   <p className="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 max-w-xl line-clamp-2">{latestPosts[0].excerpt || latestPosts[0].content}</p>
                   <Link href={`/knowledge/${latestPosts[0].id}`} className="inline-flex items-center gap-2 text-xs font-bold text-[#ffc107]">Baca Selengkapnya →</Link>
                 </div>
@@ -785,9 +789,9 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
       </section>
 
       {/* 10. SECTION KONTAK & ALAMAT KAMI */}
-      <section id="contact" className="relative w-full py-16 sm:py-24 overflow-hidden border-b border-slate-200 bg-cover bg-center" style={{ backgroundImage: "linear-gradient(to bottom, rgba(7,27,56,0.10), rgba(7,27,56,0.95)), url('/images/kontak-alamat.jpg')" }} data-aos="fade" data-aos-duration="2000">
+      <section id="contact" className="relative w-full py-28 sm:py-24 overflow-hidden border-b border-slate-200 bg-cover bg-center" style={{ backgroundImage: "linear-gradient(to bottom, rgba(7,27,56,0.10), rgba(7,27,56,0.95)), url('/images/kontak-alamat.jpg')" }} data-aos="fade" data-aos-duration="2000">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 xl:px-16 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16" data-aos="fade-up">
+          <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16" data-aos="fade-up">
             <div className="flex items-center justify-center gap-3 mb-3">
               <span className="w-6 sm:w-8 h-[2px] bg-[#ffc107]"></span>
               <span className="text-[10px] sm:text-[11px] font-black tracking-widest text-[#ffc107] uppercase" translate="no">GET IN TOUCH</span>
@@ -802,39 +806,39 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto" data-aos="fade-up" data-aos-duration="2000">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-5xl mx-auto" data-aos="fade-up" data-aos-duration="2000">
             <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/90 shadow-lg flex flex-col justify-between" data-aos="fade-up" data-aos-delay="100">
               <div>
                 <h3 className="font-extrabold text-xs sm:text-sm text-[#0f2b5c] mb-2 sm:mb-3">Alamat Kantor Pusat</h3>
-                <p className="text-slate-600 text-[10px] sm:text-[11px] leading-relaxed whitespace-pre-line">
+                <p className="text-slate-600 text-xs sm:text-[11px] leading-relaxed whitespace-pre-line">
                   Foresta Business Loft 7, Unit 6-7{'\n'}Jl. BSD Boulevard Utara, Lengkong Kulon, Tangerang, Banten 15331
                 </p>
               </div>
               <div className="mt-4 sm:mt-5 pt-3 border-t border-slate-100">
-                <a href="https://maps.app.goo.gl/vhd1bVxrsv2YdCfH9" target="_blank" rel="noreferrer" className="text-[10px] sm:text-[11px] font-bold text-[#0f2b5c] hover:text-amber-600 transition inline-flex items-center gap-1">Lihat Maps →</a>
+                <a href="https://maps.app.goo.gl/vhd1bVxrsv2YdCfH9" target="_blank" rel="noreferrer" className="text-xs sm:text-[11px] font-bold text-[#0f2b5c] hover:text-amber-600 transition inline-flex items-center gap-1">Lihat Maps →</a>
               </div>
             </div>
 
             <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/90 shadow-lg flex flex-col justify-between" data-aos="fade-up" data-aos-delay="250">
               <div>
                 <h3 className="font-extrabold text-xs sm:text-sm text-[#0f2b5c] mb-2 sm:mb-3">Jam Operasional</h3>
-                <p className="text-slate-600 text-[10px] sm:text-[11px] leading-relaxed whitespace-pre-line">Senin - Jumat: 09.00 - 18.00</p>
+                <p className="text-slate-600 text-xs sm:text-[11px] leading-relaxed whitespace-pre-line">Senin - Jumat: 09.00 - 18.00</p>
               </div>
               <div className="mt-4 sm:mt-5 pt-3 border-t border-slate-100">
-                <span className="text-[9px] sm:text-[10px] font-bold text-slate-400">Dukungan 24/7 Darurat</span>
+                <span className="text-[10px] sm:text-[10px] font-bold text-slate-400">Dukungan 24/7 Darurat</span>
               </div>
             </div>
 
             <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/90 shadow-lg flex flex-col justify-between" data-aos="fade-up" data-aos-delay="400">
               <div>
                 <h3 className="font-extrabold text-xs sm:text-sm text-[#0f2b5c] mb-2 sm:mb-3">Informasi Kontak</h3>
-                <div className="space-y-1.5 text-[10px] sm:text-[11px] text-slate-600">
+                <div className="space-y-1.5 text-xs sm:text-[11px] text-slate-600">
                   <p>Hotline: <span className="font-medium text-[#0f2b5c]">+62 822-5801-3177</span></p>
                   <p>Email: <span className="font-medium text-[#0f2b5c]">info@servistamapro.com</span></p>
                 </div>
               </div>
               <div className="mt-4 sm:mt-5 pt-3 border-t border-slate-100">
-                <a href="mailto:info@servistamapro.com" className="text-[10px] sm:text-[11px] font-bold text-[#0f2b5c] hover:text-amber-600 transition inline-flex items-center gap-1">Kirim Email →</a>
+                <a href="mailto:info@servistamapro.com" className="text-xs sm:text-[11px] font-bold text-[#0f2b5c] hover:text-amber-600 transition inline-flex items-center gap-1">Kirim Email →</a>
               </div>
             </div>
           </div>
@@ -848,7 +852,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
           <div className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/75 to-white/85" />
         </div>
 
-        <div className="relative z-10 max-w-[1450px] mx-auto px-4 sm:px-6 md:px-10 xl:px-14 py-16 sm:py-20 md:py-24">
+        <div className="relative z-10 max-w-[1450px] mx-auto px-4 sm:px-6 md:px-10 xl:px-14 py-28 sm:py-20 md:py-24">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 sm:gap-8 mb-8 sm:mb-12" data-aos="fade-up">
             <div className="max-w-[720px]">
               <div className="flex items-center gap-3 mb-3 sm:mb-4">
@@ -860,7 +864,8 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
                 <span className="text-[#b27b00]">& Branch Distribution</span>
               </h2>
               <p className="mt-3 sm:mt-5 text-xs sm:text-sm md:text-[15px] text-slate-600 leading-relaxed max-w-[650px]">
-                Dengan pengalaman lebih dari 10 tahun, kami terus memperluas jaringan layanan, workshop, dan dukungan teknis ke berbagai wilayah strategis di Indonesia.
+                Kami terus mengembangkan layanan dan memperkuat dukungan untuk memenuhi kebutuhan pelanggan di berbagai wilayah Indonesia.
+
               </p>
             </div>
           </div>
