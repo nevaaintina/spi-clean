@@ -5,28 +5,29 @@ import Footer from "@/Components/Footer";
 import { ArrowLeft } from "lucide-react";
 
 export default function ShowFeatured() {
-  // 1. Kamus Data untuk Masing-masing Card Layanan Unggulan
+  // 1. Kamus Data untuk Masing-masing Card Layanan Unggulan (Slug disesuaikan dengan database)
   const servicesMap = {
     "pelatihan-operator": {
-      title: "Pelatihan Operator",
+      title: "Layanan khusus pelatihan operator unit XCMG",
       description: "Kami memberikan pelatihan khusus kepada operator Anda untuk unit XCMG pertambangan dan konstruksi guna memastikan pengoperasian alat berat yang aman, efisien dan berstandar operasional tinggi.",
-      content: `
-        <p>PT Servistama Pro Indonesia menyediakan program pelatihan intensif bagi operator alat berat di lapangan. Program ini dirancang langsung oleh instruktur berpengalaman untuk meningkatkan keahlian teknis serta pemahaman mendalam mengenai unit XCMG.</p>
-        <p>Dengan pelatihan yang tepat, perusahaan Anda dapat menekan risiko kecelakaan kerja, mengoptimalkan produktivitas unit, serta mengurangi tingkat keausan mesin akibat kesalahan operasional.</p>
-      `,
       image_path: "/images/featured-service1.jpg",
       photos: [
         "/images/pelatihan-operator1.jpg",
         "/images/pelatihan-operator2.jpg"
       ]
     },
+    "perawatan-unit": {
+      title: "Layanan perawatan unit XCMG",
+      description: "Kami juga melayani perawatan unit XCMG pertambangan anda memastikan berjalan dengan baik saat operator anda bekerja pada unit di area site.",
+      image_path: "/images/featured-service2.jpg",
+      photos: [
+        "/images/layanan-pem1.jpg",
+        "/images/layanan-pem2.jpg"
+      ]
+    },
     "layanan-maintenance": {
-      title: "Heavy Equipment Maintenance & Overhaul",
-      description: "Layanan pemeliharaan menyeluruh dan overhaul komponen alat berat XCMG untuk memastikan performa mesin selalu optimal, tangguh dan dapat diandalkan di setiap medan proyek pertambangan maupun konstruksi.",
-      content: `
-        <p>PT Servistama Pro Indonesia menyediakan solusi perawatan preventif dan korektif komprehensif yang dikerjakan oleh tim mekanik berpengalaman dan tersertifikasi.</p>
-        <p>Kami menggunakan suku cadang original (genuine parts) serta prosedur uji diagnostik berstandar global guna meminimalkan risiko downtime serta memperpanjang masa pakai unit alat berat Anda.</p>
-      `,
+      title: "Layanan Maintenance Unit XCMG",
+      description: "Layanan pemeliharaan dan perawatan menyeluruh untuk memastikan performa unit XCMG Anda tetap optimal di segala medan pertambangan.",
       image_path: "/images/featured-service2.jpg",
       photos: [
         "/images/layanan-pem1.jpg",
@@ -34,12 +35,8 @@ export default function ShowFeatured() {
       ]
     },
     "suplai-suku-cadang": {
-      title: "Suplai Suku Cadang",
-      description: "Ketersediaan suku cadang original XCMG lengkap dengan jaminan kualitas terbaik untuk memastikan keandalan mesin serta meminimalisir waktu henti (downtime) operasional Anda.",
-      content: `
-        <p>Sebagai mitra terpercaya, kami menyediakan berbagai kebutuhan suku cadang asli (genuine parts) untuk seluruh lini produk alat berat XCMG.</p>
-        <p>Pengadaan komponen yang cepat dan tepat sasaran menjadi komitmen kami agar proyek konstruksi dan pertambangan Anda tetap berjalan tanpa hambatan berarti.</p>
-      `,
+      title: "Layanan Suku Cadang untuk Unit XCMG Pertambangan",
+      description: "Pelayanan cepat dan tepat waktu dari kami untuk memenuhi kebutuhan suku cadang unit XCMG pertambangan Anda. Kami melayani kebutuhan suku cadang Anda selama 24 jam.",
       image_path: "/images/featured-service3.png",
       photos: [
         "/images/suplai1.jpg",
@@ -47,12 +44,8 @@ export default function ShowFeatured() {
       ]
     },
     "konsultasi-teknis": {
-      title: "Konsultasi Teknis",
-      description: "Layanan konsultasi pemilihan unit dan analisis kebutuhan operasional proyek secara komprehensif bersama tim engineer profesional kami.",
-      content: `
-        <p>Bingung menentukan spesifikasi alat berat yang paling efisien untuk medan proyek Anda? Tim ahli kami siap memberikan rekomendasi teknis yang akurat.</p>
-        <p>Kami menganalisis berbagai aspek mulai dari kondisi medan, kapasitas muat, hingga kalkulasi efisiensi bahan bakar demi kesuksesan operasional proyek Anda.</p>
-      `,
+      title: "servis unit",
+      description: "Dengan mekanik yang handal dari kami, PT. Servistama Pro Indonesia mampu menjawab keraguan untuk servis berkala unit XCMG pertambangan anda.",
       image_path: "/images/featured-service4.jpg",
       photos: [
         "/images/konsultasi1.jpg",
@@ -61,12 +54,12 @@ export default function ShowFeatured() {
     }
   };
 
-  // 2. Ambil slug dari URL path terakhir (contoh: /featured-services/pelatihan-operator)
+  // 2. Ambil slug dari URL path terakhir dan ubah ke lowercase agar aman
   const currentPath = window.location.pathname;
-  const slug = currentPath.split("/").pop();
+  const slug = currentPath.split("/").pop().toLowerCase();
 
-  // Pilih data service berdasarkan slug, jika tidak ada fallback ke service pertama
-  const service = servicesMap[slug] || servicesMap["layanan-maintenance"];
+  // Pilih data service berdasarkan slug, jika tidak ada gunakan default layanan pertama
+  const service = servicesMap[slug] || servicesMap["pelatihan-operator"];
 
   // Fungsi untuk kembali ke home dan langsung scroll ke section featured services
   const handleBackToFeatured = (e) => {
@@ -83,7 +76,7 @@ export default function ShowFeatured() {
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-800 selection:bg-[#ffc107] selection:text-[#0f2b5c]">
-      <Head title={`${service.title} - PT Servistama Pro Indonesia`} />
+      <Head title={`${service?.title || "Layanan Unggulan"} - PT Servistama Pro Indonesia`} />
       <Navbar />
 
       <main className="py-16 md:py-24">
@@ -102,26 +95,20 @@ export default function ShowFeatured() {
               Layanan Unggulan
             </span>
             <h1 className="text-3xl md:text-5xl font-black text-[#0F2B5C] tracking-tight leading-tight">
-              {service.title}
+              {service?.title}
             </h1>
             <p className="text-sm md:text-base text-slate-600 leading-relaxed font-medium">
-              {service.description}
+              {service?.description}
             </p>
-            {service.content && (
-              <div 
-                className="text-sm text-slate-600 leading-relaxed space-y-4 pt-2 prose max-w-none"
-                dangerouslySetInnerHTML={{ __html: service.content }}
-              />
-            )}
           </div>
 
-          {/* Bagian Galeri & Tepat 3 Foto */}
+          {/* Bagian Galeri & Dokumentasi */}
           <div className="space-y-6 pt-8 border-t border-slate-200">
             <h3 className="text-xl font-black text-[#0F2B5C]">Galeri & Dokumentasi Kegiatan</h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {/* Foto Utama */}
-              {service.image_path && (
+              {service?.image_path && (
                 <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm h-64">
                   <img
                     src={service.image_path}
@@ -132,7 +119,7 @@ export default function ShowFeatured() {
               )}
 
               {/* 2 Foto Tambahan */}
-              {service.photos.slice(0, 2).map((photo, index) => (
+              {service?.photos?.slice(0, 2).map((photo, index) => (
                 <div key={index} className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm h-64">
                   <img
                     src={photo}

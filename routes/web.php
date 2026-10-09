@@ -13,6 +13,7 @@ use App\Models\MediaGallery;
 use App\Models\Testimonial;
 use App\Models\Poster;
 use App\Models\Milestone;
+use App\Models\CompanyHistory;
 use App\Models\TeamMember;
 use App\Models\Customer;
 use App\Models\JobVacancy;
@@ -140,9 +141,10 @@ Route::get('/hse', function () {
 
 Route::get('/about', function () {
     return Inertia::render('About/Index', [
-        'milestones'     => Milestone::orderBy('year', 'asc')->get(),
-        'managementTeam' => TeamMember::all(),
-        'customers'      => Customer::all(),
+        'companyHistories' => CompanyHistory::orderBy('year', 'asc')->get(),
+        'milestones'       => Milestone::orderBy('year', 'desc')->get(),
+        'managementTeam'   => TeamMember::all(),
+        'customers'        => Customer::all(),
     ]);
 });
 
@@ -197,6 +199,7 @@ use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\MilestoneController;
+use App\Http\Controllers\Admin\CompanyHistoryController;
 use App\Http\Controllers\Admin\TeamMemberController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\SparePartController as AdminSparePartController;
@@ -222,6 +225,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::resource('testimonials', TestimonialController::class);
 
     Route::resource('milestones', MilestoneController::class);
+    
+    // Rute endpoint untuk Company History (menggunakan CompanyHistoryController)
+    Route::post('/company-histories', [CompanyHistoryController::class, 'store'])->name('company-histories.store');
+    Route::delete('/company-histories/{companyHistory}', [CompanyHistoryController::class, 'destroy'])->name('company-histories.destroy');
+
     Route::resource('team-members', TeamMemberController::class);
     Route::resource('customers', CustomerController::class);
 

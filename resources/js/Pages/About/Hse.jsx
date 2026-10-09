@@ -172,13 +172,19 @@ function AnimatedHseSection({ program, isEven }) {
     );
 }
 
-// 3. KOMPONEN GALLERY BERSIH (TANPA KETERANGAN), SUDUT LANCIP, & PREVIEW MODAL FULL LAYAR
+// 3. KOMPONEN GALLERY BERJALAN OTOMATIS (AUTO-SCROLL MENGGUNAKAN JAVASCRIPT)
 function HseGallerySection() {
     const galleryScrollRef = useRef(null);
     const [selectedImage, setSelectedImage] = useState(null);
 
-    // 6 Foto Galeri
+    // 6 Foto Galeri Asli yang diduplikasi agar pergerakan looping tanpa henti dan mulus
     const galleryImages = [
+        "/images/galleryhse1.jpeg",
+        "/images/galleryhse2.jpeg",
+        "/images/galleryhse3.jpeg",
+        "/images/galleryhse4.jpeg",
+        "/images/galleryhse5.jpeg",
+        "/images/galleryhse6.jpeg",
         "/images/galleryhse1.jpeg",
         "/images/galleryhse2.jpeg",
         "/images/galleryhse3.jpeg",
@@ -187,7 +193,47 @@ function HseGallerySection() {
         "/images/galleryhse6.jpeg"
     ];
 
-    const scroll = (direction) => {
+    // Efek Auto-Scroll Berjalan Terus Secara Otomatis
+    useEffect(() => {
+        const scrollContainer = galleryScrollRef.current;
+        if (!scrollContainer) return;
+
+        let animationFrameId;
+        const scrollSpeed = 0.8; // Kecepatan geser otomatis
+
+        const autoScroll = () => {
+            if (scrollContainer) {
+                scrollContainer.scrollLeft += scrollSpeed;
+                // Jika sudah mencapai setengah (titik akhir set pertama), reset ke awal secara instan
+                if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
+                    scrollContainer.scrollLeft = 0;
+                }
+            }
+            animationFrameId = requestAnimationFrame(autoScroll);
+        };
+
+        animationFrameId = requestAnimationFrame(autoScroll);
+
+        // Berhenti sejenak saat kursor diarahkan ke galeri
+        const handleMouseEnter = () => cancelAnimationFrame(animationFrameId);
+        const handleMouseLeave = () => {
+            animationFrameId = requestAnimationFrame(autoScroll);
+        };
+
+        scrollContainer.addEventListener('mouseenter', handleMouseEnter);
+        scrollContainer.addEventListener('mouseleave', handleMouseLeave);
+
+        return () => {
+            cancelAnimationFrame(animationFrameId);
+            if (scrollContainer) {
+                scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
+                scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
+            }
+        };
+    }, []);
+
+    // Fungsi Navigasi Tombol Panah Manual
+    const scrollManual = (direction) => {
         if (galleryScrollRef.current) {
             const cardWidth = galleryScrollRef.current.clientWidth / 3;
             galleryScrollRef.current.scrollBy({
@@ -198,10 +244,10 @@ function HseGallerySection() {
     };
 
     return (
-        <section className="relative w-full bg-white py-12 sm:py-20 px-4 sm:px-12 lg:px-16 border-t border-slate-200">
+        <section className="relative w-full bg-white py-12 sm:py-20 px-4 sm:px-12 lg:px-16 border-t border-slate-200 overflow-hidden">
             <div className="max-w-7xl mx-auto w-full">
                 
-                {/* Header Galeri & Tombol Navigasi Scroll */}
+                {/* Header Galeri & Tombol Navigasi Manual */}
                 <div className="flex items-center justify-between mb-6 sm:mb-8">
                     <div>
                         <span className="text-[10px] sm:text-xs font-black tracking-widest text-[#0284c7] uppercase bg-sky-50 px-2.5 sm:px-3 py-1 rounded-none border-l-4 border-[#0284c7] inline-block mb-1 sm:mb-2">
@@ -215,7 +261,7 @@ function HseGallerySection() {
                     {/* Tombol Panah Kiri dan Kanan (Sudut Lancip) */}
                     <div className="flex items-center gap-2 sm:gap-3">
                         <button 
-                            onClick={() => scroll('left')}
+                            onClick={() => scrollManual('left')}
                             aria-label="Scroll Sebelumnya"
                             className="w-9 h-9 sm:w-11 sm:h-11 bg-white text-[#0f2b5c] border-2 border-slate-300 hover:border-[#0f2b5c] hover:bg-[#0f2b5c] hover:text-white rounded-none flex items-center justify-center transition-all duration-300 shadow-sm active:scale-95 cursor-pointer"
                         >
@@ -224,7 +270,7 @@ function HseGallerySection() {
                             </svg>
                         </button>
                         <button 
-                            onClick={() => scroll('right')}
+                            onClick={() => scrollManual('right')}
                             aria-label="Scroll Selanjutnya"
                             className="w-9 h-9 sm:w-11 sm:h-11 bg-white text-[#0f2b5c] border-2 border-slate-300 hover:border-[#0f2b5c] hover:bg-[#0f2b5c] hover:text-white rounded-none flex items-center justify-center transition-all duration-300 shadow-sm active:scale-95 cursor-pointer"
                         >
@@ -235,26 +281,23 @@ function HseGallerySection() {
                     </div>
                 </div>
 
-                {/* Baris Foto Bersih (Tampil 3 Foto di Layar Desktop, Total 6 Foto, Sudut Lancip) */}
+                {/* Baris Foto Berjalan Otomatis dengan JS */}
                 <div 
                     ref={galleryScrollRef}
-                    className="flex overflow-x-auto gap-4 sm:gap-6 scroll-smooth snap-x snap-mandatory pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                    className="flex overflow-x-hidden gap-4 sm:gap-6 pb-4 select-none cursor-grab active:cursor-grabbing"
                 >
                     {galleryImages.map((imgSrc, idx) => (
                         <div 
                             key={idx}
                             onClick={() => setSelectedImage(imgSrc)}
-                            className="flex-shrink-0 w-[80%] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-start group cursor-pointer"
+                            className="flex-shrink-0 w-[280px] sm:w-[360px] lg:w-[400px] snap-start group cursor-pointer"
                         >
-                            {/* Kotak Foto Polos, Sudut Lancip (rounded-none), Border Persegi */}
                             <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden rounded-none border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300">
                                 <img 
                                     src={imgSrc} 
                                     alt={`Dokumentasi HSE ${idx + 1}`} 
-                                    className="w-full h-full object-cover rounded-none transition-transform duration-700 ease-out group-hover:scale-105"
+                                    className="w-full h-full object-cover rounded-none transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none"
                                 />
-
-                                {/* Aksen Garis Kuning Lancip Saat Hover */}
                                 <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#ffc107] transition-colors duration-300 pointer-events-none rounded-none" />
                             </div>
                         </div>
@@ -269,7 +312,6 @@ function HseGallerySection() {
                     className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8 animate-fadeIn"
                     onClick={() => setSelectedImage(null)}
                 >
-                    {/* Tombol Tutup (X) */}
                     <button 
                         onClick={() => setSelectedImage(null)}
                         aria-label="Tutup Tampilan Penuh"
@@ -280,7 +322,6 @@ function HseGallerySection() {
                         </svg>
                     </button>
 
-                    {/* Foto Ukuran Besar (Full Layar Max) */}
                     <div 
                         className="relative max-w-6xl max-h-[90vh] flex items-center justify-center rounded-none shadow-2xl overflow-hidden border-2 border-white/20"
                         onClick={(e) => e.stopPropagation()}
@@ -368,7 +409,7 @@ export default function Hse() {
                 ))}
             </div>
 
-            {/* SECTION GALLERY BERSIH (SUDUT LANCIP & KLIK PREVIEW FULL LAYAR) */}
+            {/* SECTION GALLERY BERJALAN OTOMATIS */}
             <HseGallerySection />
 
             <Footer />

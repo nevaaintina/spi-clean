@@ -132,12 +132,12 @@ export default function Contact() {
       <Head title="Contact Us - PT. Servistama Pro Indonesia" />
 
       {/* =====================================================
-          NAVBAR
+         NAVBAR
       ===================================================== */}
       <Navbar />
 
       {/* =====================================================
-          FULL HERO BANNER
+         FULL HERO BANNER
       ===================================================== */}
       <section
         className="relative flex min-h-[500px] md:min-h-[560px] w-full items-center overflow-hidden bg-cover bg-center py-24"
@@ -180,7 +180,7 @@ export default function Contact() {
       </section>
 
       {/* =====================================================
-          CONTACT INFO CARD (FULL-WIDTH MEMBENTANG)
+         CONTACT INFO CARD (FULL-WIDTH MEMBENTANG)
       ===================================================== */}
       <section className="relative z-30 -mt-10 md:-mt-14 mb-12">
         <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-16">
@@ -236,27 +236,27 @@ export default function Contact() {
       </section>
 
       {/* =====================================================
-          MAPS & QR CODE SECTION (BERDAMPINGAN RAPI)
+         MAPS & QR CODE SECTION (SEJAJAR 1 BARIS DI MOBILE & DESKTOP)
       ===================================================== */}
       <section className="pb-20 pt-2 md:pt-4 bg-[#f7f9fc]">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 items-stretch">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 xl:px-16">
+          <div className="grid grid-cols-2 gap-3 sm:gap-7 items-stretch">
 
-            {/* GOOGLE MAPS (DIARAHKAN KE LINK BARU) */}
+            {/* GOOGLE MAPS */}
             <PopReveal delay={100} className="h-full">
-              <div className="bg-white rounded-2xl border border-slate-200/90 p-5 md:p-6 shadow-[0_10px_35px_rgba(15,35,70,0.06)] hover:shadow-xl transition-shadow duration-300 h-full flex flex-col justify-between">
+              <div className="bg-white rounded-2xl border border-slate-200/90 p-3 sm:p-5 md:p-6 shadow-[0_10px_35px_rgba(15,35,70,0.06)] hover:shadow-xl transition-shadow duration-300 h-full flex flex-col justify-between">
                 <div>
-                  <div className="flex gap-3 items-start mb-4">
-                    <div className="w-9 h-9 rounded-xl bg-[#fff8df] flex items-center justify-center shrink-0 text-[#b27b00]">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-start mb-3 sm:mb-4">
+                    <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-[#fff8df] flex items-center justify-center shrink-0 text-[#b27b00]">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z" />
                         <circle cx="12" cy="11" r="3" />
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-xs font-bold text-[#071b38]">Lokasi Kantor Pusat & Warehouse</h3>
-                      <p className="text-[10px] text-slate-500 leading-relaxed mt-1 font-normal">
-                        Foresta Business Loft 7, Unit 6-7, Jl. BSD Boulevard Utara, Lengkong Kulon, Pagedangan, Tangerang Regency, Banten 15331
+                      <h3 className="text-[11px] sm:text-xs font-bold text-[#071b38]">Lokasi Kantor Pusat & Warehouse</h3>
+                      <p className="text-[9px] sm:text-[10px] text-slate-500 leading-relaxed mt-0.5 sm:mt-1 font-normal">
+                        Foresta Business Loft 7, Unit 6-7, Jl. BSD Boulevard Utara, Pagedangan, Tangerang
                       </p>
                     </div>
                   </div>
@@ -266,7 +266,7 @@ export default function Contact() {
                   href="https://maps.app.goo.gl/jWF4GkC83QECqqyAA"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full h-[230px] md:h-[250px] rounded-xl overflow-hidden border border-slate-200 mt-2 relative group cursor-pointer"
+                  className="block w-full h-[180px] sm:h-[230px] md:h-[250px] rounded-xl overflow-hidden border border-slate-200 mt-2 relative group cursor-pointer"
                   title="Klik untuk membuka lokasi di Google Maps"
                 >
                   <iframe
@@ -279,47 +279,46 @@ export default function Contact() {
                     loading="lazy"
                   />
                   
-                  {/* Overlay Interaktif Hover */}
                   <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <span className="bg-white/95 text-[#0f2b5c] font-bold text-xs px-3 py-1.5 rounded-md shadow-md">
-                      Buka di Google Maps ↗
+                    <span className="bg-white/95 text-[#0f2b5c] font-bold text-[10px] sm:text-xs px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md shadow-md">
+                      Buka di Maps ↗
                     </span>
                   </div>
                 </a>
               </div>
             </PopReveal>
 
-            {/* QR CODE CARD (BERISI FILE GAMBAR) */}
+            {/* QR CODE CARD */}
             <PopReveal delay={200} className="h-full">
-              <div className="relative overflow-hidden bg-[#071b38] rounded-2xl p-6 md:p-8 shadow-[0_12px_35px_rgba(7,27,56,0.18)] hover:scale-[1.01] transition-transform duration-300 h-full flex flex-col justify-between">
+              <div className="relative overflow-hidden bg-[#071b38] rounded-2xl p-3 sm:p-6 md:p-8 shadow-[0_12px_35px_rgba(7,27,56,0.18)] hover:scale-[1.01] transition-transform duration-300 h-full flex flex-col justify-between">
                 <div className="absolute -right-16 -bottom-16 w-44 h-44 rounded-full border border-white/5 pointer-events-none" />
                 <div className="absolute right-10 top-[-70px] w-32 h-32 rounded-full border border-[#ffc107]/10 pointer-events-none" />
 
                 <div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-[#ffc107]">Scan To Connect</span>
-                    <span className="w-8 h-[1px] bg-white/20" />
+                  <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+                    <span className="text-[8px] sm:text-[9px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[#ffc107]">Scan To Connect</span>
+                    <span className="hidden sm:inline-block w-8 h-[1px] bg-white/20" />
                   </div>
 
-                  <h4 className="text-lg md:text-xl font-bold text-white">
+                  <h4 className="text-sm sm:text-lg md:text-xl font-bold text-white">
                     Simpan Kontak Kami
                   </h4>
 
-                  <p className="text-[11px] text-slate-300 leading-relaxed mt-1.5 max-w-[320px] font-normal">
-                    Scan QR Code di bawah untuk langsung menyimpan kontak resmi PT. Servistama Pro Indonesia ke dalam ponsel Anda dengan mudah dan cepat.
+                  <p className="text-[10px] sm:text-[11px] text-slate-300 leading-relaxed mt-1 font-normal">
+                    Scan QR Code untuk menyimpan kontak resmi PT. Servistama Pro Indonesia ke ponsel Anda.
                   </p>
                 </div>
 
-                <div className="relative z-10 flex flex-col sm:flex-row items-center gap-6 my-6">
-                  <div className="bg-white rounded-2xl p-3.5 shrink-0 shadow-md">
+                <div className="relative z-10 flex flex-col items-center xl:flex-row gap-3 sm:gap-6 my-3 sm:my-6">
+                  <div className="bg-white rounded-xl sm:rounded-2xl p-2 sm:p-3.5 shrink-0 shadow-md">
                     <img
                       src="/images/barcode.png"
                       alt="QR Code Contact SPI"
-                      className="w-[120px] h-[120px] object-contain"
+                      className="w-[85px] h-[85px] sm:w-[120px] sm:h-[120px] object-contain"
                     />
                   </div>
 
-                  <div className="flex flex-col gap-2.5">
+                  <div className="hidden xl:flex flex-col gap-2.5">
                     <span className="flex items-center gap-2 text-[11px] font-medium text-slate-200">
                       <span className="w-2 h-2 rounded-full bg-[#ffc107]" /> Akses Kontak Cepat
                     </span>
@@ -332,18 +331,18 @@ export default function Contact() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-white/10 text-[10px] text-slate-400">
-                  PT. Servistama Pro Indonesia © {new Date().getFullYear()} — All Rights Reserved
+                <div className="pt-3 sm:pt-4 border-t border-white/10 text-[9px] sm:text-[10px] text-slate-400 truncate">
+                  PT. Servistama Pro Indonesia © {new Date().getFullYear()}
                 </div>
-            </div>
-          </PopReveal>
+              </div>
+            </PopReveal>
 
+          </div>
         </div>
-      </div>
       </section>
 
       {/* =====================================================
-          FOOTER
+         FOOTER
       ===================================================== */}
       <Footer />
 

@@ -117,32 +117,10 @@ const IconAward = (props) => (
   </svg>
 );
 
-const IconEngineer = (props) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" {...props}>
-    <circle cx="12" cy="7" r="3.2" />
-    <path d="M5 21c.6-4 3-6.4 7-6.4s6.4 2.4 7 6.4" />
-    <path d="m9.5 8.5 1 1.2 1-1.6 1 1.6 1-1.2" />
-  </svg>
-);
-
 const IconMap = (props) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" {...props}>
     <path d="M9 4 3.5 6.2v13.3L9 17l6 2.5 5.5-2.2V3.9L15 6.5 9 4Z" />
     <path d="M9 4v13M15 6.5V19.5" />
-  </svg>
-);
-
-const IconGenuine = (props) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" {...props}>
-    <path d="M12 3 4.5 6v6c0 4.5 3.2 7.7 7.5 9 4.3-1.3 7.5-4.5 7.5-9V6L12 3Z" />
-    <path d="m9 12 2 2 4-4" />
-  </svg>
-);
-
-const IconClock = (props) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" {...props}>
-    <circle cx="12" cy="12" r="9" />
-    <path d="M12 7v5l3.3 2" />
   </svg>
 );
 
@@ -159,14 +137,6 @@ const IconUsers = (props) => (
     <circle cx="16" cy="9" r="2.2" />
     <path d="M3 19c.6-3 2.7-4.6 5.5-4.6S13.4 16 14 19" />
     <path d="M14.5 14.6c2.3.1 4 1.6 4.5 4.4" />
-  </svg>
-);
-
-const IconProject = (props) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" {...props}>
-    <rect x="3.5" y="4" width="17" height="16" rx="2" />
-    <path d="M8 2.5v3M16 2.5v3M3.5 9.5h17" />
-    <path d="m8 14 2.5 2.5L16 12" />
   </svg>
 );
 
@@ -252,7 +222,6 @@ const IconArrow = (props) => (
   </svg>
 );
 
-// Komponen OrgCard pembantu struktur organisasi
 function OrganizationCard({ children, className = "" }) {
   return (
     <div className={`absolute bg-white border border-slate-200 rounded-xl shadow-sm flex items-center justify-center p-2 text-center transition-all hover:border-[#FFC107] hover:shadow-md ${className}`}>
@@ -261,7 +230,7 @@ function OrganizationCard({ children, className = "" }) {
   );
 }
 
-export default function Index({ milestones = [], managementTeam = [], customers = [] }) {
+export default function Index({ companyHistories = [], milestones = [], managementTeam = [], customers = [] }) {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isHeroLoaded, setIsHeroLoaded] = useState(false);
 
@@ -270,7 +239,6 @@ export default function Index({ milestones = [], managementTeam = [], customers 
     return () => clearTimeout(timer);
   }, []);
 
-  // Data 4 Statistik yang sinkron
   const whoWeAreStats = [
     { icon: IconCheckBadge, value: "100%", label: "Dukungan Teknis" },
     { icon: IconCalendar, value: "4+", label: "Tahun Pengalaman" },
@@ -286,14 +254,6 @@ export default function Index({ milestones = [], managementTeam = [], customers 
     { icon: IconAward, label: "Authorized Partner", value: "XCMG (Xuzhou Construction Machinery Group)" },
     { icon: IconMap, label: "Coverage Area", value: "Nationwide - Indonesia" },
     { icon: IconPin, label: "Head Office", value: "Tangerang, Banten, Indonesia" },
-  ];
-
-  const historyTimeline = [
-    { year: "2022", title: "Authorized XCMG Dealer Indonesia" },
-    { year: "2023", title: "FMC Launch & Jakarta Warehouses" },
-    { year: "2024", title: "XCMG Award & Regional Expansion" },
-    { year: "2025", title: "2 Balikpapan Warehouses & Integrated Asset Management System" },
-    { year: "2026", title: "Full New ERP System for Operational Efficiency & Integration" },
   ];
 
   const companyStats = [
@@ -336,7 +296,7 @@ export default function Index({ milestones = [], managementTeam = [], customers 
       <Head title="About Us - PT Servistama Pro Indonesia" />
       <Navbar />
 
-      {/* ============================== HERO (DURASI SANTAI, PANJANG & MEWAH - COMPACT MOBILE) ============================== */}
+      {/* ============================== HERO ============================== */}
       <section
         className="relative flex min-h-[380px] sm:min-h-[500px] w-full items-center overflow-hidden md:min-h-[700px]"
         style={{  
@@ -429,7 +389,6 @@ export default function Index({ milestones = [], managementTeam = [], customers 
         <section className="bg-white py-12 sm:py-16 md:py-20 overflow-hidden">
           <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 sm:gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-14 lg:px-8">
             
-            {/* Foto Masuk Mengalir Santai dari Kiri */}
             <Reveal direction="left">
               <div className="relative group">
                 <img
@@ -440,7 +399,6 @@ export default function Index({ milestones = [], managementTeam = [], customers 
               </div>
             </Reveal>
 
-            {/* Teks Masuk Mengalir Santai dari Kanan */}
             <Reveal direction="right">
               <div>
                 <span className="mb-2 sm:mb-3 inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
@@ -455,7 +413,6 @@ export default function Index({ milestones = [], managementTeam = [], customers 
                   layanan purnajual prima, serta komitmen penuh dalam menjaga kinerja operasional dan keberlanjutan industri Anda.
                 </p>
                 
-                {/* 4 Statistik Who We Are */}
                 <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-4 sm:gap-6 sm:grid-cols-4">
                   {whoWeAreStats.map((s, i) => {
                     const Icon = s.icon;
@@ -498,7 +455,6 @@ export default function Index({ milestones = [], managementTeam = [], customers 
             </div>
           </Reveal>
 
-          {/* Grid Card dengan Staggered Delay Santai */}
           <div className="grid grid-cols-1 gap-3 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {companyProfile.map((row, i) => {
               const Icon = row.icon;
@@ -527,37 +483,42 @@ export default function Index({ milestones = [], managementTeam = [], customers 
       </section>
 
       {/* ============================== COMPANY HISTORY ============================== */}
-      <section className="bg-white py-12 sm:pt-8 sm:pb-16 md:pt-10 md:pb-20 overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal direction="up">
-            <span className="mb-3 sm:mb-4 inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
-              Company History
-            </span>
-          </Reveal>
+<section className="bg-white py-12 sm:pt-8 sm:pb-16 md:pt-10 md:pb-20 overflow-hidden">
+  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <Reveal direction="up">
+      <span className="mb-3 sm:mb-4 inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+        Company History
+      </span>
+    </Reveal>
 
-          <div className="relative mt-3 sm:mt-4">
-            <div className="absolute left-0 right-0 top-6 hidden h-0.5 bg-[#E2E8F0] sm:block" />
+    <div className="relative mt-3 sm:mt-4">
+      <div className="absolute left-0 right-0 top-6 hidden h-0.5 bg-[#E2E8F0] sm:block" />
 
-            <div className="grid grid-cols-2 gap-y-8 sm:gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
-              {historyTimeline.map((item, i) => (
-                <Reveal key={i} delay={i * 220} direction="up">
-                  <div className="group relative flex cursor-pointer flex-col items-center text-center">
-                    <div className="z-10 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#0F2B5C] text-[11px] sm:text-xs font-extrabold text-white shadow-md transition-all duration-700 group-hover:scale-110 group-hover:bg-[#FFC107] group-hover:text-[#0B1220] group-hover:shadow-lg group-hover:shadow-[#FFC107]/40">
-                      {item.year ? item.year.toString().slice(-2) : ""}
-                    </div>
-                    <p className="mt-2 sm:mt-3 text-xs sm:text-sm font-extrabold text-[#0F2B5C] transition-colors duration-500 group-hover:text-[#FFC107]">
-                      {item.year}
-                    </p>
-                    <p className="mt-1 max-w-[120px] text-[11px] sm:text-xs text-[#64748B] transition-colors duration-500 group-hover:text-[#0F2B5C]">
-                      {item.title}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <div className="grid grid-cols-1 gap-y-8 sm:gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
+        {companyHistories.length === 0 ? (
+          <p className="text-center text-slate-400 text-xs col-span-full py-6">Belum ada data company history.</p>
+        ) : (
+          companyHistories.map((item, i) => (
+            <Reveal key={item.id || i} delay={i * 220} direction="up">
+              <div className="group relative flex cursor-pointer flex-col items-center text-center px-2">
+                <div className="z-10 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#0F2B5C] text-[11px] sm:text-xs font-extrabold text-white shadow-md transition-all duration-700 group-hover:scale-110 group-hover:bg-[#FFC107] group-hover:text-[#0B1220] group-hover:shadow-lg group-hover:shadow-[#FFC107]/45 shrink-0">
+                  {item.year ? String(item.year).slice(-2) : ""}
+                </div>
+                <p className="mt-2 sm:mt-3 text-xs sm:text-sm font-extrabold text-[#0F2B5C] transition-colors duration-500 group-hover:text-[#FFC107]">
+                  {item.year}
+                </p>
+                {/* max-w-[150px] mempersempit lebar kotak agar teks pendek langsung turun ke baris kedua */}
+                <p className="mt-3 sm:mt-4 text-[11px] sm:text-xs text-[#64748B] transition-colors duration-500 group-hover:text-[#0F2B5C] whitespace-pre-line leading-relaxed break-words w-full max-w-[150px] mx-auto">
+                  {item.title || item.description}
+                </p>
+              </div>
+            </Reveal>
+          ))
+        )}
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* ============================== VISION MISSION ============================== */}
       <div id="vision-mission" className="scroll-mt-24">
@@ -605,52 +566,52 @@ export default function Index({ milestones = [], managementTeam = [], customers 
       <section className="bg-slate-50 py-12 sm:py-16 border-t border-slate-200 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
-          {/* MILESTONES (Dinamis dari Database) */}
+          {/* MILESTONES (DARI DATABASE MILESTONES) */}
           <Reveal direction="up">
-            <div className="text-center mb-8 sm:mb-10">
+            <div className="text-center mb-6 sm:mb-10">
               <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
                 Company Milestone
               </span>
-              <h2 className="mt-1 text-xl sm:text-2xl font-black text-[#0F2B5C]">
+              <h2 className="mt-1 text-lg sm:text-2xl font-black text-[#0F2B5C]">
                 OUR JOURNEY & ACHIEVEMENTS
               </h2>
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-12 sm:mb-20">
+          <div className="grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-12 sm:mb-20">
             {milestones.length === 0 ? (
               <p className="text-center text-slate-400 text-xs col-span-3 py-6">Belum ada data milestone.</p>
             ) : (
               milestones.map((m, i) => (
                 <Reveal key={m.id} delay={i * 220} direction="up">
                   <div
-                    className="group relative overflow-hidden rounded-xl sm:rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-sm transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl flex flex-col justify-between h-full"
+                    className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 sm:p-5 shadow-sm transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl flex flex-col justify-between h-full"
                   >
                     <div>
                       {m.image_path ? (
-                        <div className="relative aspect-square w-full overflow-hidden rounded-lg sm:rounded-xl bg-slate-100 mb-3 sm:mb-4">
+                        <div className="relative aspect-[4/3] sm:aspect-square w-full overflow-hidden rounded-xl bg-slate-100 mb-4">
                           <img
                             src={`/${m.image_path}`}
                             alt={m.title}
                             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                           />
-                          <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3">
-                            <span className="inline-block rounded-md sm:rounded-lg bg-[#0F2B5C]/90 backdrop-blur-sm px-2.5 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs font-extrabold text-[#FFC107] shadow">
+                          <div className="absolute top-3 left-3">
+                            <span className="inline-block rounded-lg bg-[#0F2B5C]/90 backdrop-blur-sm px-3 py-1 text-xs font-extrabold text-[#FFC107] shadow">
                               {m.year}
                             </span>
                           </div>
                         </div>
                       ) : (
-                        <div className="mb-3 sm:mb-4">
-                          <span className="inline-block rounded-md sm:rounded-lg bg-[#0F2B5C] px-2.5 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs font-extrabold text-[#FFC107] shadow">
+                        <div className="mb-4">
+                          <span className="inline-block rounded-lg bg-[#0F2B5C] px-3 py-1 text-xs font-extrabold text-[#FFC107] shadow">
                             {m.year}
                           </span>
                         </div>
                       )}
-                      <h4 className="text-sm sm:text-base font-extrabold text-[#0F2B5C] line-clamp-1">
+                      <h4 className="text-base font-extrabold text-[#0F2B5C]">
                         {m.title}
                       </h4>
-                      <p className="mt-1.5 sm:mt-2 text-[11px] sm:text-xs leading-relaxed text-slate-600 line-clamp-3">
+                      <p className="mt-2 text-xs sm:text-xs leading-relaxed text-slate-600">
                         {m.description}
                       </p>
                     </div>
@@ -758,14 +719,14 @@ export default function Index({ milestones = [], managementTeam = [], customers 
         </div>
       </section>
 
-      {/* ================= MANAGEMENT TEAM DINAMIS DARI DATABASE ================= */}
+      {/* ================= MANAGEMENT TEAM ================= */}
       <div id="management" className="scroll-mt-24">
         <Reveal direction="up">
           <Management managementTeam={managementTeam} />
         </Reveal>
       </div>
 
-      {/* ================= OUR CUSTOMERS DINAMIS DARI DATABASE ================= */}
+      {/* ================= OUR CUSTOMERS ================= */}
       <Reveal direction="up">
         <OurCustomers customers={customers} />
       </Reveal>
@@ -841,9 +802,9 @@ export default function Index({ milestones = [], managementTeam = [], customers 
 
       {/* ============================== CTA BANNER ============================== */}
       <Reveal direction="scale">
-        <section className="grid grid-cols-1 md:grid-cols-2">
+        <section className="grid grid-cols-2">
           <div
-            className="relative flex min-h-[220px] sm:min-h-[280px] items-center overflow-hidden px-6 py-10 sm:px-8 sm:py-14"
+            className="relative flex min-h-[180px] sm:min-h-[280px] items-center overflow-hidden px-3 py-6 sm:px-8 sm:py-14"
             style={{
               backgroundImage: "linear-gradient(to bottom, rgba(11,18,32,0.70), rgba(11,18,32,0.85)), url('https://img.youtube.com/vi/qIVMKITIV7o/maxresdefault.jpg')",
               backgroundSize: "cover",
@@ -851,10 +812,10 @@ export default function Index({ milestones = [], managementTeam = [], customers 
             }}
           >
             <div>
-              <h3 className="max-w-md text-base sm:text-xl md:text-2xl lg:text-3xl font-extrabold uppercase leading-tight text-white">
+              <h3 className="max-w-md text-[10px] sm:text-xl md:text-2xl lg:text-3xl font-extrabold uppercase leading-tight text-white">
                 BUILDING THE FUTURE OF HEAVY EQUIPMENT SERVICES
               </h3>
-              <p className="mt-2 sm:mt-3 text-xs sm:text-sm font-semibold text-[#FFC107]">
+              <p className="mt-1 sm:mt-3 text-[8px] sm:text-sm font-semibold text-[#FFC107] hidden sm:block">
                 Menjadi fondasi menuju Smart Mining Service Ecosystem.
               </p>
 
@@ -862,15 +823,15 @@ export default function Index({ milestones = [], managementTeam = [], customers 
                 type="button"
                 onClick={() => setIsVideoOpen(true)}
                 aria-label="Play company video"
-                className="mt-4 sm:mt-6 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full border-2 border-white/70 bg-[#0B1220]/40 text-white backdrop-blur-sm transition-all duration-500 hover:scale-110 hover:bg-white hover:text-[#0B1220] cursor-pointer"
+                className="mt-3 sm:mt-6 flex h-8 w-8 sm:h-14 sm:w-14 items-center justify-center rounded-full border-2 border-white/70 bg-[#0B1220]/40 text-white backdrop-blur-sm transition-all duration-500 hover:scale-110 hover:bg-white hover:text-[#0B1220] cursor-pointer"
               >
-                <IconPlay className="ml-0.5 sm:ml-1 h-4 w-4 sm:h-5 sm:w-5" />
+                <IconPlay className="ml-0.5 sm:ml-1 h-3 w-3 sm:h-5 sm:w-5" />
               </button>
             </div>
           </div>
 
           <div
-            className="relative flex min-h-[220px] sm:min-h-[280px] items-center overflow-hidden bg-[#FFC107] px-6 py-10 sm:px-8 sm:py-14"
+            className="relative flex min-h-[180px] sm:min-h-[280px] items-center overflow-hidden bg-[#FFC107] px-3 py-6 sm:px-8 sm:py-14"
             style={{
               backgroundImage: "linear-gradient(to left, rgba(255,193,7,0.35), rgba(255,193,7,0.92)), url('https://placehold.co/960x480/FFC107/FFC107?text=+')",
               backgroundSize: "cover",
@@ -878,27 +839,27 @@ export default function Index({ milestones = [], managementTeam = [], customers 
             }}
           >
             <div>
-              <h3 className="max-w-sm text-base sm:text-xl md:text-2xl lg:text-3xl font-extrabold uppercase leading-tight text-[#0B1220]">
+              <h3 className="max-w-sm text-[10px] sm:text-xl md:text-2xl lg:text-3xl font-extrabold uppercase leading-tight text-[#0B1220]">
                 LET'S BUILD A BETTER FUTURE TOGETHER
               </h3>
-              <p className="mt-2 sm:mt-3 max-w-sm text-xs sm:text-sm leading-relaxed text-[#0B1220]/80">
+              <p className="mt-1 sm:mt-3 max-w-sm text-[8px] sm:text-sm leading-relaxed text-[#0B1220]/80 hidden sm:block">
                 We are ready to support your business with our best services and solutions.
               </p>
-              <div className="mt-4 sm:mt-6 flex flex-wrap gap-3 sm:gap-4">
+              <div className="mt-3 sm:mt-6 flex flex-col sm:flex-row gap-1.5 sm:gap-4">
                 <a
                   href="https://wa.me/6282258013177?text=Halo%20PT.%20Servistama%20Pro%20Indonesia,%20saya%20tertarik%20untuk%20menghubungi%20Anda."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-md bg-[#0B1220] px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-white transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#0F2B5C] hover:shadow-lg"
+                  className="inline-flex items-center justify-center gap-1 rounded bg-[#0B1220] px-2.5 py-1.5 sm:px-6 sm:py-3 text-[9px] sm:text-sm font-bold text-white transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#0F2B5C] hover:shadow-lg"
                 >
                   Contact Us
-                  <IconArrow className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  <IconArrow className="h-3 w-3 sm:h-4 sm:w-4" />
                 </a>
                 <a
                   href="https://mail.google.com/mail/?view=cm&fs=1&to=info@servistamapro.com&su=Request%20Consultation%20-%20PT.%20Servistama%20Pro%20Indonesia"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-md border-2 border-[#0B1220] px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-[#0B1220] transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#0B1220] hover:text-white"
+                  className="inline-flex items-center justify-center gap-1 rounded border-2 border-[#0B1220] px-2.5 py-1.5 sm:px-6 sm:py-3 text-[9px] sm:text-sm font-bold text-[#0B1220] transition-all duration-500 hover:-translate-y-0.5 hover:bg-[#0B1220] hover:text-white"
                 >
                   Request Consultation
                 </a>

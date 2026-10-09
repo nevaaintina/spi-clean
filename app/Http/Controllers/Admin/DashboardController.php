@@ -21,6 +21,7 @@ use App\Models\Customer;
 use App\Models\JobVacancy;
 use App\Models\Service;
 use App\Models\Setting;
+use App\Models\CompanyHistory;
 
 class DashboardController extends Controller
 {
@@ -29,8 +30,6 @@ class DashboardController extends Controller
         // Mengambil path file PDF katalog produk dan spare part secara permanen dari database
         $productCatalog = Setting::where('key', 'product_catalog_pdf')->first();
         $sparePartCatalog = Setting::where('key', 'spare_part_catalog_pdf')->first();
-
-        
 
         return Inertia::render('Admin/Dashboard', [
             'homeSetting'           => HomeSetting::first(),
@@ -44,6 +43,7 @@ class DashboardController extends Controller
             'activePoster'          => Poster::where('is_active', true)->latest()->first(),
             'posters'               => Poster::latest()->get(),
             'milestones'            => Milestone::latest()->get(),
+            'companyHistories'      => CompanyHistory::orderBy('year', 'asc')->get(), // Diubah dari 'histories' menjadi 'companyHistories'[cite: 11]
             'teamMembers'           => TeamMember::all(),
             'customers'             => Customer::all(),
             'jobVacancies'          => JobVacancy::latest()->get(),

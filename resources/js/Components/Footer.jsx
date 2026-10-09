@@ -174,8 +174,8 @@ export default function Footer() {
 
         {/* COPYRIGHT */}
         <div className="border-t border-slate-200 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center text-slate-500 text-[11px]">
-          <p>© 2026 PT. Servistama Pro Indonesia. All rights reserved.</p>
-          <p className="mt-2 md:mt-0">The Future of Smart Heavy Equipment Service</p>
+          <p>© 2026 PT. Servistama Pro Indonesia.</p>
+          <p className="mt-2 md:mt-0">Powering Your Operation, Supporting Your Success</p>
         </div>
       </div>
     </footer>

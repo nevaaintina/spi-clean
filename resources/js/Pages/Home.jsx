@@ -336,7 +336,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
                   </div>
                   <div>
                     <h4 className="font-bold text-[11px] sm:text-xs text-[#0f2b5c]">Berpengalaman</h4>
-                    <p className="text-[9px] sm:text-[10px] text-slate-500 leading-snug mt-0.5">4 tahun melayani berbagai industri</p>
+                    <p className="text-[9px] sm:text-[10px] text-slate-500 leading-snug mt-0.5">Melayani berbagai industri dengan solusi dan layanan yang profesional.</p>
                   </div>
                 </div>
 
@@ -581,28 +581,28 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
                 id: 1,
                 slug: "pelatihan-operator",
                 title: "Pelatihan Operator",
-                description: "Kami memberikan pelatihan khusus kepada operator anda untuk unit XCMG pertambangan...",
+                
                 image_path: "/images/featured-service1.jpg"
               },
               {
                 id: 2,
                 slug: "layanan-maintenance",
-                title: "Heavy Equipment Maintenance & Overhaul",
-                description: "Layanan pemeliharaan menyeluruh dan overhaul komponen alat berat...",
+                title: "Perawatan unit",
+                
                 image_path: "/images/featured-service2.jpg"
               },
               {
                 id: 3,
                 slug: "suplai-suku-cadang",
-                title: "Suplai Suku Cadang",
-                description: "Ketersediaan suku cadang original XCMG lengkap dengan jaminan kualitas terbaik...",
+                title: "Suku Cadang",
+                
                 image_path: "/images/featured-service3.png"
               },
               {
                 id: 4,
                 slug: "konsultasi-teknis",
-                title: "Konsultasi Teknis",
-                description: "Layanan konsultasi pemilihan unit dan analisis kebutuhan operasional proyek...",
+                title: "servis unit",
+                
                 image_path: "/images/featured-service4.jpg"
               }
             ].map((srv, idx) => (
@@ -838,7 +838,15 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
                 </div>
               </div>
               <div className="mt-4 sm:mt-5 pt-3 border-t border-slate-100">
-                <a href="mailto:info@servistamapro.com" className="text-xs sm:text-[11px] font-bold text-[#0f2b5c] hover:text-amber-600 transition inline-flex items-center gap-1">Kirim Email →</a>
+                {/* Tombol diarahkan langsung ke form email / klien email default dengan subjek otomatis */}
+                <a 
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=info@servistamapro.com&su=Inquiry%20-%20PT.%20Servistama%20Pro%20Indonesia" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-xs sm:text-[11px] font-bold text-[#0f2b5c] hover:text-amber-600 transition inline-flex items-center gap-1"
+                >
+                  Kirim Pesan / Email →
+                </a>
               </div>
             </div>
           </div>

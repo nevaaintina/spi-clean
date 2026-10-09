@@ -108,20 +108,18 @@ export default function VisionMission() {
     <section className="bg-[#F8FAFC] pt-8 pb-16 md:pt-10 md:pb-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-6">
         
-        {/* BARIS ATAS: 2 KOLOM (OUR VISION & OUR MISSION) */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {/* BARIS ATAS: Visi & Misi Dibuat Sejajar 1 Baris di Mobile (grid-cols-2) */}
+        <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-2">
           
          {/* 1. VISION */}
-         <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-[#0F2B5C] p-7 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#FFC107]/50 hover:shadow-2xl hover:shadow-[#0F2B5C]/30">
+         <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-xl sm:rounded-2xl border border-white/10 bg-[#0F2B5C] p-3.5 sm:p-7 text-white shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#FFC107]/50 hover:shadow-2xl hover:shadow-[#0F2B5C]/30">
            <div className="flex flex-col h-full justify-between">
-             {/* Judul di Atas */}
-             <h3 className="text-xs font-bold uppercase tracking-widest text-[#FFC107]">
+             <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#FFC107]">
                Our Vision
              </h3>
 
-             {/* Isi Teks Visi Clean */}
-             <div className="my-auto py-4">
-               <p className="text-lg font-normal leading-relaxed text-white/95">
+             <div className="my-auto py-2 sm:py-4">
+               <p className="text-xs sm:text-lg font-normal leading-relaxed text-white/95">
                  Menjadi perusahaan penyedia jasa servis dan suku cadang alat berat terlengkap dan terbesar dengan pelayanan terbaik di Indonesia.
                </p>
              </div>
@@ -129,20 +127,20 @@ export default function VisionMission() {
          </div> 
 
          {/* 2. MISSION */}
-         <div className="group flex flex-col justify-between rounded-2xl border border-[#E2E8F0] bg-white p-7 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#FFC107] hover:shadow-2xl hover:shadow-[#0F2B5C]/10">
+         <div className="group flex flex-col justify-between rounded-xl sm:rounded-2xl border border-[#E2E8F0] bg-white p-3.5 sm:p-7 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#FFC107] hover:shadow-2xl hover:shadow-[#0F2B5C]/10">
            <div>
-             <h3 className="mb-5 text-xs font-bold uppercase tracking-widest text-[#FFC107]">
+             <h3 className="mb-3 sm:mb-5 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#FFC107]">
                Our Mission
              </h3>
-             <ul className="space-y-4">
+             <ul className="space-y-2.5 sm:space-y-4">
                {missions.map((m, i) => {
                  const Icon = m.icon;
                  return (
-                   <li key={i} className="flex items-start gap-3.5">
-                     <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#0F2B5C]/5 text-[#0F2B5C] transition-colors duration-300 group-hover:bg-[#FFC107] group-hover:text-[#0F2B5C]">
-                       <Icon className="h-4 w-4" />
+                   <li key={i} className="flex items-start gap-2 sm:gap-3.5">
+                     <span className="mt-0.5 flex h-6 w-6 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg bg-[#0F2B5C]/5 text-[#0F2B5C] transition-colors duration-300 group-hover:bg-[#FFC107] group-hover:text-[#0F2B5C]">
+                       <Icon className="h-3 w-3 sm:h-4 sm:w-4" />
                      </span>
-                     <span className="text-sm font-medium leading-relaxed text-[#64748B] transition-colors duration-300 group-hover:text-[#0F2B5C]">
+                     <span className="text-[11px] sm:text-sm font-medium leading-relaxed text-[#64748B] transition-colors duration-300 group-hover:text-[#0F2B5C]">
                        {m.text}
                      </span>
                    </li>
@@ -154,24 +152,24 @@ export default function VisionMission() {
 
         </div> 
 
-        {/* BARIS KEDUA: CORE VALUES (MELEBAR FULL HORIZONTAL 5 KOLOM) */}
-        <div className="group rounded-2xl border border-[#E2E8F0] bg-white p-7 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#FFC107] hover:shadow-2xl hover:shadow-[#0F2B5C]/10">
-          <h3 className="mb-5 text-xs font-bold uppercase tracking-widest text-[#FFC107]">
+        {/* BARIS KEDUA: CORE VALUES (HIPRO) */}
+        <div className="group rounded-2xl border border-[#E2E8F0] bg-white p-5 sm:p-7 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#FFC107] hover:shadow-2xl hover:shadow-[#0F2B5C]/10">
+          <h3 className="mb-4 sm:mb-5 text-xs font-bold uppercase tracking-widest text-[#FFC107]">
             Core Values (HIPRO)
           </h3>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-2 lg:grid-cols-5 sm:gap-4">
             {coreValues.map((v, i) => {
               const Icon = v.icon;
               return (
                 <div
                   key={i}
-                  className="flex flex-col rounded-xl border border-transparent bg-[#F8FAFC] p-4 transition-all duration-300 hover:border-[#FFC107]/40 hover:bg-[#0F2B5C]/5"
+                  className="flex flex-col rounded-xl border border-transparent bg-[#F8FAFC] p-3 sm:p-4 transition-all duration-300 hover:border-[#FFC107]/40 hover:bg-[#0F2B5C]/5"
                 >
-                  <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-[#0F2B5C]/10 text-[#0F2B5C] transition-all duration-300 group-hover:bg-[#0F2B5C] group-hover:text-[#FFC107]">
-                    <Icon className="h-4 w-4" />
+                  <div className="mb-2 sm:mb-3 flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-[#0F2B5C]/10 text-[#0F2B5C] transition-all duration-300 group-hover:bg-[#0F2B5C] group-hover:text-[#FFC107]">
+                    <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </div>
-                  <p className="text-sm font-bold text-[#0F2B5C]">{v.title}</p>
-                  <p className="mt-1 text-xs leading-snug text-[#64748B]">
+                  <p className="text-xs sm:text-sm font-bold text-[#0F2B5C]">{v.title}</p>
+                  <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs leading-tight sm:leading-snug text-[#64748B]">
                     {v.desc}
                   </p>
                 </div>

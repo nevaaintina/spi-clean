@@ -273,7 +273,7 @@ export default function OurCustomers({ customers = [] }) {
         </p>
       </div>
 
-      {/* Real Interactive Map Container */}
+      {/* Real Interactive Map Container - Ukuran diperkecil agar tidak penuh satu layar */}
       <div className="relative mb-6 sm:mb-8 overflow-hidden rounded-xl sm:rounded-2xl border border-slate-300 shadow-md">
         <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-[500] flex items-center gap-2">
           <div className="flex items-center gap-1.5 sm:gap-2 rounded-lg bg-white/95 px-2.5 sm:px-3 py-1 sm:py-1.5 shadow-md backdrop-blur-md border border-slate-200">
@@ -289,7 +289,7 @@ export default function OurCustomers({ customers = [] }) {
           </button>
         </div>
 
-        <div className="h-[260px] sm:h-[360px] md:h-[480px] w-full">
+        <div className="h-[200px] sm:h-[280px] md:h-[400px] w-full">
           <MapContainer
             center={INDONESIA_CENTER}
             zoom={DEFAULT_ZOOM}
