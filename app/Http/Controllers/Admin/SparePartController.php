@@ -72,7 +72,7 @@ class SparePartController extends Controller
             'name'             => $request->name,
             'brand'            => $request->brand ?? 'XCMG',
             'image'            => $imagePath,
-            'gallery'          => $galleryPaths, // Menyimpan galeri foto yang nantinya digabung untuk download katalog PDF di frontend
+            'gallery'          => $galleryPaths,
             'delivery_time'    => $request->delivery_time ?? '1-90 DAYS',
             'supply_capacity'  => $request->supply_capacity ?? '10,000 Pieces/Year, Waiting for Your Order in Stock',
             'product_origin'   => $request->product_origin ?? 'China',
@@ -89,7 +89,7 @@ class SparePartController extends Controller
     public function storeCatalogConfig(Request $request)
     {
         $request->validate([
-            'assembly_name'  => 'required|string',
+            'assembly_name'  => 'nullable|string',
             'catalog_pdf'    => 'nullable|mimes:pdf|max:20480',
             'exploded_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10048',
             'exploded_parts' => 'nullable|string',
@@ -107,25 +107,26 @@ class SparePartController extends Controller
             session(['spare_part_catalog_pdf' => 'images/spareparts/config/' . $pdfName]);
         }
 
+        $assemblyName = $request->filled('assembly_name') ? $request->assembly_name : 'Hydraulic System';
+
         if ($request->hasFile('exploded_image')) {
             $imgFile = $request->file('exploded_image');
-            $imgName = 'exploded_' . preg_replace('/\s+/', '_', strtolower($request->assembly_name)) . '_' . time() . '.' . $imgFile->getClientOriginalExtension();
+            $imgName = 'exploded_' . preg_replace('/\s+/', '_', strtolower($assemblyName)) . '_' . time() . '.' . $imgFile->getClientOriginalExtension();
             $imgFile->move($destinationPath, $imgName);
             
             $explodedMap = session('spare_part_exploded_images', []);
-            $explodedMap[$request->assembly_name] = 'images/spareparts/config/' . $imgName;
+            $explodedMap[$assemblyName] = 'images/spareparts/config/' . $imgName;
             session(['spare_part_exploded_images' => $explodedMap]);
         }
 
         if ($request->filled('exploded_parts')) {
             $partsData = json_decode($request->input('exploded_parts'), true);
             $explodedPartsMap = session('spare_part_exploded_parts_data', []);
-            // Menyimpan baris komponen yang hanya berisi no dan component
-            $explodedPartsMap[$request->assembly_name] = $partsData;
+            $explodedPartsMap[$assemblyName] = is_array($partsData) ? $partsData : [];
             session(['spare_part_exploded_parts_data' => $explodedPartsMap]);
         }
 
-        // Pastikan session tersimpan permanen di request saat redirect
+        // Pastikan session tersimpan permanen saat redirect
         session()->save();
 
         return redirect()->to('/admin?tab=spareparts')->with('success', 'Konfigurasi Katalog Utama & Exploded View berhasil diperbarui!');

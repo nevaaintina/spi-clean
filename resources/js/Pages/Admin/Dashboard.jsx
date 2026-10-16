@@ -2614,19 +2614,15 @@ export default function AdminDashboard({
 
                 <form onSubmit={handleCatalogSubmit} className="bg-slate-50 p-6 md:p-8 rounded-[24px] border border-slate-200/80 space-y-6">
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Pilih Kategori Assembly Exploded View</label>
-                    <select 
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Nama Kategori / Assembly (Input Teks Bebas)</label>
+                    <input 
+                      type="text" 
                       value={catalogForm.data.assembly_name} 
                       onChange={e => catalogForm.setData('assembly_name', e.target.value)} 
+                      placeholder="Cth: Hydraulic System"
                       className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs outline-none bg-white mb-2 font-medium"
-                    >
-                      <option value="Hydraulic System">Hydraulic System</option>
-                      <option value="Filters & Maintenance">Filters & Maintenance</option>
-                      <option value="Undercarriage">Undercarriage</option>
-                      <option value="Engine Parts">Engine Parts</option>
-                      <option value="Electrical System">Electrical System</option>
-                      <option value="Transmission & Brake">Transmission & Brake</option>
-                    </select>
+                      required
+                    />
 
                     <label className="block text-[11px] font-bold text-slate-600 mb-1 mt-3">Upload Gambar Diagram (Exploded View Preview)</label>
                     <input 

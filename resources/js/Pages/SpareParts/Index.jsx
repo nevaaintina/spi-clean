@@ -75,10 +75,20 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
   const [activeCategory, setActiveCategory] = useState(filters?.category || "Semua");
   const [keyword, setKeyword] = useState(filters?.search || "");
 
-  // State untuk Exploded View Interaktif
-  const [explodedSystem, setExplodedSystem] = useState("Hydraulic System");
+  const allAssemblyKeys = Array.from(
+    new Set([...Object.keys(explodedImages), ...Object.keys(explodedPartsData)])
+  );
 
-  // Fallback gambar jika admin belum mengunggah gambar untuk sistem tertentu
+  const availableAssemblies = allAssemblyKeys.length > 0 
+    ? allAssemblyKeys 
+    : ["Hydraulic System", "Filters & Maintenance", "Undercarriage", "Engine Parts", "Electrical System", "Transmission & Brake"];
+
+  const [explodedSystem, setExplodedSystem] = useState(availableAssemblies[0] || "Hydraulic System");
+  
+  // State untuk pagination komponen Exploded View
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Jumlah item per halaman
+
   const defaultImages = {
     "Hydraulic System": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80",
     "Filters & Maintenance": "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1200&q=80",
@@ -90,11 +100,26 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
 
   const currentImage = explodedImages[explodedSystem] 
     ? `/${explodedImages[explodedSystem].replace(/^\//, '')}` 
-    : defaultImages[explodedSystem];
+    : (defaultImages[explodedSystem] || "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80");
 
-  const currentParts = explodedPartsData[explodedSystem] || [
-    { no: "01", component: "Belum ada konfigurasi komponen" }
-  ];
+  // Ambil data komponen secara aman dari database admin
+  const rawPartsData = explodedPartsData[explodedSystem];
+  let allParts = [];
+  if (Array.isArray(rawPartsData)) {
+    allParts = rawPartsData;
+  } else if (rawPartsData && typeof rawPartsData === 'object') {
+    allParts = rawPartsData.components || rawPartsData.parts || rawPartsData.data || Object.values(rawPartsData);
+  }
+  
+  if (!Array.isArray(allParts) || allParts.length === 0) {
+    allParts = [{ no: "01", component: "Belum ada konfigurasi komponen" }];
+  }
+
+  // Hitung data untuk Pagination
+  const totalPages = Math.ceil(allParts.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentParts = allParts.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -106,7 +131,6 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
     router.get('/spare-parts', { search: keyword, category }, { preserveState: true });
   };
 
-  // Logika Download Katalog: Utamakan file PDF permanen dari database admin
   const handleDownloadCatalog = () => {
     if (catalogPdfUrl) {
       window.open(`/${catalogPdfUrl.replace(/^\//, '')}`, "_blank");
@@ -316,12 +340,18 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
                       <div className="p-4 sm:p-6">
                         <p className="lg:hidden text-[9px] uppercase tracking-[0.16em] text-slate-400 mb-1">Nama Component</p>
                         <h3 className="text-xs sm:text-sm text-[#071b38] font-medium leading-snug group-hover:text-[#b27b00] transition-colors">{item.name}</h3>
-                        <p className="text-[10px] sm:text-[11px] text-slate-400 mt-1">{item.category} • {item.brand || 'XCMG'} • Klik untuk detail &rarr;</p>
+                        <p className="text-[10px] sm:text-[11px] text-slate-400 mt-1">
+                          {item.category} &bull; {item.brand || 'XCMG'} &bull; Klik untuk detail &rarr;
+                        </p>
                       </div>
 
                       <div className="p-4 sm:p-6 flex justify-center">
-                        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border-2 border-slate-200 bg-slate-100 overflow-hidden shrink-0 shadow-sm flex items-center justify-center p-1">
-                          <img src={item.image ? `/${item.image.replace(/^\//, '')}` : 'https://via.placeholder.com/150'} alt={item.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 aspect-square rounded-2xl border-2 border-slate-200 bg-slate-100 overflow-hidden shrink-0 shadow-sm flex items-center justify-center p-1">
+                          <img 
+                            src={item.image ? `/${item.image.replace(/^\//, '')}` : 'https://via.placeholder.com/150'} 
+                            alt={item.name} 
+                            className="w-full h-full object-cover aspect-square rounded-xl group-hover:scale-105 transition-transform duration-500" 
+                          />
                         </div>
                       </div>
                     </Link>
@@ -429,44 +459,54 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
             </div>
           </FadeReveal>
 
+          {/* PILIHAN SPARE PART / ASSEMBLY (SCROLL HORIZONTAL) */}
+          <FadeReveal delay={50}>
+            <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 scrollbar-hide flex-nowrap">
+              {availableAssemblies.map((asmName) => {
+                const isActive = explodedSystem === asmName;
+                return (
+                  <button
+                    key={asmName}
+                    type="button"
+                    onClick={() => {
+                      setExplodedSystem(asmName);
+                      setCurrentPage(1); // Reset ke halaman 1 saat ganti pilihan
+                    }}
+                    className={`shrink-0 px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer shadow-sm ${
+                      isActive 
+                        ? "bg-[#ffc107] text-[#071b38] scale-105 shadow-md" 
+                        : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                    }`}
+                  >
+                    {asmName}
+                  </button>
+                );
+              })}
+            </div>
+          </FadeReveal>
+
           <FadeReveal delay={100}>
             <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-              <div className="bg-[#071b38] px-4 sm:px-6 py-4 sm:py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+              <div className="bg-[#071b38] px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between">
                 <div>
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-[#ffc107] font-bold block mb-0.5 sm:mb-1">Assembly</span>
-                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-white">{explodedSystem}</h3>
-                </div>
-
-                <div className="relative w-full sm:w-64">
-                  <select
-                    value={explodedSystem}
-                    onChange={(e) => setExplodedSystem(e.target.value)}
-                    className="w-full bg-[#0f2b5c] text-white text-xs font-semibold px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-white/20 outline-none focus:border-[#ffc107] cursor-pointer appearance-none"
-                  >
-                    {Object.keys(defaultImages).map((sys) => (
-                      <option key={sys} value={sys} className="bg-[#071b38] text-white">
-                        {sys}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="absolute right-4 top-3 sm:top-3.5 text-[#ffc107] pointer-events-none text-xs">▼</span>
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-[#ffc107] font-bold block mb-0.5 sm:mb-1">{explodedSystem}</span>
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-white">Interactive Diagram & Components</h3>
                 </div>
               </div>
 
               <div className="p-4 sm:p-6 md:p-8">
-                {/* Gambar Diagram Exploded View Dinamis dari Admin */}
-                <div className="relative w-full h-[240px] sm:h-[320px] md:h-[450px] bg-slate-100 rounded-xl sm:rounded-2xl overflow-hidden border border-slate-200 flex items-center justify-center p-2">
+                {/* GAMBAR EXPLODED VIEW */}
+                <div className="relative w-full h-[280px] sm:h-[380px] md:h-[480px] bg-slate-100 rounded-xl sm:rounded-2xl overflow-hidden border border-slate-200 flex items-center justify-center">
                   <img
                     src={currentImage}
                     alt={explodedSystem}
-                    className="max-h-full max-w-full object-contain"
+                    className="w-full h-full object-cover"
                   />
                   <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-black/70 backdrop-blur-sm text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg">
                     Diagram Preview
                   </div>
                 </div>
 
-                {/* Tabel Komponen Interaktif Dinamis dari Session/DB (Part Number dan Status Telah Dihapus) */}
                 <div className="mt-6 sm:mt-8 overflow-x-auto">
                   <table className="w-full text-left border-collapse min-w-[300px]">
                     <thead>
@@ -476,15 +516,71 @@ export default function Index({ spareParts = [], filters = {}, catalogPdfUrl = n
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-xs">
-                      {currentParts.map((part, idx) => (
-                        <tr key={idx} className="hover:bg-slate-50 transition">
-                          <td className="py-3 sm:py-4 px-3 sm:px-4 font-mono font-bold text-slate-400">{part.no}</td>
-                          <td className="py-3 sm:py-4 px-3 sm:px-4 font-bold text-[#071b38]">{part.component}</td>
+                      {currentParts.length > 0 ? (
+                        currentParts.map((part, idx) => (
+                          <tr key={idx} className="hover:bg-slate-50 transition">
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 font-mono font-bold text-slate-400">{part.no || part.number || (indexOfFirstItem + idx + 1)}</td>
+                            <td className="py-3 sm:py-4 px-3 sm:px-4 font-bold text-[#071b38]">{part.component || part.name || part.title}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="2" className="py-6 text-center text-slate-400 text-xs">
+                            Komponen tidak ditemukan.
+                          </td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </table>
                 </div>
+
+                {/* PAGINATION CONTROLS */}
+                {totalPages > 1 && (
+                  <div className="mt-6 flex items-center justify-between border-t border-slate-200 pt-4 px-2">
+                    <button
+                      type="button"
+                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      className={`px-3.5 py-2 rounded-xl text-xs font-bold border transition ${
+                        currentPage === 1 
+                          ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed" 
+                          : "bg-white text-[#071b38] border-slate-300 hover:bg-slate-50 cursor-pointer"
+                      }`}
+                    >
+                      &larr; Sebelumnya
+                    </button>
+
+                    <div className="flex items-center gap-1.5 overflow-x-auto">
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
+                        <button
+                          key={pageNumber}
+                          type="button"
+                          onClick={() => setCurrentPage(pageNumber)}
+                          className={`w-8 h-8 rounded-xl text-xs font-bold transition cursor-pointer flex items-center justify-center ${
+                            currentPage === pageNumber
+                              ? "bg-[#071b38] text-[#ffc107] shadow-sm"
+                              : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                          }`}
+                        >
+                          {pageNumber}
+                        </button>
+                      ))}
+                    </div>
+
+                    <button
+                      type="button"
+                      disabled={currentPage === totalPages}
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      className={`px-3.5 py-2 rounded-xl text-xs font-bold border transition ${
+                        currentPage === totalPages 
+                          ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed" 
+                          : "bg-white text-[#071b38] border-slate-300 hover:bg-slate-50 cursor-pointer"
+                      }`}
+                    >
+                      Selanjutnya &rarr;
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </FadeReveal>

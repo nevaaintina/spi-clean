@@ -232,53 +232,18 @@ function HseGallerySection() {
         };
     }, []);
 
-    // Fungsi Navigasi Tombol Panah Manual
-    const scrollManual = (direction) => {
-        if (galleryScrollRef.current) {
-            const cardWidth = galleryScrollRef.current.clientWidth / 3;
-            galleryScrollRef.current.scrollBy({
-                left: direction === 'left' ? -cardWidth * 1.5 : cardWidth * 1.5,
-                behavior: 'smooth'
-            });
-        }
-    };
-
     return (
         <section className="relative w-full bg-white py-12 sm:py-20 px-4 sm:px-12 lg:px-16 border-t border-slate-200 overflow-hidden">
             <div className="max-w-7xl mx-auto w-full">
                 
-                {/* Header Galeri & Tombol Navigasi Manual */}
-                <div className="flex items-center justify-between mb-6 sm:mb-8">
-                    <div>
-                        <span className="text-[10px] sm:text-xs font-black tracking-widest text-[#0284c7] uppercase bg-sky-50 px-2.5 sm:px-3 py-1 rounded-none border-l-4 border-[#0284c7] inline-block mb-1 sm:mb-2">
-                            Dokumentasi
-                        </span>
-                        <h2 className="text-xl sm:text-4xl font-black text-[#0f2b5c] tracking-tight">
-                            Galeri HSE
-                        </h2>
-                    </div>
-
-                    {/* Tombol Panah Kiri dan Kanan (Sudut Lancip) */}
-                    <div className="flex items-center gap-2 sm:gap-3">
-                        <button 
-                            onClick={() => scrollManual('left')}
-                            aria-label="Scroll Sebelumnya"
-                            className="w-9 h-9 sm:w-11 sm:h-11 bg-white text-[#0f2b5c] border-2 border-slate-300 hover:border-[#0f2b5c] hover:bg-[#0f2b5c] hover:text-white rounded-none flex items-center justify-center transition-all duration-300 shadow-sm active:scale-95 cursor-pointer"
-                        >
-                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
-                            </svg>
-                        </button>
-                        <button 
-                            onClick={() => scrollManual('right')}
-                            aria-label="Scroll Selanjutnya"
-                            className="w-9 h-9 sm:w-11 sm:h-11 bg-white text-[#0f2b5c] border-2 border-slate-300 hover:border-[#0f2b5c] hover:bg-[#0f2b5c] hover:text-white rounded-none flex items-center justify-center transition-all duration-300 shadow-sm active:scale-95 cursor-pointer"
-                        >
-                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </button>
-                    </div>
+                {/* Header Galeri Tanpa Tombol Navigasi */}
+                <div className="mb-6 sm:mb-8">
+                    <span className="text-[10px] sm:text-xs font-black tracking-widest text-[#0284c7] uppercase bg-sky-50 px-2.5 sm:px-3 py-1 rounded-none border-l-4 border-[#0284c7] inline-block mb-1 sm:mb-2">
+                        Dokumentasi
+                    </span>
+                    <h2 className="text-xl sm:text-4xl font-black text-[#0f2b5c] tracking-tight">
+                        Galeri HSE
+                    </h2>
                 </div>
 
                 {/* Baris Foto Berjalan Otomatis dengan JS */}
@@ -409,7 +374,7 @@ export default function Hse() {
                 ))}
             </div>
 
-            {/* SECTION GALLERY BERJALAN OTOMATIS */}
+            {/* SECTION GALLERY BERJALAN OTOMATIS TANPA TOMBOL */}
             <HseGallerySection />
 
             <Footer />

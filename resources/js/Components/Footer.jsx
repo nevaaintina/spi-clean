@@ -35,83 +35,83 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5">
               <li>
-                <Link href="/services" className="hover:text-amber-600 transition">
+                <Link href="/services/Maintenance%20&%20Repair" className="hover:text-amber-600 transition">
                   Maintenance & Repair
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="hover:text-amber-600 transition">
+                <Link href="/services/Installation%20&%20Commissioning" className="hover:text-amber-600 transition">
                   Installation & Commissioning
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="hover:text-amber-600 transition">
+                <Link href="/services/Overhaul%20&%20Rebuild" className="hover:text-amber-600 transition">
                   Overhaul & Rebuild
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="hover:text-amber-600 transition">
+                <Link href="/services/Inspection%20&%20Testing" className="hover:text-amber-600 transition">
                   Inspection & Testing
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="hover:text-amber-600 transition">
+                <Link href="/services/Contract%20&%20Consulting" className="hover:text-amber-600 transition">
                   Contract & Consulting
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* 2. PRODUK XCMG (DIARAHKAN KE HALAMAN PRODUCTS) */}
+          {/* 2. PRODUK XCMG (Disesuaikan dengan ID database phpMyAdmin) */}
           <div>
             <h4 className="text-slate-900 font-bold text-sm mb-4 border-b border-slate-200 pb-2 uppercase tracking-wider">
               XCMG Products
             </h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/products" className="hover:text-amber-600 transition">
+                <Link href="/products/24" className="hover:text-amber-600 transition">
                   GR 3005T-Pro
                 </Link>
               </li>
               <li>
-                <Link href="/products" className="hover:text-amber-600 transition">
+                <Link href="/products/22" className="hover:text-amber-600 transition">
                   XDA 45
                 </Link>
               </li>
               <li>
-                <Link href="/products" className="hover:text-amber-600 transition">
+                <Link href="/products/19" className="hover:text-amber-600 transition">
                   XDE130
                 </Link>
               </li>
               <li>
-                <Link href="/products" className="hover:text-amber-600 transition">
+                <Link href="/products/30" className="hover:text-amber-600 transition">
                   XDR 80T-AT
                 </Link>
               </li>
               <li>
-                <Link href="/products" className="hover:text-amber-600 transition">
+                <Link href="/products/27" className="hover:text-amber-600 transition">
                   XE1250
                 </Link>
               </li>
               <li>
-                <Link href="/products" className="hover:text-amber-600 transition">
+                <Link href="/products/29" className="hover:text-amber-600 transition">
                   XE2000
                 </Link>
               </li>
               <li>
-                <Link href="/products" className="hover:text-amber-600 transition">
+                <Link href="/products/25" className="hover:text-amber-600 transition">
                   XGA 105
                 </Link>
               </li>
               <li>
-                <Link href="/products" className="hover:text-amber-600 transition">
+                <Link href="/products/28" className="hover:text-amber-600 transition">
                   XGA 4251 D2WC
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* 3. PORTAL CENTER (DIARAHKAN KE SECTION ID YANG SESUAI DENGAN NAVBAR DROPDOWN) */}
+          {/* 3. PORTAL CENTER */}
           <div>
             <h4 className="text-slate-900 font-bold text-sm mb-4 border-b border-slate-200 pb-2 uppercase tracking-wider">
               Portal Center

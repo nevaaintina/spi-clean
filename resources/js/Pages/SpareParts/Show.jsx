@@ -27,14 +27,6 @@ function DownloadIcon() {
   );
 }
 
-function ChatIcon() {
-  return (
-    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-    </svg>
-  );
-}
-
 export default function Show({ sparePart }) {
   if (!sparePart) {
     return (
@@ -134,19 +126,24 @@ export default function Show({ sparePart }) {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             
-            {/* KOTAK FOTO KIRI */}
+            {/* KOTAK FOTO KIRI (Bingkai diseragamkan kotak penuh / aspect-square) */}
             <div className="lg:col-span-6 bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm">
-              <div className="relative w-full h-[360px] md:h-[420px] bg-white rounded-2xl border border-slate-100 flex items-center justify-center overflow-hidden mb-6">
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.07] select-none">
-                  <span className="text-xl md:text-2xl font-black uppercase tracking-widest text-[#071b38] text-center px-4 rotate-[-15deg]">
-                    WWW.SERVISTAMAPRO.CO.ID
-                  </span>
-                </div>
+              <div className="relative w-full aspect-square bg-slate-100 rounded-2xl border border-slate-200 flex items-center justify-center overflow-hidden mb-6">
+                
+                {/* FOTO MENGIKUTI BINGKAI DENGAN OBJECT-COVER */}
                 <img
                   src={activeImage}
                   alt={sparePart.name}
-                  className="max-h-full max-w-full object-contain relative z-10 transition-all duration-300"
+                  className="w-full h-full object-cover relative z-10 transition-all duration-300"
                 />
+
+                {/* WATERMARK DI DEPAN */}
+                <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none select-none">
+                  <span className="text-lg sm:text-xl md:text-2xl font-black uppercase tracking-widest text-white/70 text-center px-4 rotate-[-25deg] drop-shadow-md">
+                    WWW.SERVISTAMAPRO.CO.ID
+                  </span>
+                </div>
+
               </div>
 
               {galleryImages.length > 1 && (
@@ -156,23 +153,23 @@ export default function Show({ sparePart }) {
                       key={idx}
                       type="button"
                       onClick={() => setActiveImage(img)}
-                      className={`h-20 rounded-xl border-2 bg-white p-2 flex items-center justify-center overflow-hidden cursor-pointer transition ${
+                      className={`aspect-square rounded-xl border-2 bg-slate-100 flex items-center justify-center overflow-hidden cursor-pointer transition ${
                         activeImage === img ? "border-[#ffc107] shadow-md scale-105" : "border-slate-200 opacity-70 hover:opacity-100"
                       }`}
                     >
-                      <img src={img} alt={`Thumbnail ${idx + 1}`} className="max-h-full max-w-full object-contain" />
+                      <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
                     </button>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* DETAIL / SPESIFIKASI PRODUK KANAN (100% DINAMIS) */}
+            {/* DETAIL / SPESIFIKASI PRODUK KANAN */}
             <div className="lg:col-span-6 bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-sm flex flex-col justify-between">
               <div>
                 
                 <h1 className="text-2xl md:text-3xl font-bold text-[#071b38] leading-tight mb-6">
-                  {sparePart.name} - {sparePart.part_number}
+                  {sparePart.name}
                 </h1>
 
                 <div className="space-y-3.5 text-xs md:text-sm border-b border-slate-100 pb-6 mb-6">
@@ -262,8 +259,6 @@ export default function Show({ sparePart }) {
 
         </div>
       </main>
-
-      
 
       <Footer />
     </div>
