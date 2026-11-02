@@ -78,7 +78,8 @@ export default function WhyChooseUsPage() {
                 PT Servistama Pro Indonesia
               </h1>
               <p className="text-xs sm:text-base sm:text-lg text-white font-medium leading-relaxed max-w-2xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
-                Solusi terpadu servis, perawatan prediktif, suku cadang resmi, serta dukungan teknis alat berat untuk memaksimalkan uptime proyek pertambangan dan konstruksi di seluruh Indonesia.
+                Kami hadir memberikan solusi perawatan alat berat XCMG dengan dukungan teknis berkesinambungan dan suku cadang resmi untuk mengoptimalkan operasi proyek pertambangan dan konstruksi di seluruh Indonesia.
+
               </p>
             </div>
           </div>

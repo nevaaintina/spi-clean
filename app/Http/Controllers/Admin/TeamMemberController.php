@@ -42,6 +42,46 @@ class TeamMemberController extends Controller
         return redirect()->back()->with('success', 'Anggota tim berhasil ditambahkan!');
     }
 
+    public function update(Request $request, TeamMember $teamMember)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'role' => 'required|string|max:255',
+            'category' => 'required|string|in:management,operational',
+            'linkedin' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10048',
+        ]);
+
+        $imagePath = $teamMember->image_path;
+
+        // Jika ada file gambar baru yang diunggah
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada
+            if ($teamMember->image_path && File::exists(public_path($teamMember->image_path))) {
+                File::delete(public_path($teamMember->image_path));
+            }
+
+            $file = $request->file('image');
+            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $destinationPath = public_path('images/team');
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true, true);
+            }
+            $file->move($destinationPath, $filename);
+            $imagePath = 'images/team/' . $filename;
+        }
+
+        $teamMember->update([
+            'name' => $request->name,
+            'role' => $request->role,
+            'category' => $request->category,
+            'linkedin' => $request->linkedin,
+            'image_path' => $imagePath,
+        ]);
+
+        return redirect()->back()->with('success', 'Anggota tim berhasil diperbarui!');
+    }
+
     public function destroy(TeamMember $teamMember)
     {
         if ($teamMember->image_path && File::exists(public_path($teamMember->image_path))) {

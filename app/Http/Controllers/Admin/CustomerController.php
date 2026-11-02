@@ -16,7 +16,7 @@ class CustomerController extends Controller
             'region' => 'required|string|max:255',
             'description' => 'nullable|string',
             'address' => 'nullable|string', // 👈 Ditambahkan validasi untuk alamat / maps
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:8048',
         ]);
 
         $logoPath = null;

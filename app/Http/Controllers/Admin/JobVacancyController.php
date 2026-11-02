@@ -16,7 +16,7 @@ class JobVacancyController extends Controller
             'location'    => 'required|string|max:255',
             'education'   => 'required|string|max:255',
             'job_type'    => 'required|string|max:50',
-            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10120',
             'description' => 'nullable|string',
             'requirements'=> 'nullable|string',
         ]);

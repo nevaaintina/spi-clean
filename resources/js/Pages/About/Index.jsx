@@ -665,7 +665,7 @@ export default function Index({ companyHistories = [], milestones = [], manageme
                   </OrganizationCard>
 
                   <OrganizationCard className="left-[201.5px] top-[114px] w-[187px] h-[33px]">
-                    Chief Operasional Officer
+                    Chief Operational Officer
                   </OrganizationCard>
 
                   <OrganizationCard className="left-[621px] top-[114px] w-[158px] h-[33px]">
@@ -729,7 +729,7 @@ export default function Index({ companyHistories = [], milestones = [], manageme
       </Reveal>
 
       {/* ============================== COMPANY CULTURE + GOVERNANCE ============================== */}
-      <section className="bg-[#F8FAFC] pt-6 pb-12 border-t border-slate-200 overflow-hidden">
+      <section className="bg-[#F8FAFC] pt-12 sm:pt-16 pb-12 sm:pb-16 border-t border-slate-200 overflow-hidden">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 sm:gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8 items-stretch">
           
           <Reveal direction="left" className="flex flex-col h-full">
@@ -760,7 +760,7 @@ export default function Index({ companyHistories = [], milestones = [], manageme
           </Reveal>
 
           <Reveal direction="right" className="flex flex-col h-full">
-            <span className="mb-3 sm:mb-5 inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+            <span className="mb-3 sm:mb-5 inline-block text-[10px] sm:text-[#FFC107] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
               Corporate Governance
             </span>
             <div className="flex flex-col justify-between flex-1 h-full rounded-2xl border border-[#E2E8F0] bg-white p-5 sm:p-6 shadow-sm transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl md:p-7">

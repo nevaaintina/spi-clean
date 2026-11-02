@@ -19,7 +19,7 @@ class ProjectController extends Controller
             'title'       => 'required|string|max:255',
             'location'    => 'required|string|max:255',
             'year'        => 'required|string|max:10',
-            'image'       => 'required|image|mimes:jpeg,png,jpg,webp|max:50240',
+            'image'       => 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
             'description' => 'nullable|string',
         ]);
 

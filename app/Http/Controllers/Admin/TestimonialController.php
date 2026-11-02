@@ -15,7 +15,7 @@ class TestimonialController extends Controller
             'role'     => 'required|string|max:255',
             'category' => 'required|in:customer,employee,intern',
             'quote'    => 'required|string',
-            'image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8120',
         ]);
 
         $imagePath = null;

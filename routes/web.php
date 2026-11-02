@@ -42,7 +42,7 @@ Route::get('/contact-us', function () {
 
 Route::get('/career', function () {
     return Inertia::render('Career', [
-        'jobVacancies'       => JobVacancy::latest()->get(),
+        'jobVacancies'        => JobVacancy::latest()->get(),
         'careerTestimonials' => Testimonial::whereIn('category', ['employee', 'intern'])->get()
     ]);
 });
@@ -226,11 +226,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
 
     Route::resource('milestones', MilestoneController::class);
     
-    // Rute endpoint untuk Company History (menggunakan CompanyHistoryController)
+    // Rute endpoint untuk Company History
     Route::post('/company-histories', [CompanyHistoryController::class, 'store'])->name('company-histories.store');
+    Route::put('/company-histories/{companyHistory}', [CompanyHistoryController::class, 'update'])->name('company-histories.update'); // 👈 Rute Edit Company History
     Route::delete('/company-histories/{companyHistory}', [CompanyHistoryController::class, 'destroy'])->name('company-histories.destroy');
 
+    // Rute Resource Team Members (Otomatis mencakup Create, Store, Edit, Update, Destroy)
     Route::resource('team-members', TeamMemberController::class);
+    
     Route::resource('customers', CustomerController::class);
 
     Route::post('/services', [ServiceController::class, 'store'])->name('services.store');

@@ -37,6 +37,17 @@ export default function AdminDashboard({
   const [editSpecRows, setEditSpecRows] = useState([{ label: "", value: "" }]);
   const [editFeatureRows, setEditFeatureRows] = useState([""]);
 
+  // STATE UNTUK MODAL EDIT TIM (MANAJEMEN & OPERATIONAL)
+  const [editingTeam, setEditingTeam] = useState(null);
+  const editTeamForm = useForm({
+    name: "",
+    role: "",
+    category: "management",
+    linkedin: "",
+    image: null,
+    remove_image: false,
+  });
+
   // STATE UNTUK MODAL EDIT PROYEK
   const [editingProject, setEditingProject] = useState(null);
   const editProjectForm = useForm({
@@ -694,6 +705,45 @@ export default function AdminDashboard({
       onSuccess: () => {
         alert("Anggota tim berhasil ditambahkan!");
         teamForm.reset();
+        router.reload();
+      },
+    });
+  };
+
+  const handleOpenEditTeam = (t) => {
+    setEditingTeam(t);
+    editTeamForm.setData({
+      name: t.name || "",
+      role: t.role || "",
+      category: t.category || "management",
+      linkedin: t.linkedin || "",
+      image: null,
+      remove_image: false,
+    });
+  };
+
+  const handleUpdateTeam = (e) => {
+    e.preventDefault();
+    if (!editingTeam) return;
+
+    const formData = new FormData();
+    formData.append("_method", "PUT");
+    formData.append("name", editTeamForm.data.name);
+    formData.append("role", editTeamForm.data.role);
+    formData.append("category", editTeamForm.data.category);
+    formData.append("linkedin", editTeamForm.data.linkedin || "");
+    formData.append("remove_image", editTeamForm.data.remove_image ? 1 : 0);
+
+    if (editTeamForm.data.image) {
+      formData.append("image", editTeamForm.data.image);
+    }
+
+    router.post(`/admin/team-members/${editingTeam.id}`, formData, {
+      forceFormData: true,
+      preserveState: false,
+      onSuccess: () => {
+        alert("Anggota tim berhasil diperbarui!");
+        setEditingTeam(null);
         router.reload();
       },
     });
@@ -1995,7 +2045,10 @@ export default function AdminDashboard({
                                 <p className="text-[11px] text-amber-700 font-semibold">{t.role}</p>
                                 {t.linkedin && <p className="text-[10px] text-blue-600 truncate mt-1">🔗 {t.linkedin}</p>}
                               </div>
-                              <button type="button" onClick={() => handleDeleteTeam(t.id)} className="mt-4 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start">Hapus Tim</button>
+                              <div className="flex items-center gap-2 mt-4">
+                                <button type="button" onClick={() => handleOpenEditTeam(t)} className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Edit</button>
+                                <button type="button" onClick={() => handleDeleteTeam(t.id)} className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Hapus</button>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -2016,7 +2069,10 @@ export default function AdminDashboard({
                                 <p className="text-[11px] text-slate-500 font-semibold">{t.role}</p>
                                 {t.linkedin && <p className="text-[10px] text-blue-600 truncate mt-1">🔗 {t.linkedin}</p>}
                               </div>
-                              <button type="button" onClick={() => handleDeleteTeam(t.id)} className="mt-4 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start">Hapus Tim</button>
+                              <div className="flex items-center gap-2 mt-4">
+                                <button type="button" onClick={() => handleOpenEditTeam(t)} className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Edit</button>
+                                <button type="button" onClick={() => handleDeleteTeam(t.id)} className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Hapus</button>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -2037,7 +2093,10 @@ export default function AdminDashboard({
                                 <p className="text-[11px] text-slate-500 font-semibold">{t.role}</p>
                                 {t.linkedin && <p className="text-[10px] text-blue-600 truncate mt-1">🔗 {t.linkedin}</p>}
                               </div>
-                              <button type="button" onClick={() => handleDeleteTeam(t.id)} className="mt-4 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start">Hapus Tim</button>
+                              <div className="flex items-center gap-2 mt-4">
+                                <button type="button" onClick={() => handleOpenEditTeam(t)} className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Edit</button>
+                                <button type="button" onClick={() => handleDeleteTeam(t.id)} className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Hapus</button>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -3420,7 +3479,7 @@ export default function AdminDashboard({
                           <button 
                             type="button" 
                             onClick={() => handleDeleteService(srv.id)} 
-                            className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start shadow-sm"
+                            className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm"
                           >
                             Hapus
                           </button>
@@ -3461,6 +3520,50 @@ export default function AdminDashboard({
                 <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
                   <button type="button" onClick={() => setEditingHistory(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
                   <button type="submit" disabled={editHistoryForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT TEAM MEMBER ================= */}
+        {editingTeam && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-xl p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Anggota Tim: {editingTeam.name}</h3>
+                <button type="button" onClick={() => setEditingTeam(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
+              </div>
+
+              <form onSubmit={handleUpdateTeam} className="space-y-4">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Nama Lengkap</label>
+                  <input type="text" value={editTeamForm.data.name} onChange={e => editTeamForm.setData('name', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Jabatan / Role</label>
+                  <input type="text" value={editTeamForm.data.role} onChange={e => editTeamForm.setData('role', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori Umum</label>
+                    <select value={editTeamForm.data.category} onChange={e => editTeamForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
+                      <option value="management">Management</option>
+                      <option value="operational">Operational</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Link LinkedIn</label>
+                    <input type="url" value={editTeamForm.data.linkedin} onChange={e => editTeamForm.setData('linkedin', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Profil (Opsional)</label>
+                  <input type="file" accept="image/*" onChange={e => editTeamForm.setData('image', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+                </div>
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button type="button" onClick={() => setEditingTeam(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
+                  <button type="submit" disabled={editTeamForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
                 </div>
               </form>
             </div>

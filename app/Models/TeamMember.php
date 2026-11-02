@@ -13,7 +13,7 @@ class TeamMember extends Model
         'name',
         'role',
         'category',
-        'linkedin', // 👈 Ditambahkan agar mass assignment untuk linkedin diizinkan
+        'linkedin', // 👈 Diizinkan untuk mass assignment (create/update)
         'image_path',
     ];
 }
