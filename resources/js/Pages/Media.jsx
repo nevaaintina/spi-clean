@@ -214,7 +214,7 @@ const MediaCard = ({ item, onImageClick }) => {
   );
 };
 
-// Komponen Counter dengan Animasi Angka Bergerak
+// Komponen Counter dengan Animasi Angka Bergerak + Pengaman Anti-Translate
 const CounterItem = ({ icon: Icon, targetValue, label }) => {
   const safeTargetVal = String(targetValue ?? '0');
   const numericTarget = parseInt(safeTargetVal, 10) || 0;
@@ -260,10 +260,12 @@ const CounterItem = ({ icon: Icon, targetValue, label }) => {
     <div ref={ref} className="flex items-center gap-2.5 sm:gap-3 px-3 py-4 sm:py-6 sm:py-0">
       <Icon className="h-5 w-5 sm:h-7 sm:w-7 text-[#F5B800] shrink-0" />
       <div className="text-left">
-        <p className="text-xl sm:text-2xl font-bold text-[#F5B800] leading-none">
-          {numericTarget > 0 ? `${count}${suffix}` : targetValue}
+        <p className="text-xl sm:text-2xl font-bold text-[#F5B800] leading-none" translate="no">
+          <span className="notranslate">
+            {numericTarget > 0 ? `${count}${suffix}` : targetValue}
+          </span>
         </p>
-        <p className="text-[11px] sm:text-xs text-gray-300 mt-1">{label}</p>
+        <p className="text-[11px] sm:text-xs text-gray-300 mt-1" translate="no">{label}</p>
       </div>
     </div>
   );
@@ -292,7 +294,6 @@ export default function Media({ mediaGalleries = [] }) {
 
   const activeMediaList = mediaGalleries && mediaGalleries.length > 0 ? mediaGalleries : fallbackMediaItems;
 
-  // Filter out Drone Video items from non-drone categories for Featured Story
   const nonDroneMediaList = activeMediaList.filter(item => {
     const cat = item.category?.trim().toLowerCase() || '';
     const path = item.file_path || '';
@@ -573,75 +574,75 @@ export default function Media({ mediaGalleries = [] }) {
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <FadeReveal>
               <div className="grid gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.8fr)] items-center">
-              <div>
-                <p className="text-[11px] sm:text-xs font-semibold tracking-wide text-blue-700">DRONE VIDEO HIGHLIGHT</p>
-                <h2 className="mt-2 sm:mt-3 text-xl sm:text-2xl font-bold leading-snug text-[#0B1E3D] sm:text-3xl">
-                  See the <span className="text-[#F5B800]">Bigger Picture</span>
-                </h2>
-                <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-gray-500">
-                  Dokumentasi udara dari berbagai project dan aktivitas kami di seluruh Indonesia.
-                </p>
-              </div>
+            <div>
+              <p className="text-[11px] sm:text-xs font-semibold tracking-wide text-blue-700">DRONE VIDEO HIGHLIGHT</p>
+              <h2 className="mt-2 sm:mt-3 text-xl sm:text-2xl font-bold leading-snug text-[#0B1E3D] sm:text-3xl">
+                See the <span className="text-[#F5B800]">Bigger Picture</span>
+              </h2>
+              <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-gray-500">
+                Dokumentasi udara dari berbagai project dan aktivitas kami di seluruh Indonesia.
+              </p>
+            </div>
 
-              <div className="grid gap-4 sm:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)]">
-                {currentMainVideo ? (
-                  <div key={currentMainVideo.id} className="relative overflow-hidden rounded-lg h-56 sm:h-72 bg-slate-900 shadow-md flex items-center justify-center">
-                    <video 
-                      src={currentMainVideo.file_path.startsWith('http') ? currentMainVideo.file_path : `/${currentMainVideo.file_path}`} 
-                      className="absolute inset-0 h-full w-full object-cover" 
-                      controls
-                      autoPlay
-                    />
-                    <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 flex items-end justify-between text-white pointer-events-none p-1 sm:p-2">
-                      <div>
-                        <p className="text-xs sm:text-sm font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">{currentMainVideo.title}</p>
-                        <p className="text-[10px] sm:text-xs text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">{currentMainVideo.description || 'Drone Footage'}</p>
-                      </div>
+            <div className="grid gap-4 sm:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)]">
+              {currentMainVideo ? (
+                <div key={currentMainVideo.id} className="relative overflow-hidden rounded-lg h-56 sm:h-72 bg-slate-900 shadow-md flex items-center justify-center">
+                  <video 
+                    src={currentMainVideo.file_path.startsWith('http') ? currentMainVideo.file_path : `/${currentMainVideo.file_path}`} 
+                    className="absolute inset-0 h-full w-full object-cover" 
+                    controls
+                    autoPlay
+                  />
+                  <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 flex items-end justify-between text-white pointer-events-none p-1 sm:p-2">
+                    <div>
+                      <p className="text-xs sm:text-sm font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">{currentMainVideo.title}</p>
+                      <p className="text-[10px] sm:text-xs text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">{currentMainVideo.description || 'Drone Footage'}</p>
                     </div>
                   </div>
+                </div>
+              ) : (
+                <div className="h-56 sm:h-72 bg-slate-50 border border-dashed rounded-lg flex items-center justify-center text-gray-400 text-xs text-center p-4">
+                  Belum ada video utama drone.
+                </div>
+              )}
+
+              {/* Sisi Kanan: Daftar video yang bisa diklik untuk diputar di kiri */}
+              <div className="flex flex-col justify-center gap-3 sm:gap-4">
+                {sideDroneVideos.length > 0 ? (
+                  sideDroneVideos.map((vid) => (
+                    <div 
+                      key={vid.id} 
+                      onClick={() => setSelectedMainVideo(vid)}
+                      className="flex items-center gap-2.5 sm:gap-3 group bg-slate-50 p-2 sm:p-2.5 rounded-lg border border-slate-100 shadow-xs cursor-pointer hover:border-[#F5B800] transition"
+                      title="Klik untuk putar video ini"
+                    >
+                      <div className="relative h-12 w-16 sm:h-14 sm:w-20 shrink-0 overflow-hidden rounded-md bg-slate-900 flex items-center justify-center">
+                        <video 
+                          src={vid.file_path.startsWith('http') ? vid.file_path : `/${vid.file_path}`} 
+                          className="h-full w-full object-cover pointer-events-none" 
+                        />
+                        <span className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
+                          <IconPlay className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-[11px] sm:text-xs font-semibold text-[#0B1E3D] group-hover:text-[#F5B800] transition-colors line-clamp-1">
+                          {vid.title}
+                        </p>
+                        <p className="text-[9px] sm:text-[10px] text-gray-500 line-clamp-1">
+                          {vid.description || 'Drone Footage'}
+                        </p>
+                      </div>
+                    </div>
+                  ))
                 ) : (
-                  <div className="h-56 sm:h-72 bg-slate-50 border border-dashed rounded-lg flex items-center justify-center text-gray-400 text-xs text-center p-4">
-                    Belum ada video utama drone.
+                  <div className="text-xs text-gray-400 italic p-4 text-center border border-dashed rounded-lg bg-slate-50">
+                    Belum ada video drone tambahan.
                   </div>
                 )}
-
-                {/* Sisi Kanan: Daftar video yang bisa diklik untuk diputar di kiri */}
-                <div className="flex flex-col justify-center gap-3 sm:gap-4">
-                  {sideDroneVideos.length > 0 ? (
-                    sideDroneVideos.map((vid) => (
-                      <div 
-                        key={vid.id} 
-                        onClick={() => setSelectedMainVideo(vid)}
-                        className="flex items-center gap-2.5 sm:gap-3 group bg-slate-50 p-2 sm:p-2.5 rounded-lg border border-slate-100 shadow-xs cursor-pointer hover:border-[#F5B800] transition"
-                        title="Klik untuk putar video ini"
-                      >
-                        <div className="relative h-12 w-16 sm:h-14 sm:w-20 shrink-0 overflow-hidden rounded-md bg-slate-900 flex items-center justify-center">
-                          <video 
-                            src={vid.file_path.startsWith('http') ? vid.file_path : `/${vid.file_path}`} 
-                            className="h-full w-full object-cover pointer-events-none" 
-                          />
-                          <span className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
-                            <IconPlay className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
-                          </span>
-                        </div>
-                        <div>
-                          <p className="text-[11px] sm:text-xs font-semibold text-[#0B1E3D] group-hover:text-[#F5B800] transition-colors line-clamp-1">
-                            {vid.title}
-                          </p>
-                          <p className="text-[9px] sm:text-[10px] text-gray-500 line-clamp-1">
-                            {vid.description || 'Drone Footage'}
-                          </p>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-xs text-gray-400 italic p-4 text-center border border-dashed rounded-lg bg-slate-50">
-                      Belum ada video drone tambahan.
-                    </div>
-                  )}
-                </div>
               </div>
             </div>
+          </div>
             </FadeReveal>
           </div>
         </section>

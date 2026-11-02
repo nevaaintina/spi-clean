@@ -239,9 +239,14 @@ export default function Index({ companyHistories = [], milestones = [], manageme
     return () => clearTimeout(timer);
   }, []);
 
+  // --- HITUNG TAHUN PENGALAMAN SECARA OTOMATIS & REAL-TIME ---
+  const foundingYear = 2018; // Tahun perusahaan berdiri sesuai data perusahaan
+  const currentYear = new Date().getFullYear();
+  const calculatedExperienceYears = `${Math.max(1, currentYear - foundingYear)}+`;
+
   const whoWeAreStats = [
     { icon: IconCheckBadge, value: "100%", label: "Dukungan Teknis" },
-    { icon: IconCalendar, value: "4+", label: "Tahun Pengalaman" },
+    { icon: IconCalendar, value: calculatedExperienceYears, label: "Tahun Pengalaman" },
     { icon: IconUsers, value: "99%", label: "Kepuasan Pelanggan" },
     { icon: IconAward, value: "100%", label: "Layanan Terpercaya" },
   ];
@@ -258,7 +263,7 @@ export default function Index({ companyHistories = [], milestones = [], manageme
 
   const companyStats = [
     { icon: IconCheckBadge, value: "100%", label: "Dukungan Teknis" },
-    { icon: IconCalendar, value: "4+", label: "Tahun Pengalaman" },
+    { icon: IconCalendar, value: calculatedExperienceYears, label: "Tahun Pengalaman" },
     { icon: IconUsers, value: "99%", label: "Kepuasan Pelanggan" },
     { icon: IconAward, value: "100%", label: "Layanan Terpercaya" },
   ];
@@ -483,42 +488,41 @@ export default function Index({ companyHistories = [], milestones = [], manageme
       </section>
 
       {/* ============================== COMPANY HISTORY ============================== */}
-<section className="bg-white py-12 sm:pt-8 sm:pb-16 md:pt-10 md:pb-20 overflow-hidden">
-  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <Reveal direction="up">
-      <span className="mb-3 sm:mb-4 inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
-        Company History
-      </span>
-    </Reveal>
+      <section className="bg-white py-12 sm:pt-8 sm:pb-16 md:pt-10 md:pb-20 overflow-hidden">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Reveal direction="up">
+            <span className="mb-3 sm:mb-4 inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+              Company History
+            </span>
+          </Reveal>
 
-    <div className="relative mt-3 sm:mt-4">
-      <div className="absolute left-0 right-0 top-6 hidden h-0.5 bg-[#E2E8F0] sm:block" />
+          <div className="relative mt-3 sm:mt-4">
+            <div className="absolute left-0 right-0 top-6 hidden h-0.5 bg-[#E2E8F0] sm:block" />
 
-      <div className="grid grid-cols-1 gap-y-8 sm:gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
-        {companyHistories.length === 0 ? (
-          <p className="text-center text-slate-400 text-xs col-span-full py-6">Belum ada data company history.</p>
-        ) : (
-          companyHistories.map((item, i) => (
-            <Reveal key={item.id || i} delay={i * 220} direction="up">
-              <div className="group relative flex cursor-pointer flex-col items-center text-center px-2">
-                <div className="z-10 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#0F2B5C] text-[11px] sm:text-xs font-extrabold text-white shadow-md transition-all duration-700 group-hover:scale-110 group-hover:bg-[#FFC107] group-hover:text-[#0B1220] group-hover:shadow-lg group-hover:shadow-[#FFC107]/45 shrink-0">
-                  {item.year ? String(item.year).slice(-2) : ""}
-                </div>
-                <p className="mt-2 sm:mt-3 text-xs sm:text-sm font-extrabold text-[#0F2B5C] transition-colors duration-500 group-hover:text-[#FFC107]">
-                  {item.year}
-                </p>
-                {/* max-w-[150px] mempersempit lebar kotak agar teks pendek langsung turun ke baris kedua */}
-                <p className="mt-3 sm:mt-4 text-[11px] sm:text-xs text-[#64748B] transition-colors duration-500 group-hover:text-[#0F2B5C] whitespace-pre-line leading-relaxed break-words w-full max-w-[150px] mx-auto">
-                  {item.title || item.description}
-                </p>
-              </div>
-            </Reveal>
-          ))
-        )}
-      </div>
-    </div>
-  </div>
-</section>
+            <div className="grid grid-cols-1 gap-y-8 sm:gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
+              {companyHistories.length === 0 ? (
+                <p className="text-center text-slate-400 text-xs col-span-full py-6">Belum ada data company history.</p>
+              ) : (
+                companyHistories.map((item, i) => (
+                  <Reveal key={item.id || i} delay={i * 220} direction="up">
+                    <div className="group relative flex cursor-pointer flex-col items-center text-center px-2">
+                      <div className="z-10 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#0F2B5C] text-[11px] sm:text-xs font-extrabold text-white shadow-md transition-all duration-700 group-hover:scale-110 group-hover:bg-[#FFC107] group-hover:text-[#0B1220] group-hover:shadow-lg group-hover:shadow-[#FFC107]/45 shrink-0">
+                        {item.year ? String(item.year).slice(-2) : ""}
+                      </div>
+                      <p className="mt-2 sm:mt-3 text-xs sm:text-sm font-extrabold text-[#0F2B5C] transition-colors duration-500 group-hover:text-[#FFC107]">
+                        {item.year}
+                      </p>
+                      <p className="mt-3 sm:mt-4 text-[11px] sm:text-xs text-[#64748B] transition-colors duration-500 group-hover:text-[#0F2B5C] whitespace-pre-line leading-relaxed break-words w-full max-w-[150px] mx-auto">
+                        {item.title || item.description}
+                      </p>
+                    </div>
+                  </Reveal>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ============================== VISION MISSION ============================== */}
       <div id="vision-mission" className="scroll-mt-24">
@@ -566,7 +570,6 @@ export default function Index({ companyHistories = [], milestones = [], manageme
       <section className="bg-slate-50 py-12 sm:py-16 border-t border-slate-200 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
-          {/* MILESTONES (DARI DATABASE MILESTONES) */}
           <Reveal direction="up">
             <div className="text-center mb-6 sm:mb-10">
               <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
@@ -635,34 +638,28 @@ export default function Index({ companyHistories = [], milestones = [], manageme
                     STRUKTUR ORGANISASI PT SERVISTAMA PRO INDONESIA
                   </h2>
 
-                  {/* CEO -> MAIN HORIZONTAL LINE */}
                   <div className="absolute left-[700px] top-[90px] h-[12px] w-px bg-[#111827]" />
                   <div className="absolute left-[295px] top-[101px] h-px w-[946px] bg-[#111827]" />
 
-                  {/* MAIN LEVEL VERTICAL CONNECTORS */}
                   <div className="absolute left-[295px] top-[101px] h-[13px] w-px bg-[#111827]" />
                   <div className="absolute left-[700px] top-[101px] h-[13px] w-px bg-[#111827]" />
                   <div className="absolute left-[943px] top-[101px] h-[13px] w-px bg-[#111827]" />
                   <div className="absolute left-[1104px] top-[101px] h-[68px] w-px bg-[#111827]" />
                   <div className="absolute left-[1241px] top-[101px] h-[68px] w-px bg-[#111827]" />
 
-                  {/* COO CHILD CONNECTOR */}
                   <div className="absolute left-[295px] top-[147px] h-[12px] w-px bg-[#111827]" />
                   <div className="absolute left-[106px] top-[159px] h-px w-[342px] bg-[#111827]" />
                   <div className="absolute left-[106px] top-[159px] h-[10px] w-px bg-[#111827]" />
                   <div className="absolute left-[295px] top-[159px] h-[10px] w-px bg-[#111827]" />
                   <div className="absolute left-[448px] top-[159px] h-[10px] w-px bg-[#111827]" />
 
-                  {/* HR CHILD CONNECTOR */}
                   <div className="absolute left-[700px] top-[147px] h-[12px] w-px bg-[#111827]" />
                   <div className="absolute left-[621px] top-[159px] h-px w-[144px] bg-[#111827]" />
                   <div className="absolute left-[621px] top-[159px] h-[10px] w-px bg-[#111827]" />
                   <div className="absolute left-[765px] top-[159px] h-[63px] w-px bg-[#111827]" />
 
-                  {/* FINANCE CHILD CONNECTOR */}
                   <div className="absolute left-[943px] top-[147px] h-[22px] w-px bg-[#111827]" />
 
-                  {/* CARDS LAYER */}
                   <OrganizationCard className="left-[621px] top-[51px] w-[158px] h-[39px]">
                     Chief Executive Officer
                   </OrganizationCard>

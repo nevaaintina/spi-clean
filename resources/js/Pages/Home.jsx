@@ -178,6 +178,11 @@ function TestimonialsSlider({ testimonials }) {
 export default function Home({ homeSetting, projects = [], branches = [], testimonials = [], activePoster, latestPosts = [] }) {
   const [showAll, setShowAll] = useState(false);
 
+  // --- HITUNG TAHUN PENGALAMAN SECARA OTOMATIS & REAL-TIME ---
+  const foundingYear = 2018; // Ubah tahun ini sesuai dengan tahun perusahaan mulai dibangun
+  const currentYear = new Date().getFullYear();
+  const calculatedExperienceYears = Math.max(1, currentYear - foundingYear);
+
   // Inisialisasi AOS (Animate On Scroll)
   useEffect(() => {
     AOS.init({
@@ -457,10 +462,11 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
               </p>
             </div>
 
+            {/* --- BAGIAN TAHUN PENGALAMAN YANG SUDAH REAL-TIME & OTOMATIS --- */}
             <div className="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="250">
               <div className="relative w-28 h-28 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-500">
                 <div className="text-xl sm:text-3xl md:text-4xl font-black text-white leading-none mb-1 flex items-center">
-                  <AnimatedCounter targetNumber={4} suffix="+" />
+                  <AnimatedCounter targetNumber={calculatedExperienceYears} suffix="+" />
                 </div>
                 <div className="text-[9px] sm:text-xs font-bold text-[#ffc107] px-1 text-center" translate="no">Tahun Pengalaman</div>
               </div>
@@ -581,36 +587,30 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
                 id: 1,
                 slug: "pelatihan-operator",
                 title: "Pelatihan Operator",
-                
                 image_path: "/images/featured-service1.jpg"
               },
               {
                 id: 2,
                 slug: "layanan-maintenance",
                 title: "Perawatan unit",
-                
                 image_path: "/images/featured-service2.jpg"
               },
               {
                 id: 3,
                 slug: "suplai-suku-cadang",
                 title: "Suku Cadang",
-                
                 image_path: "/images/featured-service3.png"
               },
               {
                 id: 4,
                 slug: "konsultasi-teknis",
                 title: "servis unit",
-                
                 image_path: "/images/featured-service4.jpg"
               }
             ].map((srv, idx) => (
               <div key={srv.id} className="group relative h-[220px] sm:h-[360px] w-full rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-slate-200/40 bg-slate-900 transition-all duration-500 hover:-translate-y-2" data-aos="fade-up" data-aos-delay={idx * 150}>
-                {/* Gambar selalu tampil penuh */}
                 <img src={srv.image_path} alt={srv.title} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 
-                {/* Di Mobile pakai gradasi bawah yang tipis agar gambar terlihat, di Desktop (sm:) kembali menggunakan latar belakang biru solid yang muncul saat di-hover */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent sm:bg-transparent sm:inset-x-0 sm:bottom-0 sm:top-auto sm:h-full" />
                 <div className="absolute inset-0 z-10 flex flex-col justify-end p-3 sm:p-6 text-white sm:bg-[#0f2b5c]/90 sm:backdrop-blur-sm sm:translate-y-full sm:group-hover:translate-y-0 transition-transform duration-500">
                   <span className="inline-block text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-[#ffc107] mb-0.5 sm:mb-1" translate="no">LAYANAN UNGGULAN</span>
@@ -838,7 +838,6 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
                 </div>
               </div>
               <div className="mt-4 sm:mt-5 pt-3 border-t border-slate-100">
-                {/* Tombol diarahkan langsung ke form email / klien email default dengan subjek otomatis */}
                 <a 
                   href="https://mail.google.com/mail/?view=cm&fs=1&to=info@servistamapro.com&su=Inquiry%20-%20PT.%20Servistama%20Pro%20Indonesia" 
                   target="_blank" 
@@ -873,7 +872,6 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
               </h2>
               <p className="mt-3 sm:mt-5 text-xs sm:text-sm md:text-[15px] text-slate-600 leading-relaxed max-w-[650px]">
                 Kami terus mengembangkan layanan dan memperkuat dukungan untuk memenuhi kebutuhan pelanggan di berbagai wilayah Indonesia.
-
               </p>
             </div>
           </div>
