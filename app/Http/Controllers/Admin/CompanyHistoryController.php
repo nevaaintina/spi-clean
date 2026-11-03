@@ -29,6 +29,28 @@ class CompanyHistoryController extends Controller
     }
 
     /**
+     * Memperbarui data company history di database.
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'year'        => 'required|string|max:255',
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $companyHistory = CompanyHistory::findOrFail($id);
+
+        $companyHistory->update([
+            'year'        => $request->year,
+            'title'       => $request->title,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->back()->with('success', 'Company history berhasil diperbarui.');
+    }
+
+    /**
      * Menghapus data company history dari database.
      */
     public function destroy(CompanyHistory $companyHistory)

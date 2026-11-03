@@ -36,6 +36,45 @@ export default function AdminDashboard({
   const [editingProduct, setEditingProduct] = useState(null);
   const [editSpecRows, setEditSpecRows] = useState([{ label: "", value: "" }]);
   const [editFeatureRows, setEditFeatureRows] = useState([""]);
+ const editProductForm = useForm({
+  category: "Excavator",
+  name: "",
+  image: null,
+  video_file: null,
+  brochure: null, // <-- TAMBAHKAN INI
+  gallery_images: [],
+  description: "",
+  remove_image: false,
+  remove_video: false,
+});
+
+  // STATE UNTUK MODAL EDIT SPARE PART
+  const [editingSparePart, setEditingSparePart] = useState(null);
+  const editSparePartForm = useForm({
+    category: "Maintenance Tips",
+    part_number: "",
+    name: "",
+    brand: "XCMG",
+    image: null,
+    gallery_images: [],
+    delivery_time: "1-90 DAYS",
+    supply_capacity: "10,000 Pieces/Year, Waiting for Your Order in Stock",
+    product_origin: "China",
+    package_type: "Carton or Wooden Box",
+    shipping_methods: "Air Transport, Sea Transport, Express Delivery, Truck Transportation",
+    remove_image: false,
+  });
+
+  // STATE UNTUK MODAL EDIT MEDIA GALLERY
+  const [editingMedia, setEditingMedia] = useState(null);
+  const editMediaForm = useForm({
+    title: "",
+    category: "Photo Gallery",
+    media_type: "Foto (Image)",
+    file: null,
+    description: "",
+    remove_file: false,
+  });
 
   // STATE UNTUK MODAL EDIT TIM (MANAJEMEN & OPERATIONAL)
   const [editingTeam, setEditingTeam] = useState(null);
@@ -82,7 +121,7 @@ export default function AdminDashboard({
     remove_image: false,
   });
 
-  // STATE UNTUK MODAL EDIT COMPANY HISTORY (MENDUKUNG TITLE & DESCRIPTION)
+  // STATE UNTUK MODAL EDIT COMPANY HISTORY
   const [editingHistory, setEditingHistory] = useState(null);
   const editHistoryForm = useForm({
     year: "",
@@ -185,7 +224,6 @@ export default function AdminDashboard({
     image: null,
   });
 
-  // FORM TAMBAH COMPANY HISTORY (MENGISI TITLE DAN DESCRIPTION SEKALIGUS)
   const historyForm = useForm({
     year: "",
     title: "",
@@ -406,10 +444,10 @@ export default function AdminDashboard({
   };
 
   const handleDeleteVideo = () => {
-    if (confirm("Apakah Anda yakin ingin menghapus video hero banner ini?")) {
+    if (confirm("Apakah Anda yakin ingin Delete video hero banner ini?")) {
       router.delete("/admin/home/hero", {
         onSuccess: () => {
-          alert("Video Hero berhasil dihapus!");
+          alert("Video Hero berhasil Delete!");
         },
       });
     }
@@ -475,11 +513,11 @@ export default function AdminDashboard({
   };
 
   const handleDeleteProject = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus proyek ini dari galeri?")) {
+    if (confirm("Apakah Anda yakin ingin Delete proyek ini dari galeri?")) {
       router.delete(`/admin/projects/${id}`, {
         preserveState: false,
         onSuccess: () => {
-          alert("Proyek berhasil dihapus!");
+          alert("Proyek berhasil Delete!");
           router.reload();
         },
       });
@@ -527,11 +565,11 @@ export default function AdminDashboard({
   };
 
   const handleDeleteBranch = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus cabang ini?")) {
+    if (confirm("Apakah Anda yakin ingin Delete cabang ini?")) {
       router.delete(`/admin/branches/${id}`, {
         preserveState: false,
         onSuccess: () => {
-          alert("Cabang berhasil dihapus!");
+          alert("Cabang berhasil Delete!");
           router.reload();
         },
       });
@@ -555,11 +593,11 @@ export default function AdminDashboard({
   };
 
   const handleDeletePoster = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus poster ini?")) {
+    if (confirm("Apakah Anda yakin ingin Delete poster ini?")) {
       router.delete(`/admin/posters/${id}`, {
         preserveState: false,
         onSuccess: () => {
-          alert("Poster berhasil dihapus!");
+          alert("Poster berhasil Delete!");
           router.reload();
         },
       });
@@ -623,18 +661,17 @@ export default function AdminDashboard({
   };
 
   const handleDeleteMilestone = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus milestone ini?")) {
+    if (confirm("Apakah Anda yakin ingin Delete milestone ini?")) {
       router.delete(`/admin/milestones/${id}`, {
         preserveState: false,
         onSuccess: () => {
-          alert("Milestone berhasil dihapus!");
+          alert("Milestone berhasil Delete!");
           router.reload();
         },
       });
     }
   };
 
-  // HANDLER COMPANY HISTORY (MENGISI TITLE DAN DESCRIPTION SEKALIGUS AGAR AMAN DI BACKEND/FRONTEND)
   const handleHistorySubmit = (e) => {
     e.preventDefault();
     router.post("/admin/company-histories", {
@@ -679,11 +716,11 @@ export default function AdminDashboard({
   };
 
   const handleDeleteHistory = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus company history ini?")) {
+    if (confirm("Apakah Anda yakin ingin Delete company history ini?")) {
       router.delete(`/admin/company-histories/${id}`, {
         preserveState: false,
         onSuccess: () => {
-          alert("Company History berhasil dihapus!");
+          alert("Company History berhasil Delete!");
           router.reload();
         },
       });
@@ -750,11 +787,11 @@ export default function AdminDashboard({
   };
 
   const handleDeleteTeam = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus anggota tim ini?")) {
+    if (confirm("Apakah Anda yakin ingin Delete anggota tim ini?")) {
       router.delete(`/admin/team-members/${id}`, {
         preserveState: false,
         onSuccess: () => {
-          alert("Anggota tim berhasil dihapus!");
+          alert("Anggota tim berhasil Delete!");
           router.reload();
         },
       });
@@ -821,11 +858,11 @@ export default function AdminDashboard({
   };
 
   const handleDeleteCustomer = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus pelanggan ini?")) {
+    if (confirm("Apakah Anda yakin ingin Delete pelanggan ini?")) {
       router.delete(`/admin/customers/${id}`, {
         preserveState: false,
         onSuccess: () => {
-          alert("Pelanggan berhasil dihapus!");
+          alert("Pelanggan berhasil Delete!");
           router.reload();
         },
       });
@@ -845,11 +882,11 @@ export default function AdminDashboard({
   };
 
   const handleDeleteService = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus sub-layanan ini?")) {
+    if (confirm("Apakah Anda yakin ingin Delete sub-layanan ini?")) {
       router.delete(`/admin/services/${id}`, {
         preserveState: false,
         onSuccess: () => {
-          alert("Sub-layanan berhasil dihapus!");
+          alert("Sub-layanan berhasil Delete!");
           router.reload();
         },
       });
@@ -939,12 +976,12 @@ export default function AdminDashboard({
   };
 
   const handleCatalogDelete = (type, typeName) => {
-    if (confirm(`Apakah Anda yakin ingin menghapus ${typeName}?`)) {
+    if (confirm(`Apakah Anda yakin ingin Delete ${typeName}?`)) {
       router.delete("/admin/catalogs/delete", {
         data: { type: type },
         preserveState: false,
         onSuccess: () => {
-          alert(`${typeName} berhasil dihapus!`);
+          alert(`${typeName} berhasil Delete!`);
           router.reload();
         },
       });
@@ -995,16 +1032,17 @@ export default function AdminDashboard({
 
   const handleOpenEditProduct = (prod) => {
     setEditingProduct(prod);
-    editProductForm.setData({
-      category: prod.category || activeProductCategory,
-      name: prod.name || "",
-      image: null,
-      video_file: null,
-      gallery_images: [],
-      description: prod.description || "",
-      remove_image: false,
-      remove_video: false,
-    });
+   editProductForm.setData({
+  category: prod.category || activeProductCategory,
+  name: prod.name || "",
+  image: null,
+  video_file: null,
+  brochure: null, // <-- TAMBAHKAN INI
+  gallery_images: [],
+  description: prod.description || "",
+  remove_image: false,
+  remove_video: false,
+});
 
     try {
       let parsedSpecs = typeof prod.specifications === 'string' ? JSON.parse(prod.specifications) : prod.specifications;
@@ -1029,8 +1067,9 @@ export default function AdminDashboard({
     formData.append("_method", "PUT");
     formData.append("category", editProductForm.data.category);
     formData.append("name", editProductForm.data.name);
-    if (editProductForm.data.image) formData.append("image", editProductForm.data.image);
-    if (editProductForm.data.video_file) formData.append("video_file", editProductForm.data.video_file);
+   if (editProductForm.data.image) formData.append("image", editProductForm.data.image);
+if (editProductForm.data.video_file) formData.append("video_file", editProductForm.data.video_file);
+if (editProductForm.data.brochure) formData.append("brochure", editProductForm.data.brochure); // <-- TAMBAHKAN INI
     formData.append("remove_image", editProductForm.data.remove_image ? 1 : 0);
     formData.append("remove_video", editProductForm.data.remove_video ? 1 : 0);
 
@@ -1056,11 +1095,11 @@ export default function AdminDashboard({
   };
 
   const handleDeleteProduct = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
+    if (confirm("Apakah Anda yakin ingin Delete produk ini?")) {
       router.delete(`/admin/products/${id}`, {
         preserveState: false,
         onSuccess: () => {
-          alert("Produk berhasil dihapus!");
+          alert("Produk berhasil Delete!");
           router.reload();
         },
       });
@@ -1097,11 +1136,66 @@ export default function AdminDashboard({
     });
   };
 
+  const handleOpenEditSparePart = (part) => {
+    setEditingSparePart(part);
+    editSparePartForm.setData({
+      category: part.category || "Maintenance Tips",
+      part_number: part.part_number || "",
+      name: part.name || "",
+      brand: part.brand || "XCMG",
+      image: null,
+      gallery_images: [],
+      delivery_time: part.delivery_time || "1-90 DAYS",
+      supply_capacity: part.supply_capacity || "10,000 Pieces/Year, Waiting for Your Order in Stock",
+      product_origin: part.product_origin || "China",
+      package_type: part.package_type || "Carton or Wooden Box",
+      shipping_methods: part.shipping_methods || "Air Transport, Sea Transport, Express Delivery, Truck Transportation",
+      remove_image: false,
+    });
+  };
+
+  const handleUpdateSparePart = (e) => {
+    e.preventDefault();
+    if (!editingSparePart) return;
+
+    const formData = new FormData();
+    formData.append("_method", "PUT");
+    formData.append("category", editSparePartForm.data.category);
+    formData.append("part_number", editSparePartForm.data.part_number);
+    formData.append("name", editSparePartForm.data.name);
+    formData.append("brand", editSparePartForm.data.brand);
+    formData.append("delivery_time", editSparePartForm.data.delivery_time || "");
+    formData.append("supply_capacity", editSparePartForm.data.supply_capacity || "");
+    formData.append("product_origin", editSparePartForm.data.product_origin || "");
+    formData.append("package_type", editSparePartForm.data.package_type || "");
+    formData.append("shipping_methods", editSparePartForm.data.shipping_methods || "");
+    formData.append("remove_image", editSparePartForm.data.remove_image ? 1 : 0);
+
+    if (editSparePartForm.data.image) {
+      formData.append("image", editSparePartForm.data.image);
+    }
+    if (editSparePartForm.data.gallery_images && editSparePartForm.data.gallery_images.length > 0) {
+      for (let i = 0; i < editSparePartForm.data.gallery_images.length; i++) {
+        formData.append("gallery_images[]", editSparePartForm.data.gallery_images[i]);
+      }
+    }
+
+    router.post(`/admin/spare-parts/${editingSparePart.id}`, formData, {
+      forceFormData: true,
+      preserveState: false,
+      onSuccess: () => {
+        alert("Spare Part berhasil diperbarui!");
+        setEditingSparePart(null);
+        router.reload();
+      },
+    });
+  };
+
   const handleDeleteSparePart = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus spare part ini?")) {
+    if (confirm("Apakah Anda yakin ingin Delete spare part ini?")) {
       router.delete(`/admin/spare-parts/${id}`, {
         preserveState: false,
-        onSuccess: () => alert("Spare Part berhasil dihapus!"),
+        onSuccess: () => alert("Spare Part berhasil Delete!"),
       });
     }
   };
@@ -1130,10 +1224,10 @@ export default function AdminDashboard({
   };
 
   const handleDeleteArticle = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus artikel ini?")) {
+    if (confirm("Apakah Anda yakin ingin Delete artikel ini?")) {
       router.delete(`/admin/articles/${id}`, {
         preserveState: false,
-        onSuccess: () => alert("Artikel berhasil dihapus!"),
+        onSuccess: () => alert("Artikel berhasil Delete!"),
       });
     }
   };
@@ -1158,11 +1252,50 @@ export default function AdminDashboard({
     });
   };
 
+  const handleOpenEditMedia = (m) => {
+    setEditingMedia(m);
+    editMediaForm.setData({
+      title: m.title || "",
+      category: m.category || "Photo Gallery",
+      media_type: m.media_type || "Foto (Image)",
+      file: null,
+      description: m.description || "",
+      remove_file: false,
+    });
+  };
+
+  const handleUpdateMedia = (e) => {
+    e.preventDefault();
+    if (!editingMedia) return;
+
+    const formData = new FormData();
+    formData.append("_method", "PUT");
+    formData.append("title", editMediaForm.data.title);
+    formData.append("category", editMediaForm.data.category);
+    formData.append("media_type", editMediaForm.data.media_type);
+    formData.append("description", editMediaForm.data.description || "");
+    formData.append("remove_file", editMediaForm.data.remove_file ? 1 : 0);
+
+    if (editMediaForm.data.file) {
+      formData.append("file", editMediaForm.data.file);
+    }
+
+    router.post(`/admin/media/${editingMedia.id}`, formData, {
+      forceFormData: true,
+      preserveState: false,
+      onSuccess: () => {
+        alert("Media berhasil diperbarui!");
+        setEditingMedia(null);
+        router.reload();
+      },
+    });
+  };
+
   const handleDeleteMedia = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus media ini dari galeri?")) {
+    if (confirm("Apakah Anda yakin ingin Delete media ini dari galeri?")) {
       router.delete(`/admin/media/${id}`, {
         preserveState: false,
-        onSuccess: () => alert("Media berhasil dihapus!"),
+        onSuccess: () => alert("Media berhasil Delete!"),
       });
     }
   };
@@ -1236,10 +1369,10 @@ export default function AdminDashboard({
   };
 
   const handleDeleteJobVacancy = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus lowongan pekerjaan ini?")) {
+    if (confirm("Apakah Anda yakin ingin Delete lowongan pekerjaan ini?")) {
       router.delete(`/admin/job-vacancies/${id}`, {
         preserveState: false,
-        onSuccess: () => alert("Lowongan berhasil dihapus!"),
+        onSuccess: () => alert("Lowongan berhasil Delete!"),
       });
     }
   };
@@ -1304,10 +1437,10 @@ export default function AdminDashboard({
   };
 
   const handleDeleteTestimonial = (id) => {
-    if (confirm("Apakah Anda yakin ingin menghapus testimoni ini?")) {
+    if (confirm("Apakah Anda yakin ingin Delete testimoni ini?")) {
       router.delete(`/admin/testimonials/${id}`, {
         preserveState: false,
-        onSuccess: () => alert("Testimoni berhasil dihapus!"),
+        onSuccess: () => alert("Testimoni berhasil Delete!"),
       });
     }
   };
@@ -1442,7 +1575,7 @@ export default function AdminDashboard({
                       onClick={handleDeleteVideo}
                       className="px-4 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-[11px] font-bold transition shadow-sm cursor-pointer"
                     >
-                      Hapus Video
+                      Delete Video
                     </button>
                   </div>
                 )}
@@ -1552,7 +1685,7 @@ export default function AdminDashboard({
                         onClick={() => handleDeleteProject(proj.id)}
                         className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer"
                       >
-                        Hapus
+                        Delete
                       </button>
                     </div>
                   </div>
@@ -1687,7 +1820,7 @@ export default function AdminDashboard({
                           onClick={() => handleDeleteBranch(b.id)}
                           className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer"
                         >
-                          Hapus
+                          Delete
                         </button>
                       </div>
                     </div>
@@ -1734,7 +1867,7 @@ export default function AdminDashboard({
                       onClick={() => handleDeletePoster(p.id)} 
                       className="mt-2 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start"
                     >
-                      Hapus Poster
+                      Delete Poster
                     </button>
                   </div>
                 ))}
@@ -1748,7 +1881,7 @@ export default function AdminDashboard({
         {activeTab === "about" && (
           <div className="space-y-10">
             
-            {/* 1. KELOLA COMPANY HISTORY (MENGISI TITLE DAN DESCRIPTION SEKALIGUS AGAR AMAN) */}
+            {/* 1. KELOLA COMPANY HISTORY */}
             <div className="bg-white p-8 rounded-[30px] border border-slate-200 shadow-sm space-y-8">
               <div>
                 <h2 className="text-xl font-black text-[#0f2b5c] mb-1">Kelola Company History (Timeline Riwayat Perusahaan)</h2>
@@ -1824,7 +1957,7 @@ export default function AdminDashboard({
                             onClick={() => handleDeleteHistory(h.id)} 
                             className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer"
                           >
-                            Hapus
+                            Delete
                           </button>
                         </div>
                       </div>
@@ -1934,7 +2067,7 @@ export default function AdminDashboard({
                             onClick={() => handleDeleteMilestone(m.id)} 
                             className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer"
                           >
-                            Hapus
+                            Delete
                           </button>
                         </div>
                       </div>
@@ -2047,7 +2180,7 @@ export default function AdminDashboard({
                               </div>
                               <div className="flex items-center gap-2 mt-4">
                                 <button type="button" onClick={() => handleOpenEditTeam(t)} className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Edit</button>
-                                <button type="button" onClick={() => handleDeleteTeam(t.id)} className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Hapus</button>
+                                <button type="button" onClick={() => handleDeleteTeam(t.id)} className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Delete</button>
                               </div>
                             </div>
                           ))}
@@ -2071,7 +2204,7 @@ export default function AdminDashboard({
                               </div>
                               <div className="flex items-center gap-2 mt-4">
                                 <button type="button" onClick={() => handleOpenEditTeam(t)} className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Edit</button>
-                                <button type="button" onClick={() => handleDeleteTeam(t.id)} className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Hapus</button>
+                                <button type="button" onClick={() => handleDeleteTeam(t.id)} className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Delete</button>
                               </div>
                             </div>
                           ))}
@@ -2095,7 +2228,7 @@ export default function AdminDashboard({
                               </div>
                               <div className="flex items-center gap-2 mt-4">
                                 <button type="button" onClick={() => handleOpenEditTeam(t)} className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Edit</button>
-                                <button type="button" onClick={() => handleDeleteTeam(t.id)} className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Hapus</button>
+                                <button type="button" onClick={() => handleDeleteTeam(t.id)} className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm">Delete</button>
                               </div>
                             </div>
                           ))}
@@ -2217,7 +2350,7 @@ export default function AdminDashboard({
                             onClick={() => handleDeleteCustomer(c.id)} 
                             className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer"
                           >
-                            Hapus
+                            Delete
                           </button>
                         </div>
                       </div>
@@ -2257,7 +2390,7 @@ export default function AdminDashboard({
                         onClick={() => handleCatalogDelete('product', 'Katalog Produk')}
                         className="px-3.5 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[11px] font-bold transition shadow-sm cursor-pointer self-start sm:self-auto"
                       >
-                        🗑️ Hapus Katalog Produk
+                        🗑️ Delete Katalog Produk
                       </button>
                     </div>
                   ) : (
@@ -2369,6 +2502,17 @@ export default function AdminDashboard({
                     />
                   </div>
 
+                  {/* Upload Brosur Produk */}
+<div>
+  <label className="block text-[11px] font-bold text-slate-600 mb-1">Upload Brosur Produk (.PDF)</label>
+  <input 
+    type="file" 
+    accept="application/pdf" 
+    onChange={e => productForm.setData('brochure', e.target.files[0])} 
+    className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
+  />
+</div>
+
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Lengkap Produk</label>
                     <textarea 
@@ -2447,7 +2591,7 @@ export default function AdminDashboard({
                             onClick={() => handleDeleteProduct(prod.id)} 
                             className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer"
                           >
-                            Hapus
+                            Delete
                           </button>
                         </div>
                       </div>
@@ -2488,7 +2632,7 @@ export default function AdminDashboard({
                         onClick={() => handleCatalogDelete('spare_part', 'Katalog Spare Part')}
                         className="px-3.5 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[11px] font-bold transition shadow-sm cursor-pointer self-start sm:self-auto"
                       >
-                        🗑️ Hapus Katalog Spare Part
+                        🗑️ Delete Katalog Spare Part
                       </button>
                     </div>
                   ) : (
@@ -2733,15 +2877,15 @@ export default function AdminDashboard({
                           <button 
                             type="button" 
                             onClick={() => {
-                              if (confirm(`Hapus konfigurasi untuk ${assemblyName}?`)) {
+                              if (confirm(`Delete konfigurasi untuk ${assemblyName}?`)) {
                                 router.delete(`/admin/spare-parts/catalog-config/${encodeURIComponent(assemblyName)}`, {
-                                  onSuccess: () => alert("Konfigurasi berhasil dihapus!")
+                                  onSuccess: () => alert("Konfigurasi berhasil Delete!")
                                 });
                               }
                             }} 
                             className="mt-4 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start"
                           >
-                            Hapus Konfigurasi
+                            Delete Konfigurasi
                           </button>
                         </div>
                       ))}
@@ -2767,9 +2911,22 @@ export default function AdminDashboard({
                           <h4 className="font-extrabold text-xs text-[#0f2b5c]">{part.name}</h4>
                           <p className="text-[11px] text-slate-500 mt-0.5 font-mono">No: {part.part_number}</p>
                         </div>
-                        <button type="button" onClick={() => handleDeleteSparePart(part.id)} className="mt-4 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start">
-                          Hapus Part
-                        </button>
+                        <div className="flex items-center gap-2 mt-4">
+                          <button 
+                            type="button" 
+                            onClick={() => handleOpenEditSparePart(part)} 
+                            className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer"
+                          >
+                            Edit
+                          </button>
+                          <button 
+                            type="button" 
+                            onClick={() => handleDeleteSparePart(part.id)} 
+                            className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start"
+                          >
+                            Delete Part
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -2928,7 +3085,7 @@ export default function AdminDashboard({
                             Edit
                           </button>
                           <button type="button" onClick={() => handleDeleteArticle(art.id)} className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start shadow-sm">
-                            Hapus
+                            Delete
                           </button>
                         </div>
                       </div>
@@ -3050,13 +3207,22 @@ export default function AdminDashboard({
                             <h4 className="font-extrabold text-xs text-[#0f2b5c]">{media.title}</h4>
                             <p className="text-[11px] text-slate-500 mt-1 line-clamp-2">{media.description || "-"}</p>
                           </div>
-                          <button 
-                            type="button" 
-                            onClick={() => handleDeleteMedia(media.id)} 
-                            className="mt-4 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start"
-                          >
-                            Hapus Media
-                          </button>
+                          <div className="flex items-center gap-2 mt-4">
+                            <button 
+                              type="button" 
+                              onClick={() => handleOpenEditMedia(media)} 
+                              className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer"
+                            >
+                              Edit
+                            </button>
+                            <button 
+                              type="button" 
+                              onClick={() => handleDeleteMedia(media.id)} 
+                              className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start"
+                            >
+                              Delete Media
+                            </button>
+                          </div>
                         </div>
                       );
                     })}
@@ -3228,7 +3394,7 @@ export default function AdminDashboard({
                             onClick={() => handleDeleteJobVacancy(job.id)} 
                             className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm"
                           >
-                            Hapus
+                            Delete
                           </button>
                         </div>
                       </div>
@@ -3357,7 +3523,7 @@ export default function AdminDashboard({
                             onClick={() => handleDeleteTestimonial(item.id)} 
                             className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm"
                           >
-                            Hapus
+                            Delete
                           </button>
                         </div>
                       </div>
@@ -3481,7 +3647,7 @@ export default function AdminDashboard({
                             onClick={() => handleDeleteService(srv.id)} 
                             className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer shadow-sm"
                           >
-                            Hapus
+                            Delete
                           </button>
                         </div>
                       </div>
@@ -3489,6 +3655,131 @@ export default function AdminDashboard({
                   </div>
                 )}
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT PROYEK ================= */}
+        {editingProject && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-xl p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Proyek: {editingProject.title}</h3>
+                <button type="button" onClick={() => setEditingProject(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
+              </div>
+
+              <form onSubmit={handleUpdateProject} className="space-y-4">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul Proyek</label>
+                  <input type="text" value={editProjectForm.data.title} onChange={e => editProjectForm.setData('title', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Lokasi</label>
+                    <input type="text" value={editProjectForm.data.location} onChange={e => editProjectForm.setData('location', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Tahun</label>
+                    <input type="text" value={editProjectForm.data.year} onChange={e => editProjectForm.setData('year', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi</label>
+                  <textarea rows="3" value={editProjectForm.data.description} onChange={e => editProjectForm.setData('description', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Gambar Proyek (Opsional)</label>
+                  <input type="file" accept="image/*" onChange={e => editProjectForm.setData('image', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+                </div>
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button type="button" onClick={() => setEditingProject(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
+                  <button type="submit" disabled={editProjectForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT CABANG ================= */}
+        {editingBranch && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-xl p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Cabang: {editingBranch.name}</h3>
+                <button type="button" onClick={() => setEditingBranch(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
+              </div>
+
+              <form onSubmit={handleUpdateBranch} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Nama Cabang / Wilayah</label>
+                    <input type="text" value={editBranchForm.data.name} onChange={e => editBranchForm.setData('name', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori</label>
+                    <select value={editBranchForm.data.category} onChange={e => editBranchForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
+                      <option value="Head Office">Head Office</option>
+                      <option value="Branch Office">Branch Office</option>
+                      <option value="Warehouse">Warehouse</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Kota</label>
+                    <input type="text" value={editBranchForm.data.city} onChange={e => editBranchForm.setData('city', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">No. Telepon</label>
+                    <input type="text" value={editBranchForm.data.phone} onChange={e => editBranchForm.setData('phone', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi</label>
+                  <textarea rows="3" value={editBranchForm.data.description} onChange={e => editBranchForm.setData('description', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                </div>
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button type="button" onClick={() => setEditingBranch(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
+                  <button type="submit" disabled={editBranchForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT MILESTONE ================= */}
+        {editingMilestone && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-xl p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Milestone: {editingMilestone.title}</h3>
+                <button type="button" onClick={() => setEditingMilestone(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
+              </div>
+
+              <form onSubmit={handleUpdateMilestone} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Tahun / Periode</label>
+                    <input type="text" value={editMilestoneForm.data.year} onChange={e => editMilestoneForm.setData('year', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul Milestone</label>
+                    <input type="text" value={editMilestoneForm.data.title} onChange={e => editMilestoneForm.setData('title', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi</label>
+                  <textarea rows="3" value={editMilestoneForm.data.description} onChange={e => editMilestoneForm.setData('description', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Dokumentasi (Opsional)</label>
+                  <input type="file" accept="image/*" onChange={e => editMilestoneForm.setData('image', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+                </div>
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button type="button" onClick={() => setEditingMilestone(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
+                  <button type="submit" disabled={editMilestoneForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
+                </div>
+              </form>
             </div>
           </div>
         )}
@@ -3564,6 +3855,561 @@ export default function AdminDashboard({
                 <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
                   <button type="button" onClick={() => setEditingTeam(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
                   <button type="submit" disabled={editTeamForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT CUSTOMER ================= */}
+        {editingCustomer && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-xl p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Customer: {editingCustomer.name}</h3>
+                <button type="button" onClick={() => setEditingCustomer(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
+              </div>
+
+              <form onSubmit={handleUpdateCustomer} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Nama Perusahaan</label>
+                    <input type="text" value={editCustomerForm.data.name} onChange={e => editCustomerForm.setData('name', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Wilayah / Region</label>
+                    <select value={editCustomerForm.data.region} onChange={e => editCustomerForm.setData('region', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
+                      <option value="Central Kalimantan">Central Kalimantan</option>
+                      <option value="East & North Kalimantan">East & North Kalimantan</option>
+                      <option value="South Sulawesi">South Sulawesi</option>
+                      <option value="South-East Sulawesi">South-East Sulawesi</option>
+                      <option value="South Kalimantan">South Kalimantan</option>
+                      <option value="South Sumatera">South Sumatera</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi / Sektor</label>
+                  <input type="text" value={editCustomerForm.data.description} onChange={e => editCustomerForm.setData('description', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Alamat / Link Maps</label>
+                  <input type="text" value={editCustomerForm.data.address} onChange={e => editCustomerForm.setData('address', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Logo Perusahaan (Opsional)</label>
+                  <input type="file" accept="image/*" onChange={e => editCustomerForm.setData('logo', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+                </div>
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button type="button" onClick={() => setEditingCustomer(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
+                  <button type="submit" disabled={editCustomerForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT PRODUK ================= */}
+        {editingProduct && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-2xl p-8 space-y-6 max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Produk: {editingProduct.name}</h3>
+                <button type="button" onClick={() => setEditingProduct(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
+              </div>
+
+              <form onSubmit={handleUpdateProduct} className="space-y-4">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Nama Produk / Model</label>
+                  <input type="text" value={editProductForm.data.name} onChange={e => editProductForm.setData('name', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Lengkap Produk</label>
+                  <textarea rows="4" value={editProductForm.data.description} onChange={e => editProductForm.setData('description', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div>
+    <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Utama</label>
+    <input type="file" accept="image/*" onChange={e => editProductForm.setData('image', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+  </div>
+  <div>
+    <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Video File</label>
+    <input type="file" accept="video/mp4,video/webm" onChange={e => editProductForm.setData('video_file', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+  </div>
+  <div>
+    <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Brosur (.PDF)</label>
+    <input type="file" accept="application/pdf" onChange={e => editProductForm.setData('brochure', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+  </div>
+</div>
+
+                <div className="space-y-3 pt-2 border-t border-slate-200">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Edit Spesifikasi Teknis</label>
+                    <button type="button" onClick={handleAddEditSpecRow} className="px-3 py-1 bg-emerald-600 text-white rounded-lg text-[10px] font-bold cursor-pointer hover:bg-emerald-700">+ Tambah Baris</button>
+                  </div>
+                  {editSpecRows.map((spec, idx) => (
+                    <div key={idx} className="flex gap-2 items-center">
+                      <input type="text" placeholder="Label" value={spec.label} onChange={e => { const updated = [...editSpecRows]; updated[idx].label = e.target.value; setEditSpecRows(updated); }} className="flex-1 h-10 px-3 rounded-lg border border-slate-200 text-xs" />
+                      <input type="text" placeholder="Nilai" value={spec.value} onChange={e => { const updated = [...editSpecRows]; updated[idx].value = e.target.value; setEditSpecRows(updated); }} className="flex-1 h-10 px-3 rounded-lg border border-slate-200 text-xs" />
+                      {editSpecRows.length > 1 && <button type="button" onClick={() => handleRemoveEditSpecRow(idx)} className="px-3 py-2 bg-red-500 text-white rounded-lg text-xs cursor-pointer">✕</button>}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-3 pt-2 border-t border-slate-200">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Edit Fitur Unggulan</label>
+                    <button type="button" onClick={handleAddEditFeatureRow} className="px-3 py-1 bg-emerald-600 text-white rounded-lg text-[10px] font-bold cursor-pointer hover:bg-emerald-700">+ Tambah Poin</button>
+                  </div>
+                  {editFeatureRows.map((feat, idx) => (
+                    <div key={idx} className="flex gap-2 items-center">
+                      <input type="text" placeholder="Deskripsi fitur" value={feat} onChange={e => { const updated = [...editFeatureRows]; updated[idx] = e.target.value; setEditFeatureRows(updated); }} className="flex-1 h-10 px-3 rounded-lg border border-slate-200 text-xs" />
+                      {editFeatureRows.length > 1 && <button type="button" onClick={() => handleRemoveEditFeatureRow(idx)} className="px-3 py-2 bg-red-500 text-white rounded-lg text-xs cursor-pointer">✕</button>}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button type="button" onClick={() => setEditingProduct(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
+                  <button type="submit" disabled={editProductForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT SPARE PART ================= */}
+        {editingSparePart && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-xl p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Spare Part: {editingSparePart.name}</h3>
+                <button type="button" onClick={() => setEditingSparePart(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
+              </div>
+
+              <form onSubmit={handleUpdateSparePart} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Part Number</label>
+                    <input type="text" value={editSparePartForm.data.part_number} onChange={e => editSparePartForm.setData('part_number', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Nama Komponen</label>
+                    <input type="text" value={editSparePartForm.data.name} onChange={e => editSparePartForm.setData('name', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori</label>
+                    <select value={editSparePartForm.data.category} onChange={e => editSparePartForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
+                      <option value="Maintenance Tips">Maintenance Tips</option>
+                      <option value="Heavy Equipment Knowledge">Heavy Equipment Knowledge</option>
+                      <option value="Mining Technology">Mining Technology</option>
+                      <option value="Hydraulic System">Hydraulic System</option>
+                      <option value="Engine Maintenance">Engine Maintenance</option>
+                      <option value="Lubrication Guide">Lubrication Guide</option>
+                      <option value="Predictive Maintenance">Predictive Maintenance</option>
+                      <option value="Failure Analysis">Failure Analysis</option>
+                      <option value="Safety">Safety</option>
+                      <option value="Operator Tips">Operator Tips</option>
+                      <option value="Technical Bulletin">Technical Bulletin</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Brand</label>
+                    <input 
+                      type="text" 
+                      value={editSparePartForm.data.brand} 
+                      onChange={e => editSparePartForm.setData('brand', e.target.value)} 
+                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Delivery Time</label>
+                    <input 
+                      type="text" 
+                      value={editSparePartForm.data.delivery_time} 
+                      onChange={e => editSparePartForm.setData('delivery_time', e.target.value)} 
+                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Supply Capacity</label>
+                    <input 
+                      type="text" 
+                      value={editSparePartForm.data.supply_capacity} 
+                      onChange={e => editSparePartForm.setData('supply_capacity', e.target.value)} 
+                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Product Origin</label>
+                    <input 
+                      type="text" 
+                      value={editSparePartForm.data.product_origin} 
+                      onChange={e => editSparePartForm.setData('product_origin', e.target.value)} 
+                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Package Type</label>
+                    <input 
+                      type="text" 
+                      value={editSparePartForm.data.package_type} 
+                      onChange={e => editSparePartForm.setData('package_type', e.target.value)} 
+                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Shipping Methods</label>
+                  <input 
+                    type="text" 
+                    value={editSparePartForm.data.shipping_methods} 
+                    onChange={e => editSparePartForm.setData('shipping_methods', e.target.value)} 
+                    className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Utama (Opsional)</label>
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={e => editSparePartForm.setData('image', e.target.files[0])} 
+                      className="w-full text-xs text-slate-500 cursor-pointer" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Tambah Galeri Foto (Opsional)</label>
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      multiple 
+                      onChange={e => editSparePartForm.setData('gallery_images', e.target.files)} 
+                      className="w-full text-xs text-slate-500 cursor-pointer" 
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button type="button" onClick={() => setEditingSparePart(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
+                  <button type="submit" disabled={editSparePartForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT MEDIA GALLERY ================= */}
+        {editingMedia && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-xl p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Media: {editingMedia.title}</h3>
+                <button type="button" onClick={() => setEditingMedia(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
+              </div>
+
+              <form onSubmit={handleUpdateMedia} className="space-y-4">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul / Keterangan</label>
+                  <input type="text" value={editMediaForm.data.title} onChange={e => editMediaForm.setData('title', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori</label>
+                    <select value={editMediaForm.data.category} onChange={e => editMediaForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
+                      <option value="Photo Gallery">Photo Gallery</option>
+                      <option value="Workshop">Workshop</option>
+                      <option value="Mining Site">Mining Site</option>
+                      <option value="Customer Visit">Customer Visit</option>
+                      <option value="Training">Training</option>
+                      <option value="CSR">CSR</option>
+                      <option value="Company Event">Company Event</option>
+                      <option value="Drone Video">Drone Video</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Tipe Media</label>
+                    <select value={editMediaForm.data.media_type} onChange={e => editMediaForm.setData('media_type', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
+                      <option value="Foto (Image)">Foto (Image)</option>
+                      <option value="Video (MP4)">Video (MP4)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Tambahan</label>
+                  <textarea rows="3" value={editMediaForm.data.description} onChange={e => editMediaForm.setData('description', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti File Media (Foto/Video) (Opsional)</label>
+                  <input type="file" accept="image/*,video/mp4" onChange={e => editMediaForm.setData('file', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+                </div>
+
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button type="button" onClick={() => setEditingMedia(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
+                  <button type="submit" disabled={editMediaForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT JOB VACANCY ================= */}
+        {editingJob && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-xl p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Lowongan: {editingJob.title}</h3>
+                <button type="button" onClick={() => setEditingJob(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
+              </div>
+
+              <form onSubmit={handleUpdateJob} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul Posisi</label>
+                    <input type="text" value={editJobForm.data.title} onChange={e => editJobForm.setData('title', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Departemen</label>
+                    <input type="text" value={editJobForm.data.department} onChange={e => editJobForm.setData('department', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Lokasi</label>
+                    <input type="text" value={editJobForm.data.location} onChange={e => editJobForm.setData('location', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Pendidikan</label>
+                    <input type="text" value={editJobForm.data.education} onChange={e => editJobForm.setData('education', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Tipe Pekerjaan</label>
+                  <select value={editJobForm.data.job_type} onChange={e => editJobForm.setData('job_type', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Internship">Internship</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Singkat</label>
+                  <textarea rows="3" value={editJobForm.data.description} onChange={e => editJobForm.setData('description', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Persyaratan</label>
+                  <textarea rows="3" value={editJobForm.data.requirements} onChange={e => editJobForm.setData('requirements', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Lowongan (Opsional)</label>
+                  <input type="file" accept="image/*" onChange={e => editJobForm.setData('image', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+                </div>
+
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button type="button" onClick={() => setEditingJob(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
+                  <button type="submit" disabled={editJobForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT TESTIMONIAL ================= */}
+        {editingTestimonial && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-xl p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Testimoni: {editingTestimonial.name}</h3>
+                <button type="button" onClick={() => setEditingTestimonial(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
+              </div>
+
+              <form onSubmit={handleUpdateTestimonial} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Nama Pemberi Testimoni</label>
+                    <input type="text" value={editTestimonialForm.data.name} onChange={e => editTestimonialForm.setData('name', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Jabatan / Role / Univ</label>
+                    <input type="text" value={editTestimonialForm.data.role} onChange={e => editTestimonialForm.setData('role', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori Testimoni</label>
+                  <select value={editTestimonialForm.data.category} onChange={e => editTestimonialForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
+                    <option value="customer">Customer Testimonial (Home)</option>
+                    <option value="employee">Employee Stories (Career)</option>
+                    <option value="intern">Testimoni Magang (Career)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Isi Testimoni / Quote</label>
+                  <textarea rows="4" value={editTestimonialForm.data.quote} onChange={e => editTestimonialForm.setData('quote', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Profil / Logo (Opsional)</label>
+                  <input type="file" accept="image/*" onChange={e => editTestimonialForm.setData('image', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+                </div>
+
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button type="button" onClick={() => setEditingTestimonial(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
+                  <button type="submit" disabled={editTestimonialForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT SUB-LAYANAN (SERVICE) ================= */}
+        {editingService && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-xl p-8 space-y-6">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Sub-Layanan: {editingService.title}</h3>
+                <button type="button" onClick={() => setEditingService(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
+              </div>
+
+              <form onSubmit={handleUpdateService} className="space-y-4">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori Layanan Utama</label>
+                  <select value={editServiceForm.data.category} onChange={e => editServiceForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none font-bold">
+                    <option value="Maintenance & Repair">Maintenance & Repair</option>
+                    <option value="Installation & Commissioning">Installation & Commissioning</option>
+                    <option value="Overhaul & Rebuild">Overhaul & Rebuild</option>
+                    <option value="Inspection & Testing">Inspection & Testing</option>
+                    <option value="Contract & Consulting">Contract & Consulting</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Nama Sub-Layanan</label>
+                  <input type="text" value={editServiceForm.data.title} onChange={e => editServiceForm.setData('title', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Lengkap Sub-Layanan</label>
+                  <textarea rows="3" value={editServiceForm.data.description} onChange={e => editServiceForm.setData('description', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">What We Do (1 baris = 1 poin)</label>
+                    <textarea rows="4" value={editServiceForm.data.what_we_do} onChange={e => editServiceForm.setData('what_we_do', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Key Benefits (1 baris = 1 poin)</label>
+                    <textarea rows="4" value={editServiceForm.data.key_benefits} onChange={e => editServiceForm.setData('key_benefits', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button type="button" onClick={() => setEditingService(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
+                  <button type="submit" disabled={editServiceForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODAL POPUP EDIT ARTIKEL KNOWLEDGE ================= */}
+        {editingArticle && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-2xl p-8 space-y-6 max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Artikel: {editingArticle.title}</h3>
+                <button type="button" onClick={() => setEditingArticle(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
+              </div>
+
+              <form onSubmit={handleUpdateArticle} className="space-y-4">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul Artikel</label>
+                  <input type="text" value={editArticleForm.data.title} onChange={e => editArticleForm.setData('title', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori</label>
+                    <select value={editArticleForm.data.category} onChange={e => editArticleForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
+                      <option value="Maintenance Tips">Maintenance Tips</option>
+                      <option value="Heavy Equipment Knowledge">Heavy Equipment Knowledge</option>
+                      <option value="Mining Technology">Mining Technology</option>
+                      <option value="Hydraulic System">Hydraulic System</option>
+                      <option value="Engine Maintenance">Engine Maintenance</option>
+                      <option value="Lubrication Guide">Lubrication Guide</option>
+                      <option value="Predictive Maintenance">Predictive Maintenance</option>
+                      <option value="Failure Analysis">Failure Analysis</option>
+                      <option value="Safety">Safety</option>
+                      <option value="Operator Tips">Operator Tips</option>
+                      <option value="Technical Bulletin">Technical Bulletin</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Estimasi Waktu Baca</label>
+                    <input type="text" value={editArticleForm.data.read_time} onChange={e => editArticleForm.setData('read_time', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Link Instagram (Opsional)</label>
+                  <input type="url" value={editArticleForm.data.instagram_link} onChange={e => editArticleForm.setData('instagram_link', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ringkasan (Excerpt)</label>
+                  <textarea rows="3" value={editArticleForm.data.excerpt} onChange={e => editArticleForm.setData('excerpt', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Isi Konten Lengkap</label>
+                  <textarea rows="6" value={editArticleForm.data.content} onChange={e => editArticleForm.setData('content', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Thumbnail (Opsional)</label>
+                  <input type="file" accept="image/*" onChange={e => editArticleForm.setData('thumbnail', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <input 
+                    type="checkbox" 
+                    id="edit_is_featured"
+                    checked={editArticleForm.data.is_featured}
+                    onChange={e => editArticleForm.setData('is_featured', e.target.checked)}
+                    className="w-4 h-4 text-[#0f2b5c] rounded border-slate-300 focus:ring-[#ffc107]"
+                  />
+                  <label htmlFor="edit_is_featured" className="text-xs font-bold text-slate-700 cursor-pointer">
+                    Jadikan Artikel Utama (Featured)
+                  </label>
+                </div>
+
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                  <button type="button" onClick={() => setEditingArticle(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
+                  <button type="submit" disabled={editArticleForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
                 </div>
               </form>
             </div>

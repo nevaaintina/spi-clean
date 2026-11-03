@@ -45,6 +45,47 @@ class MediaGalleryController extends Controller
     }
 
     /**
+     * Memperbarui data media gallery dan mengganti file fisik jika ada file baru.
+     */
+    public function update(Request $request, MediaGallery $media)
+    {
+        $request->validate([
+            'title'       => 'required|string|max:255',
+            'category'    => 'required|string',
+            'media_type'  => 'required|string',
+            'file'        => 'nullable|file|mimes:jpg,jpeg,png,webp,mp4,mov,avi|max:51200',
+            'description' => 'nullable|string',
+        ]);
+
+        $filePath = $media->file_path;
+
+        if ($request->boolean('remove_file')) {
+            if ($media->file_path && file_exists(public_path($media->file_path))) {
+                @unlink(public_path($media->file_path));
+            }
+            $filePath = null;
+        } elseif ($request->hasFile('file')) {
+            if ($media->file_path && file_exists(public_path($media->file_path))) {
+                @unlink(public_path($media->file_path));
+            }
+            $file = $request->file('file');
+            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $file->move(public_path('media'), $filename);
+            $filePath = 'media/' . $filename;
+        }
+
+        $media->update([
+            'title'       => $request->input('title'),
+            'category'    => $request->input('category'),
+            'media_type'  => $request->input('media_type'),
+            'file_path'   => $filePath,
+            'description' => $request->input('description'),
+        ]);
+
+        return redirect()->back()->with('success', 'Media berhasil diperbarui!');
+    }
+
+    /**
      * Menghapus media dari database dan file fisiknya.
      */
     public function destroy(MediaGallery $media)

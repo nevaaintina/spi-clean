@@ -167,9 +167,14 @@ class ProductController extends Controller
             $imagePath = 'images/products/' . $filename;
         }
 
-        // Update brosur PDF jika ada file baru yang diunggah
+        // 2. Update atau Hapus Brosur PDF
         $brochurePath = $product->brochure;
-        if ($request->hasFile('brochure')) {
+        if ($request->boolean('remove_brochure')) {
+            if ($product->brochure && File::exists(public_path($product->brochure))) {
+                File::delete(public_path($product->brochure));
+            }
+            $brochurePath = null;
+        } elseif ($request->hasFile('brochure')) {
             if ($product->brochure && File::exists(public_path($product->brochure))) {
                 File::delete(public_path($product->brochure));
             }
@@ -183,7 +188,7 @@ class ProductController extends Controller
             $brochurePath = 'brochures/products/' . $pdfName;
         }
 
-        // 2. Update atau Hapus Video Produk
+        // 3. Update atau Hapus Video Produk
         $videoPath = $product->video_path;
         if ($request->boolean('remove_video')) {
             if ($product->video_path && File::exists(public_path($product->video_path))) {

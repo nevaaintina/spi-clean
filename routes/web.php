@@ -177,8 +177,8 @@ Route::get('/spare-parts/{sparePart}', function (SparePart $sparePart) {
     $sparePartCatalog = Setting::where('key', 'spare_part_catalog_pdf')->first();
 
     return Inertia::render('SpareParts/Show', [
-        'sparePart'          => $sparePart,
-        'catalogPdfUrl'      => $sparePartCatalog ? $sparePartCatalog->value : null,
+        'sparePart'            => $sparePart,
+        'catalogPdfUrl'        => $sparePartCatalog ? $sparePartCatalog->value : null,
         'explodedImagesMap'    => session('spare_part_exploded_images', []),
         'explodedPartsDataMap' => session('spare_part_exploded_parts_data', []),
     ]);
@@ -228,10 +228,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     
     // Rute endpoint untuk Company History
     Route::post('/company-histories', [CompanyHistoryController::class, 'store'])->name('company-histories.store');
-    Route::put('/company-histories/{companyHistory}', [CompanyHistoryController::class, 'update'])->name('company-histories.update'); // 👈 Rute Edit Company History
+    Route::put('/company-histories/{companyHistory}', [CompanyHistoryController::class, 'update'])->name('company-histories.update');
     Route::delete('/company-histories/{companyHistory}', [CompanyHistoryController::class, 'destroy'])->name('company-histories.destroy');
 
-    // Rute Resource Team Members (Otomatis mencakup Create, Store, Edit, Update, Destroy)
+    // Rute Resource Team Members
     Route::resource('team-members', TeamMemberController::class);
     
     Route::resource('customers', CustomerController::class);
@@ -245,6 +245,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::delete('/articles/{article}', [ArticleController::class, 'destroy'])->name('articles.destroy');
 
     Route::post('/media', [MediaGalleryController::class, 'store'])->name('media.store');
+    Route::put('/media/{media}', [MediaGalleryController::class, 'update'])->name('media.update'); // 👈 Rute Edit Media Gallery
     Route::delete('/media/{media}', [MediaGalleryController::class, 'destroy'])->name('media.destroy');
 
     Route::post('/job-vacancies', [JobVacancyController::class, 'store'])->name('job-vacancies.store');
@@ -254,7 +255,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::post('/catalogs/update', [CatalogController::class, 'update'])->name('catalogs.update');
     Route::delete('/catalogs/delete', [CatalogController::class, 'destroy'])->name('catalogs.destroy');
 
+    // Rute Spare Parts
     Route::post('/spare-parts', [AdminSparePartController::class, 'store'])->name('spare-parts.store');
+    Route::put('/spare-parts/{sparePart}', [AdminSparePartController::class, 'update'])->name('spare-parts.update'); // 👈 Rute Edit Spare Parts
     Route::post('/spare-parts/catalog-config', [AdminSparePartController::class, 'storeCatalogConfig'])->name('spare-parts.catalog-config');
     Route::delete('/spare-parts/catalog-config/{assemblyName}', [AdminSparePartController::class, 'destroyCatalogConfig'])->name('spare-parts.catalog-config.destroy');
     Route::delete('/spare-parts/{sparePart}', [AdminSparePartController::class, 'destroy'])->name('spare-parts.destroy');

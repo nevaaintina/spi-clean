@@ -8,6 +8,9 @@ use App\Models\Branch;
 
 class BranchController extends Controller
 {
+    /**
+     * Menyimpan data cabang/area operasional baru.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -26,6 +29,31 @@ class BranchController extends Controller
         return redirect()->back()->with('success', 'Cabang / Area Operasional berhasil ditambahkan!');
     }
 
+    /**
+     * Memperbarui data cabang/area operasional.
+     */
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name'        => 'required|string|max:255',
+            'category'    => 'required|string|max:100',
+            'city'        => 'required|string|max:100',
+            'phone'       => 'nullable|string|max:50',
+            'description' => 'nullable|string',
+            'maps_link'   => 'nullable|string|max:500',
+            'latitude'    => 'nullable|numeric',
+            'longitude'   => 'nullable|numeric',
+        ]);
+
+        $branch = Branch::findOrFail($id);
+        $branch->update($validated);
+
+        return redirect()->back()->with('success', 'Cabang berhasil diperbarui!');
+    }
+
+    /**
+     * Menghapus data cabang/area operasional.
+     */
     public function destroy(Branch $branch)
     {
         $branch->delete();

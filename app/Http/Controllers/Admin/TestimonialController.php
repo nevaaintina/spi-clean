@@ -38,6 +38,44 @@ class TestimonialController extends Controller
         return redirect()->back()->with('success', 'Testimoni berhasil ditambahkan!');
     }
 
+    public function update(Request $request, Testimonial $testimonial)
+    {
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'role'     => 'required|string|max:255',
+            'category' => 'required|in:customer,employee,intern',
+            'quote'    => 'required|string',
+            'image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8120',
+        ]);
+
+        $imagePath = $testimonial->image_path;
+
+        if ($request->boolean('remove_image')) {
+            if ($testimonial->image_path && file_exists(public_path($testimonial->image_path))) {
+                @unlink(public_path($testimonial->image_path));
+            }
+            $imagePath = null;
+        } elseif ($request->hasFile('image')) {
+            if ($testimonial->image_path && file_exists(public_path($testimonial->image_path))) {
+                @unlink(public_path($testimonial->image_path));
+            }
+            $file = $request->file('image');
+            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $file->move(public_path('testimonials'), $filename);
+            $imagePath = 'testimonials/' . $filename;
+        }
+
+        $testimonial->update([
+            'name'       => $request->input('name'),
+            'role'       => $request->input('role'),
+            'category'   => $request->input('category'),
+            'quote'      => $request->input('quote'),
+            'image_path' => $imagePath,
+        ]);
+
+        return redirect()->back()->with('success', 'Testimoni berhasil diperbarui!');
+    }
+
     public function destroy(Testimonial $testimonial)
     {
         if ($testimonial->image_path && file_exists(public_path($testimonial->image_path))) {

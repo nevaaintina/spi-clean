@@ -201,7 +201,19 @@ export default function ProductShow({ product }) {
 
   const videoSource = getVideoUrl(product.video_path);
 
+  // Path file brosur PDF khusus produk jika diunggah admin
+  const brochureUrl = product.brochure 
+    ? `/${product.brochure.replace(/^\//, '')}` 
+    : null;
+
   const handleDownloadPdf = () => {
+    // Jika produk memiliki file brosur PDF khusus dari admin, buka/unduh PDF asli
+    if (brochureUrl) {
+      window.open(brochureUrl, '_blank');
+      return;
+    }
+
+    // Jika tidak ada brosur PDF khusus, jalankan auto-generated PDF dari galeri foto
     const printWindow = window.open('', '_blank');
     if (!printWindow) {
       alert("Mohon izinkan pop-up pada browser Anda untuk mendownload dokumen PDF.");
@@ -231,7 +243,7 @@ export default function ProductShow({ product }) {
           ${galleryImages.map((img, idx) => `
             <div class="page">
               <img src="${window.location.origin}${img}" alt="Dokumen ${idx + 1}" />
-              <div class="footer">Halaman ${idx + 1} dari ${galleryImages.length} \vert{}${product.name}</div>
+              <div class="footer">Halaman ${idx + 1} dari ${galleryImages.length} | ${product.name}</div>
             </div>
           `).join('')}
           <script>
@@ -455,7 +467,6 @@ export default function ProductShow({ product }) {
             </div>
           )}
 
-          {/* TAB FITUR UNGGULAN: Tanda # Telah Dihapus */}
           {activeTab === "Fitur Unggulan" && (
             <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
               <h2 className="text-xl font-black text-[#0f2b5c] mb-6 flex items-center gap-3">
@@ -470,7 +481,6 @@ export default function ProductShow({ product }) {
                         {idx + 1}
                       </div>
                       <div>
-                        {/* Menghilangkan tanda # */}
                         <h3 className="font-bold text-[#0f2b5c] text-base mb-1">Keunggulan {idx + 1}</h3>
                         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{feature}</p>
                       </div>
@@ -507,7 +517,7 @@ export default function ProductShow({ product }) {
             <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
               <h2 className="text-xl font-black text-[#0f2b5c] mb-6 flex items-center gap-3">
                 <span className="w-1.5 h-6 bg-[#ffc107] rounded-full" />
-                Dokumen Katalog & Semua Foto Produk ({galleryImages.length} Foto Digabungkan)
+                Dokumen Katalog {product.brochure ? "Resmi PDF" : `& Semua Foto Produk (${galleryImages.length} Foto Digabungkan)`}
               </h2>
               <div className="space-y-6 max-w-xl">
                 <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -515,17 +525,34 @@ export default function ProductShow({ product }) {
                     <div className="w-12 h-12 rounded-xl bg-[#0f2b5c] text-white flex items-center justify-center font-black text-xs shrink-0">PDF</div>
                     <div>
                       <h4 className="text-sm font-bold text-[#0f2b5c]">Katalog Dokumen {product.name}</h4>
-                      <p className="text-xs text-slate-500">Gabungan seluruh ({galleryImages.length}) foto unit dalam 1 dokumen PDF</p>
+                      <p className="text-xs text-slate-500">
+                        {product.brochure 
+                          ? "Dokumen brosur resmi untuk produk ini dalam format PDF."
+                          : `Gabungan seluruh (${galleryImages.length}) foto unit dalam 1 dokumen PDF`}
+                      </p>
                     </div>
                   </div>
-                  <button 
-                    type="button"
-                    onClick={handleDownloadPdf}
-                    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#ffc107] hover:bg-[#eaae00] text-[#0f2b5c] font-black text-xs transition cursor-pointer flex items-center justify-center gap-2 shadow-sm shrink-0"
-                  >
-                    <Icon type="download" className="w-4 h-4" />
-                    Download PDF Katalog
-                  </button>
+                  {brochureUrl ? (
+                    <a
+                      href={brochureUrl}
+                      download
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#ffc107] hover:bg-[#eaae00] text-[#0f2b5c] font-black text-xs transition cursor-pointer flex items-center justify-center gap-2 shadow-sm shrink-0"
+                    >
+                      <Icon type="download" className="w-4 h-4" />
+                      Download PDF Katalog
+                    </a>
+                  ) : (
+                    <button 
+                      type="button"
+                      onClick={handleDownloadPdf}
+                      className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#ffc107] hover:bg-[#eaae00] text-[#0f2b5c] font-black text-xs transition cursor-pointer flex items-center justify-center gap-2 shadow-sm shrink-0"
+                    >
+                      <Icon type="download" className="w-4 h-4" />
+                      Download PDF Katalog
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

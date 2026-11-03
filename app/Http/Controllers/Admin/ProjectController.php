@@ -51,6 +51,56 @@ class ProjectController extends Controller
     }
 
     /**
+     * Memperbarui data proyek beserta pengelolaan file gambar lamanya.
+     */
+    public function update(Request $request, $id)
+    {
+        // 1. Validasi input (image dibuat nullable saat update)
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'location'    => 'required|string|max:255',
+            'year'        => 'required|string|max:10',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'description' => 'nullable|string',
+        ]);
+
+        $project = Project::findOrFail($id);
+
+        // 2. Opsi jika centang hapus foto dari frontend
+        if ($request->boolean('remove_image')) {
+            if ($project->image && File::exists(public_path($project->image))) {
+                File::delete(public_path($project->image));
+            }
+            $validated['image'] = null;
+        }
+
+        // 3. Jika pengguna mengunggah gambar baru
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama dari public_path jika ada
+            if ($project->image && File::exists(public_path($project->image))) {
+                File::delete(public_path($project->image));
+            }
+
+            // Simpan gambar baru ke folder public/images/projects
+            $file = $request->file('image');
+            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $destinationPath = public_path('images/projects');
+            
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true, true);
+            }
+
+            $file->move($destinationPath, $filename);
+            $validated['image'] = 'images/projects/' . $filename;
+        }
+
+        // 4. Update data ke database
+        $project->update($validated);
+
+        return redirect()->back()->with('success', 'Proyek berhasil diperbarui!');
+    }
+
+    /**
      * Menghapus data proyek dan file gambarnya dari folder public.
      */
     public function destroy(Project $project)

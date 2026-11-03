@@ -179,7 +179,7 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
   const [showAll, setShowAll] = useState(false);
 
   // --- HITUNG TAHUN PENGALAMAN SECARA OTOMATIS & REAL-TIME ---
-  const foundingYear = 2018; // Ubah tahun ini sesuai dengan tahun perusahaan mulai dibangun
+  const foundingYear = 2022; // Ubah tahun ini sesuai dengan tahun perusahaan mulai dibangun
   const currentYear = new Date().getFullYear();
   const calculatedExperienceYears = Math.max(1, currentYear - foundingYear);
 
@@ -452,8 +452,8 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             
             <div className="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="100">
               <div className="relative w-28 h-28 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-500">
-                <div className="text-xl sm:text-3xl md:text-4xl font-black text-white leading-none mb-1" translate="no">
-                  100%
+                <div className="text-xl sm:text-3xl md:text-4xl font-black text-white leading-none mb-1 flex items-center">
+                  <AnimatedCounter targetNumber={100} suffix="%" />
                 </div>
                 <div className="text-[9px] sm:text-xs font-bold text-[#ffc107] px-1 text-center" translate="no">Dukungan Teknis</div>
               </div>
@@ -478,19 +478,19 @@ export default function Home({ homeSetting, projects = [], branches = [], testim
             <div className="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="400">
               <div className="relative w-28 h-28 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-500">
                 <div className="text-xl sm:text-3xl md:text-4xl font-black text-white leading-none mb-1 flex items-center">
-                  <AnimatedCounter targetNumber={99} suffix="%" />
+                  <AnimatedCounter targetNumber={27} suffix="" />
                 </div>
-                <div className="text-[9px] sm:text-xs font-bold text-[#ffc107] px-1 text-center" translate="no">Kepuasan Pelanggan</div>
+                <div className="text-[9px] sm:text-xs font-bold text-[#ffc107] px-1 text-center" translate="no">Lokasi Operasional</div>
               </div>
               <p className="text-white text-[10px] sm:text-xs leading-relaxed mt-3 sm:mt-4 max-w-[160px]">
-                Siap memberikan dukungan teknis kapan pun dibutuhkan.
+                Menjangkau berbagai wilayah operasional untuk memberikan dukungan layanan terbaik di Indonesia.
               </p>
             </div>
 
             <div className="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="550">
               <div className="relative w-28 h-28 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full border-4 border-white/10 border-t-[#ffc107] border-r-[#ffc107] p-2 flex flex-col items-center justify-center bg-[#0f2b5c]/40 backdrop-blur-sm shadow-lg group-hover:scale-105 transition-transform duration-500">
-                <div className="text-xl sm:text-3xl md:text-4xl font-black text-white leading-none mb-1" translate="no">
-                  100%
+                <div className="text-xl sm:text-3xl md:text-4xl font-black text-white leading-none mb-1 flex items-center">
+                  <AnimatedCounter targetNumber={100} suffix="%" />
                 </div>
                 <div className="text-[9px] sm:text-xs font-bold text-[#ffc107] px-1 text-center" translate="no">Layanan Terpercaya</div>
               </div>

@@ -240,14 +240,14 @@ export default function Index({ companyHistories = [], milestones = [], manageme
   }, []);
 
   // --- HITUNG TAHUN PENGALAMAN SECARA OTOMATIS & REAL-TIME ---
-  const foundingYear = 2018; // Tahun perusahaan berdiri sesuai data perusahaan
+  const foundingYear = 2022; // Tahun perusahaan berdiri sesuai data perusahaan
   const currentYear = new Date().getFullYear();
   const calculatedExperienceYears = `${Math.max(1, currentYear - foundingYear)}+`;
 
   const whoWeAreStats = [
     { icon: IconCheckBadge, value: "100%", label: "Dukungan Teknis" },
     { icon: IconCalendar, value: calculatedExperienceYears, label: "Tahun Pengalaman" },
-    { icon: IconUsers, value: "99%", label: "Kepuasan Pelanggan" },
+    { icon: IconMap, value: "27", label: "Lokasi Operasional" },
     { icon: IconAward, value: "100%", label: "Layanan Terpercaya" },
   ];
 
@@ -259,13 +259,6 @@ export default function Index({ companyHistories = [], milestones = [], manageme
     { icon: IconAward, label: "Authorized Partner", value: "XCMG (Xuzhou Construction Machinery Group)" },
     { icon: IconMap, label: "Coverage Area", value: "Nationwide - Indonesia" },
     { icon: IconPin, label: "Head Office", value: "Tangerang, Banten, Indonesia" },
-  ];
-
-  const companyStats = [
-    { icon: IconCheckBadge, value: "100%", label: "Dukungan Teknis" },
-    { icon: IconCalendar, value: calculatedExperienceYears, label: "Tahun Pengalaman" },
-    { icon: IconUsers, value: "99%", label: "Kepuasan Pelanggan" },
-    { icon: IconAward, value: "100%", label: "Layanan Terpercaya" },
   ];
 
   const cultureItems = [
@@ -301,18 +294,18 @@ export default function Index({ companyHistories = [], milestones = [], manageme
       <Head title="About Us - PT Servistama Pro Indonesia" />
       <Navbar />
 
-      {/* ============================== HERO ============================== */}
+      {/* ============================== HERO (1 LAYAR FULL) ============================== */}
       <section
-        className="relative flex min-h-[380px] sm:min-h-[500px] w-full items-center overflow-hidden md:min-h-[700px]"
+        className="relative flex h-screen min-h-[550px] w-full items-center overflow-hidden"
         style={{  
-          backgroundImage: `linear-gradient(180deg, rgba(7,27,56,0.15) 0%, rgba(7,27,56,0.30) 50%, rgba(7,27,56,0.20) 100%), url('/images/about-hero.png')`,
+          backgroundImage: `linear-gradient(180deg, rgba(7,27,56,0.25) 0%, rgba(7,27,56,0.45) 50%, rgba(7,27,56,0.30) 100%), url('/images/about-hero.png')`,
           backgroundSize: "cover",
           backgroundPosition: "center 40%",
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="mx-auto flex w-full max-w-7xl flex-col justify-center px-4 py-12 sm:px-6 sm:py-20 lg:px-8">
-          <div className="flex flex-col justify-center">
+        <div className="mx-auto flex w-full max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
+          <div className="flex flex-col justify-center max-w-2xl">
             
             <span 
               className={`mb-2 sm:mb-4 inline-block w-fit text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107] transition-all duration-[1800ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${
@@ -331,7 +324,7 @@ export default function Index({ companyHistories = [], milestones = [], manageme
             </h1>
 
             <p 
-              className={`mt-3 sm:mt-5 max-w-lg text-xs sm:text-sm md:text-base leading-relaxed text-white/95 transition-all duration-[2000ms] delay-500 ease-[cubic-bezier(0.12,1,0.2,1)] ${
+              className={`mt-3 sm:mt-5 text-xs sm:text-sm md:text-base leading-relaxed text-white/95 transition-all duration-[2000ms] delay-500 ease-[cubic-bezier(0.12,1,0.2,1)] ${
                 isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >
@@ -339,7 +332,7 @@ export default function Index({ companyHistories = [], milestones = [], manageme
             </p> 
 
             <div 
-              className={`mt-5 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-4 transition-all duration-[2000ms] delay-700 ease-[cubic-bezier(0.12,1,0.2,1)] ${
+              className={`mt-6 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-4 transition-all duration-[2000ms] delay-700 ease-[cubic-bezier(0.12,1,0.2,1)] ${
                 isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
             >
@@ -357,32 +350,6 @@ export default function Index({ companyHistories = [], milestones = [], manageme
                 Our Services
                 <IconArrow className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-500 group-hover:translate-x-1" />
               </Link>
-            </div>
-
-            {/* STATISTIK DI HERO BANNER */}
-            <div 
-              className={`mt-8 sm:mt-12 grid grid-cols-2 gap-4 sm:gap-6 border-t border-white/20 pt-6 sm:pt-8 sm:grid-cols-4 transition-all duration-[2200ms] delay-[900ms] ease-[cubic-bezier(0.12,1,0.2,1)] ${
-                isHeroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
-              }`}
-            >
-              {whoWeAreStats.map((s, i) => {
-                const Icon = s.icon;
-                return (
-                  <a
-                    key={i}
-                    href="#why-choose-us"
-                    className="group flex flex-col items-start transition-all duration-500 hover:-translate-y-1 cursor-pointer"
-                  >
-                    <Icon className="h-5 w-5 sm:h-7 sm:w-7 text-[#FFC107] transition-transform duration-500 group-hover:scale-110" />
-                    <p className="mt-1 sm:mt-2 text-xl sm:text-2xl md:text-3xl font-extrabold text-white">
-                      <CounterNumber value={s.value} />
-                    </p>
-                    <p className="text-[10px] sm:text-xs md:text-sm font-medium text-white/90 transition-colors group-hover:text-white" translate="no">
-                      {s.label}
-                    </p>
-                  </a>
-                );
-              })}
             </div>
 
           </div>
@@ -530,41 +497,6 @@ export default function Index({ companyHistories = [], milestones = [], manageme
           <VisionMission />
         </Reveal>
       </div>
-
-      {/* ============================== COMPANY STATISTICS ============================== */}
-      <section
-        className="relative overflow-hidden bg-[#0B1220] py-12 sm:py-16 md:py-20"
-        style={{
-          backgroundImage: "linear-gradient(to right, rgba(11,18,32,0.95), rgba(15,43,92,0.85)), url('https://placehold.co/1920x600/0B1220/0B1220?text=+')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal direction="up">
-            <span className="mb-6 sm:mb-8 inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
-              Company Statistics
-            </span>
-          </Reveal>
-          
-          <div className="grid grid-cols-2 gap-6 sm:gap-8 sm:grid-cols-4">
-            {companyStats.map((s, i) => {
-              const Icon = s.icon;
-              return (
-                <Reveal key={i} delay={i * 200} direction="scale">
-                  <div className="text-center sm:text-left transition-transform duration-500 hover:-translate-y-1">
-                    <Icon className="mx-auto h-6 w-6 sm:h-7 sm:w-7 text-[#FFC107] sm:mx-0" />
-                    <p className="mt-2 sm:mt-3 text-2xl sm:text-3xl font-extrabold text-white md:text-4xl text-[#FFC107]">
-                      <CounterNumber value={s.value} />
-                    </p>
-                    <p className="mt-1 sm:mt-2 text-[10px] sm:text-xs font-bold text-white" translate="no">{s.label}</p>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* ===================== MILESTONE / ORG STRUCTURE / MANAGEMENT ===================== */}
       <section className="bg-slate-50 py-12 sm:py-16 border-t border-slate-200 overflow-hidden">
@@ -760,7 +692,7 @@ export default function Index({ companyHistories = [], milestones = [], manageme
           </Reveal>
 
           <Reveal direction="right" className="flex flex-col h-full">
-            <span className="mb-3 sm:mb-5 inline-block text-[10px] sm:text-[#FFC107] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
+            <span className="mb-3 sm:mb-5 inline-block text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#FFC107]">
               Corporate Governance
             </span>
             <div className="flex flex-col justify-between flex-1 h-full rounded-2xl border border-[#E2E8F0] bg-white p-5 sm:p-6 shadow-sm transition-all duration-700 hover:-translate-y-1.5 hover:border-[#FFC107] hover:shadow-xl md:p-7">

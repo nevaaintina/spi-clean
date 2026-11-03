@@ -83,6 +83,82 @@ class SparePartController extends Controller
         return redirect()->to('/admin?tab=spareparts')->with('success', 'Spare Part beserta galeri foto berhasil ditambahkan!');
     }
 
+    public function update(Request $request, SparePart $sparePart)
+    {
+        $request->validate([
+            'category'         => 'required|string',
+            'part_number'      => 'required|string|max:255',
+            'name'             => 'required|string|max:255',
+            'brand'            => 'nullable|string|max:255',
+            'image'            => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10048',
+            'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10048',
+            'delivery_time'    => 'nullable|string|max:255',
+            'supply_capacity'  => 'nullable|string|max:255',
+            'product_origin'   => 'nullable|string|max:255',
+            'package_type'     => 'nullable|string|max:255',
+            'shipping_methods' => 'nullable|string|max:255',
+        ]);
+
+        $imagePath = $sparePart->image;
+        if ($request->boolean('remove_image')) {
+            if ($sparePart->image && File::exists(public_path($sparePart->image))) {
+                File::delete(public_path($sparePart->image));
+            }
+            $imagePath = null;
+        } elseif ($request->hasFile('image')) {
+            if ($sparePart->image && File::exists(public_path($sparePart->image))) {
+                File::delete(public_path($sparePart->image));
+            }
+            $file = $request->file('image');
+            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $destinationPath = public_path('images/spareparts');
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true, true);
+            }
+            $file->move($destinationPath, $filename);
+            $imagePath = 'images/spareparts/' . $filename;
+        }
+
+        $galleryPaths = $sparePart->gallery ?? [];
+        if ($request->hasFile('gallery_images')) {
+            if (!empty($sparePart->gallery) && is_array($sparePart->gallery)) {
+                foreach ($sparePart->gallery as $oldGallery) {
+                    if (File::exists(public_path($oldGallery))) {
+                        File::delete(public_path($oldGallery));
+                    }
+                }
+            }
+
+            $galleryPaths = [];
+            $gDestination = public_path('images/spareparts/gallery');
+            if (!File::exists($gDestination)) {
+                File::makeDirectory($gDestination, 0755, true, true);
+            }
+
+            foreach ($request->file('gallery_images') as $gFile) {
+                $gName = time() . '_' . uniqid() . '_' . preg_replace('/\s+/', '_', $gFile->getClientOriginalName());
+                $gFile->move($gDestination, $gName);
+                $galleryPaths[] = 'images/spareparts/gallery/' . $gName;
+            }
+        }
+
+        $sparePart->update([
+            'category'         => $request->category,
+            'part_number'      => $request->part_number,
+            'name'             => $request->name,
+            'brand'            => $request->brand ?? 'XCMG',
+            'image'            => $imagePath,
+            'gallery'          => $galleryPaths,
+            'delivery_time'    => $request->delivery_time ?? '1-90 DAYS',
+            'supply_capacity'  => $request->supply_capacity ?? '10,000 Pieces/Year, Waiting for Your Order in Stock',
+            'product_origin'   => $request->product_origin ?? 'China',
+            'package_type'     => $request->package_type ?? 'Carton or Wooden Box',
+            'shipping_methods' => $request->shipping_methods ?? 'Air Transport, Sea Transport, Express Delivery, Truck Transportation',
+        ]);
+
+        return redirect()->to('/admin?tab=spareparts')->with('success', 'Spare Part berhasil diperbarui!');
+    }
+
     /**
      * Menangani penyimpanan konfigurasi Download Katalog PDF Utama & Gambar/Data Exploded View
      */
