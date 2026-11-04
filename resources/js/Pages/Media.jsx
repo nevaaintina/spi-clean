@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Head } from '@inertiajs/react';
 import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
@@ -276,20 +276,23 @@ export default function Media({ mediaGalleries = [] }) {
   const [visibleCount, setVisibleCount] = useState(6);
   const [modalImage, setModalImage] = useState(null);
 
+  // State Urutan Foto ('terbaru' | 'terlama')
+  const [sortOrder, setSortOrder] = useState('terbaru');
+
   const fallbackMediaItems = [
-    { id: 1, category: 'Photo Gallery', title: 'Heavy Equipment Showcase', description: 'Unit alat berat siap operasional di lapangan.', file_path: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80' },
-    { id: 2, category: 'Photo Gallery', title: 'Hydraulic System Check', description: 'Pemeriksaan rutin komponen hidrolik.', file_path: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80' },
-    { id: 3, category: 'Photo Gallery', title: 'On-Site Technical Support', description: 'Dukungan teknisi profesional langsung di site.', file_path: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=800&q=80' },
-    { id: 4, category: 'Photo Gallery', title: 'Spare Parts Management', description: 'Gudang penyimpanan suku cadang original.', file_path: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80' },
-    { id: 5, category: 'Photo Gallery', title: 'Mining Fleet Operation', description: 'Operasional armada di area pertambangan.', file_path: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=800&q=80' },
-    { id: 6, category: 'Photo Gallery', title: 'Engine Maintenance', description: 'Perawatan mesin berat secara berkala.', file_path: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80' },
-    { id: 7, category: 'Workshop', title: 'Workshop Overhaul Area', description: 'Fasilitas perbaikan dan overhaul mesin berat.', file_path: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80' },
-    { id: 8, category: 'Mining Site', title: 'Open Pit Mining Operation', description: 'Aktivitas pertambangan skala besar di Kalimantan.', file_path: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=800&q=80' },
-    { id: 9, category: 'Customer Visit', title: 'Kunjungan Klien Korporat', description: 'Diskusi strategis bersama mitra bisnis.', file_path: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80' },
-    { id: 10, category: 'Training', title: 'Pelatihan Operator XCMG', description: 'Sesi pelatihan teori dan praktik bagi operator.', file_path: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80' },
-    { id: 11, category: 'CSR/TJSL', title: 'Program Sosial Perusahaan', description: 'Kontribusi nyata bagi masyarakat sekitar wilayah operasional.', file_path: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=800&q=80' },
-    { id: 12, category: 'Company Event', title: 'Annual Gathering SPI', description: 'Acara kebersamaan seluruh karyawan dan manajemen.', file_path: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80' },
-    { id: 13, category: 'Drone Video', title: 'Aerial Survey Project', description: 'Pemantauan udara area proyek konstruksi.', file_path: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=800&q=80' },
+    { id: 1, category: 'Photo Gallery', title: 'Heavy Equipment Showcase', description: 'Unit alat berat siap operasional di lapangan.', file_path: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80', created_at: '2024-01-01' },
+    { id: 2, category: 'Photo Gallery', title: 'Hydraulic System Check', description: 'Pemeriksaan rutin komponen hidrolik.', file_path: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80', created_at: '2024-01-02' },
+    { id: 3, category: 'Photo Gallery', title: 'On-Site Technical Support', description: 'Dukungan teknisi profesional langsung di site.', file_path: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=800&q=80', created_at: '2024-01-03' },
+    { id: 4, category: 'Photo Gallery', title: 'Spare Parts Management', description: 'Gudang penyimpanan suku cadang original.', file_path: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80', created_at: '2024-01-04' },
+    { id: 5, category: 'Photo Gallery', title: 'Mining Fleet Operation', description: 'Operasional armada di area pertambangan.', file_path: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=800&q=80', created_at: '2024-01-05' },
+    { id: 6, category: 'Photo Gallery', title: 'Engine Maintenance', description: 'Perawatan mesin berat secara berkala.', file_path: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80', created_at: '2024-01-06' },
+    { id: 7, category: 'Workshop', title: 'Workshop Overhaul Area', description: 'Fasilitas perbaikan dan overhaul mesin berat.', file_path: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80', created_at: '2024-01-07' },
+    { id: 8, category: 'Mining Site', title: 'Open Pit Mining Operation', description: 'Aktivitas pertambangan skala besar di Kalimantan.', file_path: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=800&q=80', created_at: '2024-01-08' },
+    { id: 9, category: 'Customer Visit', title: 'Kunjungan Klien Korporat', description: 'Diskusi strategis bersama mitra bisnis.', file_path: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80', created_at: '2024-01-09' },
+    { id: 10, category: 'Training', title: 'Pelatihan Operator XCMG', description: 'Sesi pelatihan teori dan praktik bagi operator.', file_path: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80', created_at: '2024-01-10' },
+    { id: 11, category: 'CSR/TJSL', title: 'Program Sosial Perusahaan', description: 'Kontribusi nyata bagi masyarakat sekitar wilayah operasional.', file_path: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=800&q=80', created_at: '2024-01-11' },
+    { id: 12, category: 'Company Event', title: 'Annual Gathering SPI', description: 'Acara kebersamaan seluruh karyawan dan manajemen.', file_path: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80', created_at: '2024-01-12' },
+    { id: 13, category: 'Drone Video', title: 'Aerial Survey Project', description: 'Pemantauan udara area proyek konstruksi.', file_path: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=800&q=80', created_at: '2024-01-13' },
   ];
 
   const activeMediaList = mediaGalleries && mediaGalleries.length > 0 ? mediaGalleries : fallbackMediaItems;
@@ -354,15 +357,29 @@ export default function Media({ mediaGalleries = [] }) {
     { icon: IconShield, targetValue: '100%', label: 'Commitment' },
   ];
 
-  const filteredMedia = activeMediaList.filter(item => {
-    const itemCat = item.category?.trim().toLowerCase() || '';
-    const activeCat = activeCategory.trim().toLowerCase();
+  // Filtering Media Berdasarkan Kategori
+  const filteredMedia = useMemo(() => {
+    const list = activeMediaList.filter(item => {
+      const itemCat = item.category?.trim().toLowerCase() || '';
+      const activeCat = activeCategory.trim().toLowerCase();
 
-    if (activeCat === 'csr/tjsl') {
-      return itemCat === 'csr' || itemCat === 'csr/tjsl';
-    }
-    return itemCat === activeCat;
-  });
+      if (activeCat === 'csr/tjsl') {
+        return itemCat === 'csr' || itemCat === 'csr/tjsl';
+      }
+      return itemCat === activeCat;
+    });
+
+    // Mengurutkan Berdasarkan Foto Terbaru / Terlama
+    return list.sort((a, b) => {
+      const timeA = new Date(a.created_at || a.id).getTime();
+      const timeB = new Date(b.created_at || b.id).getTime();
+      if (sortOrder === 'terbaru') {
+        return timeB - timeA; // Terbaru ke Terlama
+      } else {
+        return timeA - timeB; // Terlama ke Terbaru
+      }
+    });
+  }, [activeMediaList, activeCategory, sortOrder]);
   
   const displayedMedia = filteredMedia.slice(0, visibleCount);
 
@@ -512,7 +529,7 @@ export default function Media({ mediaGalleries = [] }) {
           </div>
         </section>
 
-        {/* ============ 4. MEDIA FILTER BAR ============ */}
+        {/* ============ 4. MEDIA FILTER & SORT BAR ============ */}
         <section className="border-t border-gray-100 bg-white py-4 sm:py-6">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -520,6 +537,36 @@ export default function Media({ mediaGalleries = [] }) {
                 <IconGrid />
                 {activeCategory.toUpperCase()}
               </button>
+
+              {/* FITUR TOMBOL URUTAN FOTO TERBARU / TERLAMA */}
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-slate-500">Urutkan:</span>
+                <div className="inline-flex rounded-xl bg-slate-100 p-1 border border-slate-200">
+                  <button
+                    type="button"
+                    onClick={() => setSortOrder('terbaru')}
+                    className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+                      sortOrder === 'terbaru'
+                        ? 'bg-[#0B1E3D] text-white shadow-xs'
+                        : 'text-slate-600 hover:text-[#0B1E3D]'
+                    }`}
+                  >
+                     Foto Terbaru
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSortOrder('terlama')}
+                    className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+                      sortOrder === 'terlama'
+                        ? 'bg-[#0B1E3D] text-white shadow-xs'
+                        : 'text-slate-600 hover:text-[#0B1E3D]'
+                    }`}
+                  >
+                     Foto Terlama
+                  </button>
+                </div>
+              </div>
+
             </div>
           </div>
         </section>
@@ -544,10 +591,12 @@ export default function Media({ mediaGalleries = [] }) {
               </div>
             )}
 
+            {/* TOMBOL LOAD MORE MEDIA (LANGSUNG TAMPIL SEMUA SEKALI KLIK) */}
             {visibleCount < filteredMedia.length && (
               <div className="mt-8 sm:mt-10 flex justify-center">
                 <button 
-                  onClick={() => setVisibleCount(prev => prev + 6)}
+                  type="button"
+                  onClick={() => setVisibleCount(filteredMedia.length)}
                   className="flex items-center gap-2 rounded-md border border-gray-300 px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-[#0B1E3D] hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   Load More Media
@@ -574,75 +623,75 @@ export default function Media({ mediaGalleries = [] }) {
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <FadeReveal>
               <div className="grid gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.8fr)] items-center">
-            <div>
-              <p className="text-[11px] sm:text-xs font-semibold tracking-wide text-blue-700">DRONE VIDEO HIGHLIGHT</p>
-              <h2 className="mt-2 sm:mt-3 text-xl sm:text-2xl font-bold leading-snug text-[#0B1E3D] sm:text-3xl">
-                See the <span className="text-[#F5B800]">Bigger Picture</span>
-              </h2>
-              <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-gray-500">
-                Dokumentasi udara dari berbagai project dan aktivitas kami di seluruh Indonesia.
-              </p>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)]">
-              {currentMainVideo ? (
-                <div key={currentMainVideo.id} className="relative overflow-hidden rounded-lg h-56 sm:h-72 bg-slate-900 shadow-md flex items-center justify-center">
-                  <video 
-                    src={currentMainVideo.file_path.startsWith('http') ? currentMainVideo.file_path : `/${currentMainVideo.file_path}`} 
-                    className="absolute inset-0 h-full w-full object-cover" 
-                    controls
-                    autoPlay
-                  />
-                  <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 flex items-end justify-between text-white pointer-events-none p-1 sm:p-2">
-                    <div>
-                      <p className="text-xs sm:text-sm font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">{currentMainVideo.title}</p>
-                      <p className="text-[10px] sm:text-xs text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">{currentMainVideo.description || 'Drone Footage'}</p>
-                    </div>
-                  </div>
+                <div>
+                  <p className="text-[11px] sm:text-xs font-semibold tracking-wide text-blue-700">DRONE VIDEO HIGHLIGHT</p>
+                  <h2 className="mt-2 sm:mt-3 text-xl sm:text-2xl font-bold leading-snug text-[#0B1E3D] sm:text-3xl">
+                    See the <span className="text-[#F5B800]">Bigger Picture</span>
+                  </h2>
+                  <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-gray-500">
+                    Dokumentasi udara dari berbagai project dan aktivitas kami di seluruh Indonesia.
+                  </p>
                 </div>
-              ) : (
-                <div className="h-56 sm:h-72 bg-slate-50 border border-dashed rounded-lg flex items-center justify-center text-gray-400 text-xs text-center p-4">
-                  Belum ada video utama drone.
-                </div>
-              )}
 
-              {/* Sisi Kanan: Daftar video yang bisa diklik untuk diputar di kiri */}
-              <div className="flex flex-col justify-center gap-3 sm:gap-4">
-                {sideDroneVideos.length > 0 ? (
-                  sideDroneVideos.map((vid) => (
-                    <div 
-                      key={vid.id} 
-                      onClick={() => setSelectedMainVideo(vid)}
-                      className="flex items-center gap-2.5 sm:gap-3 group bg-slate-50 p-2 sm:p-2.5 rounded-lg border border-slate-100 shadow-xs cursor-pointer hover:border-[#F5B800] transition"
-                      title="Klik untuk putar video ini"
-                    >
-                      <div className="relative h-12 w-16 sm:h-14 sm:w-20 shrink-0 overflow-hidden rounded-md bg-slate-900 flex items-center justify-center">
-                        <video 
-                          src={vid.file_path.startsWith('http') ? vid.file_path : `/${vid.file_path}`} 
-                          className="h-full w-full object-cover pointer-events-none" 
-                        />
-                        <span className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
-                          <IconPlay className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
-                        </span>
-                      </div>
-                      <div>
-                        <p className="text-[11px] sm:text-xs font-semibold text-[#0B1E3D] group-hover:text-[#F5B800] transition-colors line-clamp-1">
-                          {vid.title}
-                        </p>
-                        <p className="text-[9px] sm:text-[10px] text-gray-500 line-clamp-1">
-                          {vid.description || 'Drone Footage'}
-                        </p>
+                <div className="grid gap-4 sm:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)]">
+                  {currentMainVideo ? (
+                    <div key={currentMainVideo.id} className="relative overflow-hidden rounded-lg h-56 sm:h-72 bg-slate-900 shadow-md flex items-center justify-center">
+                      <video 
+                        src={currentMainVideo.file_path.startsWith('http') ? currentMainVideo.file_path : `/${currentMainVideo.file_path}`} 
+                        className="absolute inset-0 h-full w-full object-cover" 
+                        controls
+                        autoPlay
+                      />
+                      <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 flex items-end justify-between text-white pointer-events-none p-1 sm:p-2">
+                        <div>
+                          <p className="text-xs sm:text-sm font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">{currentMainVideo.title}</p>
+                          <p className="text-[10px] sm:text-xs text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">{currentMainVideo.description || 'Drone Footage'}</p>
+                        </div>
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="text-xs text-gray-400 italic p-4 text-center border border-dashed rounded-lg bg-slate-50">
-                    Belum ada video drone tambahan.
+                  ) : (
+                    <div className="h-56 sm:h-72 bg-slate-50 border border-dashed rounded-lg flex items-center justify-center text-gray-400 text-xs text-center p-4">
+                      Belum ada video utama drone.
+                    </div>
+                  )}
+
+                  {/* Sisi Kanan: Daftar video yang bisa diklik untuk diputar di kiri */}
+                  <div className="flex flex-col justify-center gap-3 sm:gap-4">
+                    {sideDroneVideos.length > 0 ? (
+                      sideDroneVideos.map((vid) => (
+                        <div 
+                          key={vid.id} 
+                          onClick={() => setSelectedMainVideo(vid)}
+                          className="flex items-center gap-2.5 sm:gap-3 group bg-slate-50 p-2 sm:p-2.5 rounded-lg border border-slate-100 shadow-xs cursor-pointer hover:border-[#F5B800] transition"
+                          title="Klik untuk putar video ini"
+                        >
+                          <div className="relative h-12 w-16 sm:h-14 sm:w-20 shrink-0 overflow-hidden rounded-md bg-slate-900 flex items-center justify-center">
+                            <video 
+                              src={vid.file_path.startsWith('http') ? vid.file_path : `/${vid.file_path}`} 
+                              className="h-full w-full object-cover pointer-events-none" 
+                            />
+                            <span className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
+                              <IconPlay className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                            </span>
+                          </div>
+                          <div>
+                            <p className="text-[11px] sm:text-xs font-semibold text-[#0B1E3D] group-hover:text-[#F5B800] transition-colors line-clamp-1">
+                              {vid.title}
+                            </p>
+                            <p className="text-[9px] sm:text-[10px] text-gray-500 line-clamp-1">
+                              {vid.description || 'Drone Footage'}
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-xs text-gray-400 italic p-4 text-center border border-dashed rounded-lg bg-slate-50">
+                        Belum ada video drone tambahan.
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
-            </div>
-          </div>
             </FadeReveal>
           </div>
         </section>

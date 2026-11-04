@@ -140,7 +140,7 @@ function Icon({ type, className = "w-6 h-6" }) {
 /* =========================================================
    PRODUCT SHOW (MAIN COMPONENT)
 ========================================================= */
-export default function ProductShow({ product }) {
+export default function ProductShow({ product, productCatalogPdf }) {
   if (!product) {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center text-center px-4">
@@ -207,13 +207,20 @@ export default function ProductShow({ product }) {
     : null;
 
   const handleDownloadPdf = () => {
-    // Jika produk memiliki file brosur PDF khusus dari admin, buka/unduh PDF asli
+    // 1. Jika produk memiliki file brosur PDF khusus dari admin, buka file PDF tersebut
     if (brochureUrl) {
       window.open(brochureUrl, '_blank');
       return;
     }
 
-    // Jika tidak ada brosur PDF khusus, jalankan auto-generated PDF dari galeri foto
+    // 2. Jika ada Katalog PDF Utama dari props global, buka Katalog Utama
+    if (productCatalogPdf) {
+      const catalogPath = `/${productCatalogPdf.replace(/^\//, '')}`;
+      window.open(catalogPath, '_blank');
+      return;
+    }
+
+    // 3. Jika tidak ada brosur PDF sama sekali, buat dokumen PDF otomatis dari galeri foto produk
     const printWindow = window.open('', '_blank');
     if (!printWindow) {
       alert("Mohon izinkan pop-up pada browser Anda untuk mendownload dokumen PDF.");
@@ -532,27 +539,15 @@ export default function ProductShow({ product }) {
                       </p>
                     </div>
                   </div>
-                  {brochureUrl ? (
-                    <a
-                      href={brochureUrl}
-                      download
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#ffc107] hover:bg-[#eaae00] text-[#0f2b5c] font-black text-xs transition cursor-pointer flex items-center justify-center gap-2 shadow-sm shrink-0"
-                    >
-                      <Icon type="download" className="w-4 h-4" />
-                      Download PDF Katalog
-                    </a>
-                  ) : (
-                    <button 
-                      type="button"
-                      onClick={handleDownloadPdf}
-                      className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#ffc107] hover:bg-[#eaae00] text-[#0f2b5c] font-black text-xs transition cursor-pointer flex items-center justify-center gap-2 shadow-sm shrink-0"
-                    >
-                      <Icon type="download" className="w-4 h-4" />
-                      Download PDF Katalog
-                    </button>
-                  )}
+                  
+                  <button 
+                    type="button"
+                    onClick={handleDownloadPdf}
+                    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#ffc107] hover:bg-[#eaae00] text-[#0f2b5c] font-black text-xs transition cursor-pointer flex items-center justify-center gap-2 shadow-sm shrink-0"
+                  >
+                    <Icon type="download" className="w-4 h-4" />
+                    Download PDF Katalog
+                  </button>
                 </div>
               </div>
             </div>

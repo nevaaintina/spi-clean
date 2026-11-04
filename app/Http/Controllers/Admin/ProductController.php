@@ -137,6 +137,7 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
+        // Validasi input (dibuat opsional agar file tidak wajib diunggah ulang saat mengedit teks saja)
         $request->validate([
             'category' => 'required|string',
             'name' => 'required|string|max:255',
@@ -153,7 +154,7 @@ class ProductController extends Controller
                 File::delete(public_path($product->image));
             }
             $imagePath = null;
-        } elseif ($request->hasFile('image')) {
+        } elseif ($request->hasFile('image')) { // Hanya diisi file baru jika mengunggah berkas gambar valid
             if ($product->image && File::exists(public_path($product->image))) {
                 File::delete(public_path($product->image));
             }
@@ -174,7 +175,7 @@ class ProductController extends Controller
                 File::delete(public_path($product->brochure));
             }
             $brochurePath = null;
-        } elseif ($request->hasFile('brochure')) {
+        } elseif ($request->hasFile('brochure')) { // Hanya diisi file baru jika mengunggah brosur PDF valid
             if ($product->brochure && File::exists(public_path($product->brochure))) {
                 File::delete(public_path($product->brochure));
             }
@@ -195,7 +196,7 @@ class ProductController extends Controller
                 File::delete(public_path($product->video_path));
             }
             $videoPath = null;
-        } elseif ($request->hasFile('video_file')) {
+        } elseif ($request->hasFile('video_file')) { // Hanya diisi file baru jika mengunggah video valid
             if ($product->video_path && File::exists(public_path($product->video_path))) {
                 File::delete(public_path($product->video_path));
             }
@@ -233,12 +234,13 @@ class ProductController extends Controller
             }
         }
 
-        $specifications = $request->specifications;
+        // Decode JSON Spesifikasi & Fitur jika dikirim sebagai String dari FormData Frontend
+        $specifications = $request->specifications ?? $product->specifications;
         if (is_string($specifications)) {
             $specifications = json_decode($specifications, true);
         }
 
-        $features = $request->features;
+        $features = $request->features ?? $product->features;
         if (is_string($features)) {
             $features = json_decode($features, true);
         }

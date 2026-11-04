@@ -1030,66 +1030,88 @@ export default function AdminDashboard({
     });
   };
 
-  const handleOpenEditProduct = (prod) => {
+const handleOpenEditProduct = (prod) => {
     setEditingProduct(prod);
-   editProductForm.setData({
-  category: prod.category || activeProductCategory,
-  name: prod.name || "",
-  image: null,
-  video_file: null,
-  brochure: null, // <-- TAMBAHKAN INI
-  gallery_images: [],
-  description: prod.description || "",
-  remove_image: false,
-  remove_video: false,
-});
 
-    try {
-      let parsedSpecs = typeof prod.specifications === 'string' ? JSON.parse(prod.specifications) : prod.specifications;
-      setEditSpecRows(Array.isArray(parsedSpecs) && parsedSpecs.length > 0 ? parsedSpecs : [{ label: "", value: "" }]);
-    } catch (e) {
-      setEditSpecRows([{ label: "", value: "" }]);
+    // Decode specifications jika masih berupa JSON String
+    let parsedSpecs = prod.specifications || [];
+    if (typeof parsedSpecs === 'string') {
+      try { parsedSpecs = JSON.parse(parsedSpecs); } catch (e) { parsedSpecs = []; }
     }
 
-    try {
-      let parsedFeats = typeof prod.features === 'string' ? JSON.parse(prod.features) : prod.features;
-      setEditFeatureRows(Array.isArray(parsedFeats) && parsedFeats.length > 0 ? parsedFeats : [""]);
-    } catch (e) {
-      setEditFeatureRows([""]);
+    // Decode features jika masih berupa JSON String
+    let parsedFeats = prod.features || [];
+    if (typeof parsedFeats === 'string') {
+      try { parsedFeats = JSON.parse(parsedFeats); } catch (e) { parsedFeats = []; }
     }
+
+    const finalSpecs = Array.isArray(parsedSpecs) && parsedSpecs.length > 0 ? parsedSpecs : [{ label: "", value: "" }];
+    const finalFeats = Array.isArray(parsedFeats) && parsedFeats.length > 0 ? parsedFeats : [""];
+
+    setEditSpecRows(finalSpecs);
+    setEditFeatureRows(finalFeats);
+
+    editProductForm.setData({
+      category: prod.category || '',
+      name: prod.name || '',
+      description: prod.description || '',
+      image: null,
+      brochure: null,
+      video_file: null,
+      specifications: finalSpecs,
+      features: finalFeats,
+      remove_image: false,
+      remove_video: false,
+      remove_brochure: false,
+    });
   };
 
-  const handleUpdateProduct = (e) => {
+
+
+const handleUpdateProduct = (e) => {
     e.preventDefault();
     if (!editingProduct) return;
 
     const formData = new FormData();
-    formData.append("_method", "PUT");
-    formData.append("category", editProductForm.data.category);
-    formData.append("name", editProductForm.data.name);
-   if (editProductForm.data.image) formData.append("image", editProductForm.data.image);
-if (editProductForm.data.video_file) formData.append("video_file", editProductForm.data.video_file);
-if (editProductForm.data.brochure) formData.append("brochure", editProductForm.data.brochure); // <-- TAMBAHKAN INI
-    formData.append("remove_image", editProductForm.data.remove_image ? 1 : 0);
-    formData.append("remove_video", editProductForm.data.remove_video ? 1 : 0);
+    formData.append("_method", "PUT"); // Method spoofing Laravel
 
-    if (editProductForm.data.gallery_images && editProductForm.data.gallery_images.length > 0) {
-      for (let i = 0; i < editProductForm.data.gallery_images.length; i++) {
-        formData.append("gallery_images[]", editProductForm.data.gallery_images[i]);
-      }
+    formData.append("category", editProductForm.data.category || "");
+    formData.append("name", editProductForm.data.name || "");
+    formData.append("description", editProductForm.data.description || "");
+
+    // PENTING: Hanya append jika data media berupa File nyata (bukan null / URL lama)
+    if (editProductForm.data.image instanceof File) {
+      formData.append("image", editProductForm.data.image);
+    }
+    if (editProductForm.data.video_file instanceof File) {
+      formData.append("video_file", editProductForm.data.video_file);
+    }
+    if (editProductForm.data.brochure instanceof File) {
+      formData.append("brochure", editProductForm.data.brochure);
     }
 
-    formData.append("description", editProductForm.data.description || "");
-    formData.append("specifications", JSON.stringify(editSpecRows));
-    formData.append("features", JSON.stringify(editFeatureRows));
+    // Flag hapus file
+    formData.append("remove_image", editProductForm.data.remove_image ? 1 : 0);
+    formData.append("remove_video", editProductForm.data.remove_video ? 1 : 0);
+    formData.append("remove_brochure", editProductForm.data.remove_brochure ? 1 : 0);
+
+    // KUNCI SPESIFIKASI & FITUR: Stringify array sebelum dikirim
+    const specsToSend = editSpecRows.length > 0 ? editSpecRows : (editProductForm.data.specifications || []);
+    formData.append("specifications", JSON.stringify(specsToSend));
+
+    const featsToSend = editFeatureRows.length > 0 ? editFeatureRows : (editProductForm.data.features || []);
+    formData.append("features", JSON.stringify(featsToSend));
 
     router.post(`/admin/products/${editingProduct.id}`, formData, {
       forceFormData: true,
-      preserveState: false,
+      preserveScroll: true,
       onSuccess: () => {
         alert("Produk berhasil diperbarui!");
         setEditingProduct(null);
-        router.reload();
+      },
+      onError: (errors) => {
+        console.error("Gagal update produk:", errors);
+        alert("Gagal memperbarui produk. Cek console log.");
       },
     });
   };
