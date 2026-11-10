@@ -102,6 +102,13 @@ const IconCalendar = ({ className = 'w-6 h-6' }) => (
   </svg>
 );
 
+const IconMap = ({ className = 'w-6 h-6' }) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M9 3v15M15 6v15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 const IconDrone = ({ className = 'w-6 h-6' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <circle cx="12" cy="12" r="2.3" stroke="currentColor" strokeWidth="1.6" />
@@ -353,7 +360,7 @@ export default function Media({ mediaGalleries = [] }) {
   const statistics = [
     { icon: IconPhoto, targetValue: `${totalPhotos}+`, label: 'Photo Documentation' },
     { icon: IconVideo, targetValue: `${totalDroneVideos}+`, label: 'Video Drone' },
-    { icon: IconCalendar, targetValue: '99%', label: 'Kepuasan Pelanggan' },
+    { icon: IconMap, targetValue: '27', label: 'Lokasi Operasional' },
     { icon: IconShield, targetValue: '100%', label: 'Commitment' },
   ];
 
