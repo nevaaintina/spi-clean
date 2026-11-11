@@ -57,6 +57,14 @@ const IconCamera = ({ className = 'w-6 h-6' }) => (
   </svg>
 );
 
+const IconInstagram = ({ className = 'w-6 h-6' }) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className}>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="currentColor" strokeWidth="1.6" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="currentColor" strokeWidth="1.6" />
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
 const IconWrench = ({ className = 'w-6 h-6' }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className}>
     <path d="M14.7 6.3a4 4 0 0 0-5.4 4.6L4 16.2V20h3.8l5.3-5.3a4 4 0 0 0 4.6-5.4l-2.6 2.6-2.2-2.2 2.6-2.6Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" />
@@ -163,20 +171,68 @@ const IconShield = ({ className = 'w-6 h-6' }) => (
   </svg>
 );
 
+const IconExternalLink = ({ className = 'w-4 h-4' }) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className}>
+    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M15 3h6v6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M10 14L21 3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 const CATEGORIES = [
   { id: 'Photo Gallery', label: 'Photo Gallery', number: '01.', icon: IconCamera },
-  { id: 'Workshop', label: 'Workshop', number: '02.', icon: IconWrench },
-  { id: 'Mining Site', label: 'Mining Site', number: '03.', icon: IconExcavator },
-  { id: 'Customer Visit', label: 'Customer Visit', number: '04.', icon: IconUsers },
-  { id: 'Training', label: 'Training', number: '05.', icon: IconGraduation },
-  { id: 'CSR/TJSL', label: 'CSR/TJSL', number: '06.', icon: IconHandshake },
-  { id: 'Company Event', label: 'Company Event', number: '07.', icon: IconCalendar },
-  { id: 'Drone Video', label: 'Drone Video', number: '08.', icon: IconDrone },
+  { id: 'Instagram', label: 'Instagram', number: '02.', icon: IconInstagram },
+  { id: 'Workshop', label: 'Workshop', number: '03.', icon: IconWrench },
+  { id: 'Mining Site', label: 'Mining Site', number: '04.', icon: IconExcavator },
+  { id: 'Customer Visit', label: 'Customer Visit', number: '05.', icon: IconUsers },
+  { id: 'Training', label: 'Training', number: '06.', icon: IconGraduation },
+  { id: 'CSR/TJSL', label: 'CSR/TJSL', number: '07.', icon: IconHandshake },
+  { id: 'Company Event', label: 'Company Event', number: '08.', icon: IconCalendar },
+  { id: 'Drone Video', label: 'Drone Video', number: '09.', icon: IconDrone },
 ];
 
-const MediaCard = ({ item, onImageClick }) => {
+const MediaCard = ({ item, onMediaClick }) => {
+  const isInstagram = Boolean(item.instagram_url);
   const filePath = item.file_path ? (item.file_path.startsWith('http') ? item.file_path : `/${item.file_path}`) : 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80';
   const isVideo = item.media_type?.toLowerCase().includes('video') || filePath.endsWith('.mp4') || filePath.endsWith('.mov') || filePath.endsWith('.avi');
+
+  const getInstagramEmbedUrl = (url) => {
+    if (!url) return '';
+    try {
+      const cleanUrl = url.split('?')[0].replace(/\/$/, '');
+      return `${cleanUrl}/embed`;
+    } catch (e) {
+      return url;
+    }
+  };
+
+  if (isInstagram) {
+    const embedUrl = getInstagramEmbedUrl(item.instagram_url);
+    return (
+      <div 
+        onClick={() => onMediaClick({ isInstagram: true, instagramUrl: item.instagram_url, embedUrl, title: item.title || item.category })}
+        className="relative overflow-hidden rounded-xl shadow-md bg-white border border-slate-200 h-96 sm:h-[420px] flex flex-col group cursor-pointer"
+      >
+        <iframe
+          src={embedUrl}
+          className="w-full h-full border-0 rounded-xl bg-white pointer-events-none"
+          allow="encrypted-media"
+          scrolling="no"
+          frameBorder="0"
+          title={item.title || "Instagram Post"}
+        />
+        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-all flex items-end justify-between p-3 pointer-events-none">
+          <span className="bg-[#0B1E3D]/80 text-[#F5B800] text-[10px] font-bold px-2.5 py-1 rounded-md backdrop-blur-xs flex items-center gap-1">
+            <IconInstagram className="w-3.5 h-3.5" />
+            Instagram
+          </span>
+          <span className="bg-white/90 text-[#0B1E3D] text-[11px] font-bold px-3 py-1.5 rounded-lg shadow-sm group-hover:scale-105 transition-transform flex items-center gap-1">
+            Perbesar
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative overflow-hidden rounded-lg group h-48 sm:h-72 lg:h-80 shadow-md bg-slate-900 flex items-center justify-center">
@@ -190,7 +246,7 @@ const MediaCard = ({ item, onImageClick }) => {
         <img
           src={filePath}
           alt={item.title || "Media gallery item"}
-          onClick={() => onImageClick(filePath, item.title || item.category)}
+          onClick={() => onMediaClick({ url: filePath, title: item.title || item.category })}
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
           title="Klik untuk memperbesar foto"
         />
@@ -198,7 +254,7 @@ const MediaCard = ({ item, onImageClick }) => {
 
       {!isVideo && (
         <div 
-          onClick={() => onImageClick(filePath, item.title || item.category)}
+          onClick={() => onMediaClick({ url: filePath, title: item.title || item.category })}
           className="absolute top-2 right-2 sm:top-3 sm:right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-black/60 hover:bg-black/85 text-white p-1.5 sm:p-2 rounded-xl backdrop-blur-xs z-20 cursor-pointer shadow-lg"
           title="Lihat Foto Full"
         >
@@ -209,7 +265,7 @@ const MediaCard = ({ item, onImageClick }) => {
       )}
 
       <div 
-        onClick={() => !isVideo && onImageClick(filePath, item.title || item.category)}
+        onClick={() => !isVideo && onMediaClick({ url: filePath, title: item.title || item.category })}
         className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 sm:p-4 z-10 cursor-pointer pointer-events-none"
       >
         <div className="pointer-events-auto">
@@ -221,7 +277,7 @@ const MediaCard = ({ item, onImageClick }) => {
   );
 };
 
-// Komponen Counter dengan Animasi Angka Bergerak + Pengaman Anti-Translate
+// Komponen Counter dengan Animasi Angka Bergerak
 const CounterItem = ({ icon: Icon, targetValue, label }) => {
   const safeTargetVal = String(targetValue ?? '0');
   const numericTarget = parseInt(safeTargetVal, 10) || 0;
@@ -381,9 +437,9 @@ export default function Media({ mediaGalleries = [] }) {
       const timeA = new Date(a.created_at || a.id).getTime();
       const timeB = new Date(b.created_at || b.id).getTime();
       if (sortOrder === 'terbaru') {
-        return timeB - timeA; // Terbaru ke Terlama
+        return timeB - timeA;
       } else {
-        return timeA - timeB; // Terlama ke Terbaru
+        return timeA - timeB;
       }
     });
   }, [activeMediaList, activeCategory, sortOrder]);
@@ -434,7 +490,7 @@ export default function Media({ mediaGalleries = [] }) {
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <FadeReveal delay={150}>
               <div className="rounded-xl sm:rounded-t-2xl bg-white p-3 sm:p-6 shadow-xl">
-                <div className="grid grid-cols-4 gap-2 sm:grid-cols-4 lg:grid-cols-8 sm:gap-3">
+                <div className="grid grid-cols-3 gap-2 sm:grid-cols-5 lg:grid-cols-9 sm:gap-3">
                   {CATEGORIES.map((cat) => {
                     const IconComponent = cat.icon;
                     const isActive = activeCategory.toLowerCase() === cat.id.toLowerCase();
@@ -558,7 +614,7 @@ export default function Media({ mediaGalleries = [] }) {
                         : 'text-slate-600 hover:text-[#0B1E3D]'
                     }`}
                   >
-                     Foto Terbaru
+                    Foto Terbaru
                   </button>
                   <button
                     type="button"
@@ -569,7 +625,7 @@ export default function Media({ mediaGalleries = [] }) {
                         : 'text-slate-600 hover:text-[#0B1E3D]'
                     }`}
                   >
-                     Foto Terlama
+                    Foto Terlama
                   </button>
                 </div>
               </div>
@@ -582,12 +638,12 @@ export default function Media({ mediaGalleries = [] }) {
         <section className="bg-white pb-10 sm:pb-12">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             {displayedMedia.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                 {displayedMedia.map((item, index) => (
                   <FadeReveal key={item.id} delay={(index % 3) * 100}>
                     <MediaCard 
                       item={item} 
-                      onImageClick={(url, title) => setModalImage({ url, title })} 
+                      onMediaClick={(modalData) => setModalImage(modalData)} 
                     />
                   </FadeReveal>
                 ))}
@@ -598,7 +654,7 @@ export default function Media({ mediaGalleries = [] }) {
               </div>
             )}
 
-            {/* TOMBOL LOAD MORE MEDIA (LANGSUNG TAMPIL SEMUA SEKALI KLIK) */}
+            {/* TOMBOL LOAD MORE MEDIA */}
             {visibleCount < filteredMedia.length && (
               <div className="mt-8 sm:mt-10 flex justify-center">
                 <button 
@@ -614,7 +670,7 @@ export default function Media({ mediaGalleries = [] }) {
           </div>
         </section>
 
-        {/* ============ 6. STATS BAR (ANIMASI COUNTER) ============ */}
+        {/* ============ 6. STATS BAR ============ */}
         <section className="bg-[#0B1E3D] py-6 sm:py-8">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="grid grid-cols-2 divide-y divide-white/10 sm:grid-cols-4 sm:divide-y-0 sm:divide-x">
@@ -662,7 +718,6 @@ export default function Media({ mediaGalleries = [] }) {
                     </div>
                   )}
 
-                  {/* Sisi Kanan: Daftar video yang bisa diklik untuk diputar di kiri */}
                   <div className="flex flex-col justify-center gap-3 sm:gap-4">
                     {sideDroneVideos.length > 0 ? (
                       sideDroneVideos.map((vid) => (
@@ -704,25 +759,64 @@ export default function Media({ mediaGalleries = [] }) {
         </section>
       </div>
 
-      {/* ============ MODAL LIGHTBOX UNTUK FOTO FULL ============ */}
+      {/* ============ MODAL LIGHTBOX FOTO / INSTAGRAM EMBED FULL ============ */}
       {modalImage && (
         <div 
           onClick={() => setModalImage(null)}
-          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 cursor-pointer"
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 cursor-pointer overflow-y-auto"
         >
-          <div className="relative max-w-5xl w-full max-h-[90vh] flex flex-col items-center" onClick={e => e.stopPropagation()}>
-            <button 
-              onClick={() => setModalImage(null)}
-              className="absolute -top-10 sm:-top-12 right-0 text-white bg-white/20 hover:bg-white/40 rounded-full p-2 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center font-bold text-base sm:text-lg transition cursor-pointer"
-            >
-              &times;
-            </button>
-            <img 
-              src={modalImage.url} 
-              alt={modalImage.title} 
-              className="max-w-full max-h-[80vh] object-contain rounded-xl sm:rounded-2xl shadow-2xl border border-white/10" 
-            />
-            <p className="text-white text-xs sm:text-sm font-semibold mt-4 text-center">{modalImage.title}</p>
+          {/* TOMBOL X FIXED DI POJOK KANAN ATAS LAYAR */}
+          <button 
+            onClick={() => setModalImage(null)}
+            aria-label="Tutup modal"
+            className="fixed top-4 right-4 sm:top-6 sm:right-6 text-white bg-white/20 hover:bg-white/40 rounded-full w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center font-bold text-lg sm:text-xl shadow-lg transition cursor-pointer z-[60]"
+            title="Tutup (Esc)"
+          >
+            &times;
+          </button>
+
+          <div 
+            className="relative max-w-xl w-full flex flex-col items-center my-auto py-4" 
+            onClick={e => e.stopPropagation()}
+          >
+            {modalImage.isInstagram ? (
+              <div className="w-full bg-white rounded-2xl shadow-2xl flex flex-col items-center border border-white/20 p-2 sm:p-4">
+                {/* iframe dengan tinggi 700px presisi sesuai aspek rasio embed Instagram */}
+                <div className="w-full h-[620px] sm:h-[700px] overflow-hidden rounded-xl bg-white">
+                  <iframe 
+                    src={modalImage.embedUrl} 
+                    className="w-full h-full border-0"
+                    allow="encrypted-media"
+                    scrolling="no"
+                    frameBorder="0"
+                    title={modalImage.title || "Instagram Embed"}
+                  />
+                </div>
+                
+                {/* Tombol Kunjungi Instagram */}
+                {modalImage.instagramUrl && (
+                  <a
+                    href={modalImage.instagramUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex items-center gap-2 bg-[#0B1E3D] hover:bg-[#071328] text-[#F5B800] px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-md transition-transform hover:scale-105 border border-[#F5B800]/30 shrink-0"
+                  >
+                    <IconInstagram className="w-4 h-4 text-[#F5B800]" />
+                    Mengunjungi Instagram
+                    <IconExternalLink className="w-3.5 h-3.5 text-[#F5B800]" />
+                  </a>
+                )}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center w-full">
+                <img 
+                  src={modalImage.url} 
+                  alt={modalImage.title} 
+                  className="max-w-full max-h-[85vh] object-contain rounded-xl sm:rounded-2xl shadow-2xl border border-white/10" 
+                />
+                <p className="text-white text-xs sm:text-sm font-semibold mt-3 text-center">{modalImage.title}</p>
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -36,17 +36,17 @@ export default function AdminDashboard({
   const [editingProduct, setEditingProduct] = useState(null);
   const [editSpecRows, setEditSpecRows] = useState([{ label: "", value: "" }]);
   const [editFeatureRows, setEditFeatureRows] = useState([""]);
- const editProductForm = useForm({
-  category: "Excavator",
-  name: "",
-  image: null,
-  video_file: null,
-  brochure: null, // <-- TAMBAHKAN INI
-  gallery_images: [],
-  description: "",
-  remove_image: false,
-  remove_video: false,
-});
+  const editProductForm = useForm({
+    category: "Excavator",
+    name: "",
+    image: null,
+    video_file: null,
+    brochure: null,
+    gallery_images: [],
+    description: "",
+    remove_image: false,
+    remove_video: false,
+  });
 
   // STATE UNTUK MODAL EDIT SPARE PART
   const [editingSparePart, setEditingSparePart] = useState(null);
@@ -72,6 +72,7 @@ export default function AdminDashboard({
     category: "Photo Gallery",
     media_type: "Foto (Image)",
     file: null,
+    instagram_url: "",
     description: "",
     remove_file: false,
   });
@@ -286,6 +287,7 @@ export default function AdminDashboard({
     category: "Photo Gallery",
     media_type: "Foto (Image)",
     file: null,
+    instagram_url: "",
     description: "",
   });
 
@@ -1030,7 +1032,7 @@ export default function AdminDashboard({
     });
   };
 
-const handleOpenEditProduct = (prod) => {
+  const handleOpenEditProduct = (prod) => {
     setEditingProduct(prod);
 
     // Decode specifications jika masih berupa JSON String
@@ -1066,9 +1068,7 @@ const handleOpenEditProduct = (prod) => {
     });
   };
 
-
-
-const handleUpdateProduct = (e) => {
+  const handleUpdateProduct = (e) => {
     e.preventDefault();
     if (!editingProduct) return;
 
@@ -1079,7 +1079,6 @@ const handleUpdateProduct = (e) => {
     formData.append("name", editProductForm.data.name || "");
     formData.append("description", editProductForm.data.description || "");
 
-    // PENTING: Hanya append jika data media berupa File nyata (bukan null / URL lama)
     if (editProductForm.data.image instanceof File) {
       formData.append("image", editProductForm.data.image);
     }
@@ -1090,12 +1089,10 @@ const handleUpdateProduct = (e) => {
       formData.append("brochure", editProductForm.data.brochure);
     }
 
-    // Flag hapus file
     formData.append("remove_image", editProductForm.data.remove_image ? 1 : 0);
     formData.append("remove_video", editProductForm.data.remove_video ? 1 : 0);
     formData.append("remove_brochure", editProductForm.data.remove_brochure ? 1 : 0);
 
-    // KUNCI SPESIFIKASI & FITUR: Stringify array sebelum dikirim
     const specsToSend = editSpecRows.length > 0 ? editSpecRows : (editProductForm.data.specifications || []);
     formData.append("specifications", JSON.stringify(specsToSend));
 
@@ -1260,6 +1257,7 @@ const handleUpdateProduct = (e) => {
     formData.append("title", mediaForm.data.title);
     formData.append("category", mediaForm.data.category);
     formData.append("media_type", mediaForm.data.media_type);
+    formData.append("instagram_url", mediaForm.data.instagram_url || "");
     if (mediaForm.data.file) formData.append("file", mediaForm.data.file);
     formData.append("description", mediaForm.data.description || "");
 
@@ -1281,6 +1279,7 @@ const handleUpdateProduct = (e) => {
       category: m.category || "Photo Gallery",
       media_type: m.media_type || "Foto (Image)",
       file: null,
+      instagram_url: m.instagram_url || "",
       description: m.description || "",
       remove_file: false,
     });
@@ -1295,6 +1294,7 @@ const handleUpdateProduct = (e) => {
     formData.append("title", editMediaForm.data.title);
     formData.append("category", editMediaForm.data.category);
     formData.append("media_type", editMediaForm.data.media_type);
+    formData.append("instagram_url", editMediaForm.data.instagram_url || "");
     formData.append("description", editMediaForm.data.description || "");
     formData.append("remove_file", editMediaForm.data.remove_file ? 1 : 0);
 
@@ -2525,15 +2525,15 @@ const handleUpdateProduct = (e) => {
                   </div>
 
                   {/* Upload Brosur Produk */}
-<div>
-  <label className="block text-[11px] font-bold text-slate-600 mb-1">Upload Brosur Produk (.PDF)</label>
-  <input 
-    type="file" 
-    accept="application/pdf" 
-    onChange={e => productForm.setData('brochure', e.target.files[0])} 
-    className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
-  />
-</div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Upload Brosur Produk (.PDF)</label>
+                    <input 
+                      type="file" 
+                      accept="application/pdf" 
+                      onChange={e => productForm.setData('brochure', e.target.files[0])} 
+                      className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
+                    />
+                  </div>
 
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Lengkap Produk</label>
@@ -3119,141 +3119,181 @@ const handleUpdateProduct = (e) => {
           </div>
         )}
 
-        {/* ================= TAB 6: MEDIA GALLERY ================= */}
-        {activeTab === "media" && (
-          <div className="space-y-8">
-            <div className="bg-white p-8 rounded-[30px] border border-slate-200 shadow-sm space-y-6">
-              <div>
-                <h2 className="text-xl font-black text-[#0f2b5c] mb-1">Unggah Foto atau Video Baru</h2>
-                <p className="text-xs text-slate-500">Kelola galeri foto dan video perusahaan beserta pengaturan tata letak tampilannya.</p>
-              </div>
+       {/* ================= TAB 6: MEDIA GALLERY ================= */}
+{activeTab === "media" && (
+  <div className="space-y-8">
+    <div className="bg-white p-8 rounded-[30px] border border-slate-200 shadow-sm space-y-6">
+      <div>
+        <h2 className="text-xl font-black text-[#0f2b5c] mb-1">Unggah Foto atau Video Baru</h2>
+        <p className="text-xs text-slate-500">Kelola galeri foto dan video perusahaan beserta pengaturan tata letak tampilannya.</p>
+      </div>
 
-              <form onSubmit={handleMediaSubmit} className="bg-slate-50 p-6 md:p-8 rounded-[24px] border border-slate-200/80 space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul / Keterangan</label>
-                    <input 
-                      type="text" 
-                      placeholder="Contoh: Aktivitas Tambang" 
-                      value={mediaForm.data.title} 
-                      onChange={e => mediaForm.setData('title', e.target.value)} 
-                      className="w-full h-11 px-3 rounded-xl border border-slate-200 text-xs bg-white outline-none focus:border-[#ffc107]" 
-                      required 
-                    />
-                  </div>
+      <form onSubmit={handleMediaSubmit} className="bg-slate-50 p-6 md:p-8 rounded-[24px] border border-slate-200/80 space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul / Keterangan</label>
+            <input 
+              type="text" 
+              placeholder="Contoh: Aktivitas Tambang" 
+              value={mediaForm.data.title} 
+              onChange={e => mediaForm.setData('title', e.target.value)} 
+              className="w-full h-11 px-3 rounded-xl border border-slate-200 text-xs bg-white outline-none focus:border-[#ffc107]" 
+              required 
+            />
+          </div>
 
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Pilih Kategori</label>
-                    <select 
-                      value={mediaForm.data.category} 
-                      onChange={e => mediaForm.setData('category', e.target.value)} 
-                      className="w-full h-11 px-3 rounded-xl border border-slate-200 text-xs outline-none bg-white font-medium"
-                    >
-                      <option value="Photo Gallery">Photo Gallery</option>
-                      <option value="Workshop">Workshop</option>
-                      <option value="Mining Site">Mining Site</option>
-                      <option value="Customer Visit">Customer Visit</option>
-                      <option value="Training">Training</option>
-                      <option value="CSR">CSR</option>
-                      <option value="Company Event">Company Event</option>
-                      <option value="Drone Video">Drone Video</option>
-                    </select>
-                  </div>
+          <div>
+            <label className="block text-[11px] font-bold text-slate-600 mb-1">Pilih Kategori</label>
+            <select 
+              value={mediaForm.data.category} 
+              onChange={e => mediaForm.setData('category', e.target.value)} 
+              className="w-full h-11 px-3 rounded-xl border border-slate-200 text-xs outline-none bg-white font-medium"
+            >
+              <option value="Photo Gallery">Photo Gallery</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Workshop">Workshop</option>
+              <option value="Mining Site">Mining Site</option>
+              <option value="Customer Visit">Customer Visit</option>
+              <option value="Training">Training</option>
+              <option value="CSR">CSR</option>
+              <option value="Company Event">Company Event</option>
+              <option value="Drone Video">Drone Video</option>
+            </select>
+          </div>
 
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Tipe Media</label>
-                    <select 
-                      value={mediaForm.data.media_type} 
-                      onChange={e => mediaForm.setData('media_type', e.target.value)} 
-                      className="w-full h-11 px-3 rounded-xl border border-slate-200 text-xs outline-none bg-white font-medium"
-                    >
-                      <option value="Foto (Image)">Foto (Image)</option>
-                      <option value="Video (MP4)">Video (MP4)</option>
-                    </select>
-                  </div>
-                </div>
+          <div>
+            <label className="block text-[11px] font-bold text-slate-600 mb-1">Tipe Media</label>
+            <select 
+              value={mediaForm.data.media_type} 
+              onChange={e => mediaForm.setData('media_type', e.target.value)} 
+              className="w-full h-11 px-3 rounded-xl border border-slate-200 text-xs outline-none bg-white font-medium"
+            >
+              <option value="Foto (Image)">Foto (Image)</option>
+              <option value="Video (MP4)">Video (MP4)</option>
+              <option value="Instagram Post">Instagram Post / Link</option>
+            </select>
+          </div>
+        </div>
 
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Pilih File (Foto / Video)</label>
-                  <input 
-                    type="file" 
-                    accept="image/*,video/mp4" 
-                    onChange={e => mediaForm.setData('file', e.target.files[0])} 
-                    className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
-                    required 
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Tambahan (Opsional)</label>
-                  <textarea 
-                    rows="3" 
-                    placeholder="Keterangan lengkap..." 
-                    value={mediaForm.data.description} 
-                    onChange={e => mediaForm.setData('description', e.target.value)} 
-                    className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none focus:border-[#ffc107]" 
-                  />
-                </div>
-
-                <button 
-                  type="submit" 
-                  disabled={mediaForm.processing}
-                  className="px-8 py-3.5 bg-[#071b38] hover:bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md transition cursor-pointer"
-                >
-                  {mediaForm.processing ? "Mengunggah..." : "Unggah Media"}
-                </button>
-              </form>
-
-              <div className="space-y-4 pt-4 border-t border-slate-200">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#0f2b5c]">
-                  Daftar Media Tersimpan ({mediaGalleries.length})
-                </h3>
-
-                {mediaGalleries.length === 0 ? (
-                  <p className="text-xs text-slate-400 italic">Belum ada foto atau video yang diunggah ke galeri.</p>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {mediaGalleries.map(media => {
-                      const isVid = media.media_type?.toLowerCase().includes('video') || media.file_path?.endsWith('.mp4');
-                      return (
-                        <div key={media.id} className="p-4 rounded-2xl border border-slate-200 bg-slate-50 flex flex-col justify-between shadow-sm">
-                          <div>
-                            {isVid ? (
-                              <video src={`/${media.file_path}`} className="w-full h-32 object-cover rounded-xl mb-3 border bg-slate-900" controls />
-                            ) : (
-                              <img src={`/${media.file_path}`} alt="" className="w-full h-32 object-cover rounded-xl mb-3 border bg-white" />
-                            )}
-                            <span className="inline-block text-[10px] font-extrabold bg-[#071b38] text-[#ffc107] px-2.5 py-0.5 rounded-md mb-1 uppercase">
-                              {media.category}
-                            </span>
-                            <h4 className="font-extrabold text-xs text-[#0f2b5c]">{media.title}</h4>
-                            <p className="text-[11px] text-slate-500 mt-1 line-clamp-2">{media.description || "-"}</p>
-                          </div>
-                          <div className="flex items-center gap-2 mt-4">
-                            <button 
-                              type="button" 
-                              onClick={() => handleOpenEditMedia(media)} 
-                              className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer"
-                            >
-                              Edit
-                            </button>
-                            <button 
-                              type="button" 
-                              onClick={() => handleDeleteMedia(media.id)} 
-                              className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start"
-                            >
-                              Delete Media
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+        {/* LOGIKA PENGKONDISIAN INPUT BERDASARKAN KATEGORI */}
+        <div className="grid grid-cols-1 gap-4">
+          {mediaForm.data.category === "Instagram" ? (
+            <div>
+              <label className="block text-[11px] font-bold text-slate-600 mb-1">Tempel Link / Tautan Instagram</label>
+              <input 
+                type="url" 
+                placeholder="https://www.instagram.com/p/..." 
+                value={mediaForm.data.instagram_url} 
+                onChange={e => mediaForm.setData('instagram_url', e.target.value)} 
+                className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none focus:border-[#ffc107]" 
+                required
+              />
             </div>
+          ) : (
+            <div>
+              <label className="block text-[11px] font-bold text-slate-600 mb-1">Pilih File (Foto / Video)</label>
+              <input 
+                type="file" 
+                accept="image/*,video/mp4" 
+                onChange={e => mediaForm.setData('file', e.target.files[0])} 
+                className="w-full text-xs text-slate-500 bg-white p-2.5 rounded-xl border border-slate-200 cursor-pointer" 
+                required={!mediaForm.data.instagram_url}
+              />
+            </div>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Tambahan (Opsional)</label>
+          <textarea 
+            rows="3" 
+            placeholder="Keterangan lengkap..." 
+            value={mediaForm.data.description} 
+            onChange={e => mediaForm.setData('description', e.target.value)} 
+            className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none focus:border-[#ffc107]" 
+          />
+        </div>
+
+        <button 
+          type="submit" 
+          disabled={mediaForm.processing}
+          className="px-8 py-3.5 bg-[#071b38] hover:bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-md transition cursor-pointer"
+        >
+          {mediaForm.processing ? "Mengunggah..." : "Unggah Media"}
+        </button>
+      </form>
+
+      <div className="space-y-4 pt-4 border-t border-slate-200">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-[#0f2b5c]">
+          Daftar Media Tersimpan ({mediaGalleries.length})
+        </h3>
+
+        {mediaGalleries.length === 0 ? (
+          <p className="text-xs text-slate-400 italic">Belum ada foto atau video yang diunggah ke galeri.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {mediaGalleries.map(media => {
+              const isVid = media.media_type?.toLowerCase().includes('video') || media.file_path?.endsWith('.mp4');
+              
+              // Helper Konversi URL Instagram agar Bebas Query Parameter dan Valid /embed
+              const getEmbedUrl = (url) => {
+                if (!url) return '';
+                const cleanUrl = url.split('?')[0].replace(/\/$/, '');
+                return `${cleanUrl}/embed`;
+              };
+
+              const filePath = media.file_path ? (media.file_path.startsWith('http') ? media.file_path : `/${media.file_path}`) : '';
+
+              return (
+                <div key={media.id} className="p-4 rounded-2xl border border-slate-200 bg-slate-50 flex flex-col justify-between shadow-sm">
+                  <div>
+                    {media.instagram_url ? (
+                      <div className="w-full h-80 rounded-xl mb-3 overflow-hidden bg-white border border-slate-200">
+                        <iframe
+                          src={getEmbedUrl(media.instagram_url)}
+                          className="w-full h-full border-0"
+                          allow="encrypted-media"
+                          scrolling="no"
+                          frameBorder="0"
+                          title={media.title || "Instagram Embed"}
+                        ></iframe>
+                      </div>
+                    ) : isVid ? (
+                      <video src={filePath} className="w-full h-32 object-cover rounded-xl mb-3 border bg-slate-900" controls />
+                    ) : (
+                      <img src={filePath || '/images/placeholder.jpg'} alt={media.title || ""} className="w-full h-32 object-cover rounded-xl mb-3 border bg-white" />
+                    )}
+                    <span className="inline-block text-[10px] font-extrabold bg-[#071b38] text-[#ffc107] px-2.5 py-0.5 rounded-md mb-1 uppercase">
+                      {media.category}
+                    </span>
+                    <h4 className="font-extrabold text-xs text-[#0f2b5c]">{media.title}</h4>
+                    <p className="text-[11px] text-slate-500 mt-1 line-clamp-2">{media.description || "-"}</p>
+                  </div>
+                  <div className="flex items-center gap-2 mt-4">
+                    <button 
+                      type="button" 
+                      onClick={() => handleOpenEditMedia(media)} 
+                      className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer"
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      type="button" 
+                      onClick={() => handleDeleteMedia(media.id)} 
+                      className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-[10px] font-bold transition cursor-pointer self-start"
+                    >
+                      Delete Media
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
+      </div>
+    </div>
+  </div>
+)}
 
         {/* ================= TAB 7: JOB VACANCY ================= */}
         {activeTab === "jobvacancy" && (
@@ -3951,19 +3991,19 @@ const handleUpdateProduct = (e) => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-  <div>
-    <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Utama</label>
-    <input type="file" accept="image/*" onChange={e => editProductForm.setData('image', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
-  </div>
-  <div>
-    <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Video File</label>
-    <input type="file" accept="video/mp4,video/webm" onChange={e => editProductForm.setData('video_file', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
-  </div>
-  <div>
-    <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Brosur (.PDF)</label>
-    <input type="file" accept="application/pdf" onChange={e => editProductForm.setData('brochure', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
-  </div>
-</div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Utama</label>
+                    <input type="file" accept="image/*" onChange={e => editProductForm.setData('image', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Video File</label>
+                    <input type="file" accept="video/mp4,video/webm" onChange={e => editProductForm.setData('video_file', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Brosur (.PDF)</label>
+                    <input type="file" accept="application/pdf" onChange={e => editProductForm.setData('brochure', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+                  </div>
+                </div>
 
                 <div className="space-y-3 pt-2 border-t border-slate-200">
                   <div className="flex items-center justify-between">
@@ -4026,7 +4066,7 @@ const handleUpdateProduct = (e) => {
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori</label>
                     <select value={editSparePartForm.data.category} onChange={e => editSparePartForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
-                      <option value="Maintenance Tips">Maintenance Tips</option>
+                     <option value="Maintenance Tips">Maintenance Tips</option>
                       <option value="Heavy Equipment Knowledge">Heavy Equipment Knowledge</option>
                       <option value="Mining Technology">Mining Technology</option>
                       <option value="Hydraulic System">Hydraulic System</option>
@@ -4041,87 +4081,24 @@ const handleUpdateProduct = (e) => {
                   </div>
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 mb-1">Brand</label>
-                    <input 
-                      type="text" 
-                      value={editSparePartForm.data.brand} 
-                      onChange={e => editSparePartForm.setData('brand', e.target.value)} 
-                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
-                    />
+                    <input type="text" value={editSparePartForm.data.brand} onChange={e => editSparePartForm.setData('brand', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 mb-1">Delivery Time</label>
-                    <input 
-                      type="text" 
-                      value={editSparePartForm.data.delivery_time} 
-                      onChange={e => editSparePartForm.setData('delivery_time', e.target.value)} 
-                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
-                    />
+                    <input type="text" value={editSparePartForm.data.delivery_time} onChange={e => editSparePartForm.setData('delivery_time', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
                   </div>
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 mb-1">Supply Capacity</label>
-                    <input 
-                      type="text" 
-                      value={editSparePartForm.data.supply_capacity} 
-                      onChange={e => editSparePartForm.setData('supply_capacity', e.target.value)} 
-                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Product Origin</label>
-                    <input 
-                      type="text" 
-                      value={editSparePartForm.data.product_origin} 
-                      onChange={e => editSparePartForm.setData('product_origin', e.target.value)} 
-                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Package Type</label>
-                    <input 
-                      type="text" 
-                      value={editSparePartForm.data.package_type} 
-                      onChange={e => editSparePartForm.setData('package_type', e.target.value)} 
-                      className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
-                    />
+                    <input type="text" value={editSparePartForm.data.supply_capacity} onChange={e => editSparePartForm.setData('supply_capacity', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Shipping Methods</label>
-                  <input 
-                    type="text" 
-                    value={editSparePartForm.data.shipping_methods} 
-                    onChange={e => editSparePartForm.setData('shipping_methods', e.target.value)} 
-                    className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" 
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Utama (Opsional)</label>
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      onChange={e => editSparePartForm.setData('image', e.target.files[0])} 
-                      className="w-full text-xs text-slate-500 cursor-pointer" 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Tambah Galeri Foto (Opsional)</label>
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      multiple 
-                      onChange={e => editSparePartForm.setData('gallery_images', e.target.files)} 
-                      className="w-full text-xs text-slate-500 cursor-pointer" 
-                    />
-                  </div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Utama (Opsional)</label>
+                  <input type="file" accept="image/*" onChange={e => editSparePartForm.setData('image', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
                 </div>
 
                 <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
@@ -4133,63 +4110,131 @@ const handleUpdateProduct = (e) => {
           </div>
         )}
 
-        {/* ================= MODAL POPUP EDIT MEDIA GALLERY ================= */}
-        {editingMedia && (
+        {/* ================= MODAL POPUP EDIT KNOWLEDGE ARTICLE ================= */}
+        {editingArticle && (
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
             <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-xl p-8 space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Media: {editingMedia.title}</h3>
-                <button type="button" onClick={() => setEditingMedia(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
+                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Artikel: {editingArticle.title}</h3>
+                <button type="button" onClick={() => setEditingArticle(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
               </div>
 
-              <form onSubmit={handleUpdateMedia} className="space-y-4">
+              <form onSubmit={handleUpdateArticle} className="space-y-4">
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul / Keterangan</label>
-                  <input type="text" value={editMediaForm.data.title} onChange={e => editMediaForm.setData('title', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul Artikel</label>
+                  <input type="text" value={editArticleForm.data.title} onChange={e => editArticleForm.setData('title', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori</label>
-                    <select value={editMediaForm.data.category} onChange={e => editMediaForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
-                      <option value="Photo Gallery">Photo Gallery</option>
-                      <option value="Workshop">Workshop</option>
-                      <option value="Mining Site">Mining Site</option>
-                      <option value="Customer Visit">Customer Visit</option>
-                      <option value="Training">Training</option>
-                      <option value="CSR">CSR</option>
-                      <option value="Company Event">Company Event</option>
-                      <option value="Drone Video">Drone Video</option>
+                    <select value={editArticleForm.data.category} onChange={e => editArticleForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
+                      <option value="Maintenance Tips">Maintenance Tips</option>
+                      <option value="Heavy Equipment Knowledge">Heavy Equipment Knowledge</option>
+                      <option value="Mining Technology">Mining Technology</option>
+                      <option value="Hydraulic System">Hydraulic System</option>
+                      <option value="Engine Maintenance">Engine Maintenance</option>
+                      <option value="Lubrication Guide">Lubrication Guide</option>
+                      <option value="Predictive Maintenance">Predictive Maintenance</option>
+                      <option value="Failure Analysis">Failure Analysis</option>
+                      <option value="Safety">Safety</option>
+                      <option value="Operator Tips">Operator Tips</option>
+                      <option value="Technical Bulletin">Technical Bulletin</option>
                     </select>
                   </div>
-
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Tipe Media</label>
-                    <select value={editMediaForm.data.media_type} onChange={e => editMediaForm.setData('media_type', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
-                      <option value="Foto (Image)">Foto (Image)</option>
-                      <option value="Video (MP4)">Video (MP4)</option>
-                    </select>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Estimasi Waktu Baca</label>
+                    <input type="text" value={editArticleForm.data.read_time} onChange={e => editArticleForm.setData('read_time', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
                   </div>
                 </div>
-
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Tambahan</label>
-                  <textarea rows="3" value={editMediaForm.data.description} onChange={e => editMediaForm.setData('description', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Link Instagram (Opsional)</label>
+                  <input type="url" value={editArticleForm.data.instagram_link} onChange={e => editArticleForm.setData('instagram_link', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
                 </div>
-
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti File Media (Foto/Video) (Opsional)</label>
-                  <input type="file" accept="image/*,video/mp4" onChange={e => editMediaForm.setData('file', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Isi Konten</label>
+                  <textarea rows="5" value={editArticleForm.data.content} onChange={e => editArticleForm.setData('content', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
                 </div>
-
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Thumbnail (Opsional)</label>
+                  <input type="file" accept="image/*" onChange={e => editArticleForm.setData('thumbnail', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+                </div>
+                <div className="flex items-center gap-3">
+                  <input type="checkbox" id="edit_is_featured" checked={editArticleForm.data.is_featured} onChange={e => editArticleForm.setData('is_featured', e.target.checked)} className="w-4 h-4 text-[#0f2b5c] rounded border-slate-300" />
+                  <label htmlFor="edit_is_featured" className="text-xs font-bold text-slate-700 cursor-pointer">Jadikan Artikel Utama (Featured)</label>
+                </div>
                 <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
-                  <button type="button" onClick={() => setEditingMedia(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
-                  <button type="submit" disabled={editMediaForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
+                  <button type="button" onClick={() => setEditingArticle(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
+                  <button type="submit" disabled={editArticleForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
                 </div>
               </form>
             </div>
           </div>
         )}
+
+        {/* ================= MODAL POPUP EDIT MEDIA GALLERY ================= */}
+        {editingMedia && (
+  <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-xl p-8 space-y-6">
+      <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+        <h3 className="text-lg font-black text-[#0f2b5c]">Edit Media: {editingMedia.title}</h3>
+        <button type="button" onClick={() => setEditingMedia(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
+      </div>
+
+      <form onSubmit={handleUpdateMedia} className="space-y-4">
+        <div>
+          <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul Media</label>
+          <input type="text" value={editMediaForm.data.title} onChange={e => editMediaForm.setData('title', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori</label>
+            <select value={editMediaForm.data.category} onChange={e => editMediaForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
+              <option value="Photo Gallery">Photo Gallery</option>
+              <option value="Instagram">Instagram</option> {/* DITAMBAHKAN KATEGORI INSTAGRAM */}
+              <option value="Workshop">Workshop</option>
+              <option value="Mining Site">Mining Site</option>
+              <option value="Customer Visit">Customer Visit</option>
+              <option value="Training">Training</option>
+              <option value="CSR">CSR</option>
+              <option value="Company Event">Company Event</option>
+              <option value="Drone Video">Drone Video</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-[11px] font-bold text-slate-600 mb-1">Tipe Media</label>
+            <select value={editMediaForm.data.media_type} onChange={e => editMediaForm.setData('media_type', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
+              <option value="Foto (Image)">Foto (Image)</option>
+              <option value="Video (MP4)">Video (MP4)</option>
+              <option value="Instagram Post">Instagram Post / Link</option>
+            </select>
+          </div>
+        </div>
+
+        {/* LOGIKA PENGKONDISIAN EDIT */}
+        {editMediaForm.data.category === "Instagram" ? (
+          <div>
+            <label className="block text-[11px] font-bold text-slate-600 mb-1">Tautan / Link Instagram</label>
+            <input type="url" placeholder="https://www.instagram.com/p/..." value={editMediaForm.data.instagram_url} onChange={e => editMediaForm.setData('instagram_url', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
+          </div>
+        ) : (
+          <div>
+            <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti File Media (Foto/Video) (Opsional)</label>
+            <input type="file" accept="image/*,video/mp4" onChange={e => editMediaForm.setData('file', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+          </div>
+        )}
+
+        <div>
+          <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Tambahan</label>
+          <textarea rows="3" value={editMediaForm.data.description} onChange={e => editMediaForm.setData('description', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+        </div>
+        <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+          <button type="button" onClick={() => setEditingMedia(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
+          <button type="submit" disabled={editMediaForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
 
         {/* ================= MODAL POPUP EDIT JOB VACANCY ================= */}
         {editingJob && (
@@ -4211,7 +4256,6 @@ const handleUpdateProduct = (e) => {
                     <input type="text" value={editJobForm.data.department} onChange={e => editJobForm.setData('department', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
                   </div>
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[11px] font-bold text-slate-600 mb-1">Lokasi</label>
@@ -4222,32 +4266,29 @@ const handleUpdateProduct = (e) => {
                     <input type="text" value={editJobForm.data.education} onChange={e => editJobForm.setData('education', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
                   </div>
                 </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Tipe Pekerjaan</label>
-                  <select value={editJobForm.data.job_type} onChange={e => editJobForm.setData('job_type', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
-                    <option value="Full-time">Full-time</option>
-                    <option value="Part-time">Part-time</option>
-                    <option value="Contract">Contract</option>
-                    <option value="Internship">Internship</option>
-                  </select>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Tipe Pekerjaan</label>
+                    <select value={editJobForm.data.job_type} onChange={e => editJobForm.setData('job_type', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
+                      <option value="Full-time">Full-time</option>
+                      <option value="Part-time">Part-time</option>
+                      <option value="Contract">Contract</option>
+                      <option value="Internship">Internship</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Lowongan (Opsional)</label>
+                    <input type="file" accept="image/*" onChange={e => editJobForm.setData('image', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
+                  </div>
                 </div>
-
                 <div>
                   <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Singkat</label>
                   <textarea rows="3" value={editJobForm.data.description} onChange={e => editJobForm.setData('description', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
                 </div>
-
                 <div>
                   <label className="block text-[11px] font-bold text-slate-600 mb-1">Persyaratan</label>
-                  <textarea rows="3" value={editJobForm.data.requirements} onChange={e => editJobForm.setData('requirements', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
+                  <textarea rows="4" value={editJobForm.data.requirements} onChange={e => editJobForm.setData('requirements', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
                 </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Lowongan (Opsional)</label>
-                  <input type="file" accept="image/*" onChange={e => editJobForm.setData('image', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
-                </div>
-
                 <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
                   <button type="button" onClick={() => setEditingJob(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
                   <button type="submit" disabled={editJobForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
@@ -4273,11 +4314,10 @@ const handleUpdateProduct = (e) => {
                     <input type="text" value={editTestimonialForm.data.name} onChange={e => editTestimonialForm.setData('name', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Jabatan / Role / Univ</label>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Jabatan / Keterangan</label>
                     <input type="text" value={editTestimonialForm.data.role} onChange={e => editTestimonialForm.setData('role', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
                   </div>
                 </div>
-
                 <div>
                   <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori Testimoni</label>
                   <select value={editTestimonialForm.data.category} onChange={e => editTestimonialForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
@@ -4286,17 +4326,14 @@ const handleUpdateProduct = (e) => {
                     <option value="intern">Testimoni Magang (Career)</option>
                   </select>
                 </div>
-
                 <div>
                   <label className="block text-[11px] font-bold text-slate-600 mb-1">Isi Testimoni / Quote</label>
                   <textarea rows="4" value={editTestimonialForm.data.quote} onChange={e => editTestimonialForm.setData('quote', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
                 </div>
-
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Profil / Logo (Opsional)</label>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto (Opsional)</label>
                   <input type="file" accept="image/*" onChange={e => editTestimonialForm.setData('image', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
                 </div>
-
                 <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
                   <button type="button" onClick={() => setEditingTestimonial(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
                   <button type="submit" disabled={editTestimonialForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
@@ -4306,7 +4343,7 @@ const handleUpdateProduct = (e) => {
           </div>
         )}
 
-        {/* ================= MODAL POPUP EDIT SUB-LAYANAN (SERVICE) ================= */}
+        {/* ================= MODAL POPUP EDIT SUB-LAYANAN ================= */}
         {editingService && (
           <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
             <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-xl p-8 space-y-6">
@@ -4317,8 +4354,8 @@ const handleUpdateProduct = (e) => {
 
               <form onSubmit={handleUpdateService} className="space-y-4">
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori Layanan Utama</label>
-                  <select value={editServiceForm.data.category} onChange={e => editServiceForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none font-bold">
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori Utama</label>
+                  <select value={editServiceForm.data.category} onChange={e => editServiceForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
                     <option value="Maintenance & Repair">Maintenance & Repair</option>
                     <option value="Installation & Commissioning">Installation & Commissioning</option>
                     <option value="Overhaul & Rebuild">Overhaul & Rebuild</option>
@@ -4326,112 +4363,27 @@ const handleUpdateProduct = (e) => {
                     <option value="Contract & Consulting">Contract & Consulting</option>
                   </select>
                 </div>
-
                 <div>
                   <label className="block text-[11px] font-bold text-slate-600 mb-1">Nama Sub-Layanan</label>
                   <input type="text" value={editServiceForm.data.title} onChange={e => editServiceForm.setData('title', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
                 </div>
-
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Lengkap Sub-Layanan</label>
+                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Deskripsi Lengkap</label>
                   <textarea rows="3" value={editServiceForm.data.description} onChange={e => editServiceForm.setData('description', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">What We Do (1 baris = 1 poin)</label>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">What We Do (Poin baris)</label>
                     <textarea rows="4" value={editServiceForm.data.what_we_do} onChange={e => editServiceForm.setData('what_we_do', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Key Benefits (1 baris = 1 poin)</label>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Key Benefits (Poin baris)</label>
                     <textarea rows="4" value={editServiceForm.data.key_benefits} onChange={e => editServiceForm.setData('key_benefits', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
                   </div>
                 </div>
-
                 <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
                   <button type="button" onClick={() => setEditingService(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
                   <button type="submit" disabled={editServiceForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {/* ================= MODAL POPUP EDIT ARTIKEL KNOWLEDGE ================= */}
-        {editingArticle && (
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-            <div className="bg-white rounded-[30px] border border-slate-200 shadow-2xl w-full max-w-2xl p-8 space-y-6 max-h-[90vh] overflow-y-auto">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <h3 className="text-lg font-black text-[#0f2b5c]">Edit Artikel: {editingArticle.title}</h3>
-                <button type="button" onClick={() => setEditingArticle(null)} className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer">✕</button>
-              </div>
-
-              <form onSubmit={handleUpdateArticle} className="space-y-4">
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Judul Artikel</label>
-                  <input type="text" value={editArticleForm.data.title} onChange={e => editArticleForm.setData('title', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Kategori</label>
-                    <select value={editArticleForm.data.category} onChange={e => editArticleForm.setData('category', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none">
-                      <option value="Maintenance Tips">Maintenance Tips</option>
-                      <option value="Heavy Equipment Knowledge">Heavy Equipment Knowledge</option>
-                      <option value="Mining Technology">Mining Technology</option>
-                      <option value="Hydraulic System">Hydraulic System</option>
-                      <option value="Engine Maintenance">Engine Maintenance</option>
-                      <option value="Lubrication Guide">Lubrication Guide</option>
-                      <option value="Predictive Maintenance">Predictive Maintenance</option>
-                      <option value="Failure Analysis">Failure Analysis</option>
-                      <option value="Safety">Safety</option>
-                      <option value="Operator Tips">Operator Tips</option>
-                      <option value="Technical Bulletin">Technical Bulletin</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Estimasi Waktu Baca</label>
-                    <input type="text" value={editArticleForm.data.read_time} onChange={e => editArticleForm.setData('read_time', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Link Instagram (Opsional)</label>
-                  <input type="url" value={editArticleForm.data.instagram_link} onChange={e => editArticleForm.setData('instagram_link', e.target.value)} className="w-full h-11 px-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ringkasan (Excerpt)</label>
-                  <textarea rows="3" value={editArticleForm.data.excerpt} onChange={e => editArticleForm.setData('excerpt', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Isi Konten Lengkap</label>
-                  <textarea rows="6" value={editArticleForm.data.content} onChange={e => editArticleForm.setData('content', e.target.value)} className="w-full p-4 rounded-xl border border-slate-200 text-xs bg-white outline-none" required />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">Ganti Foto Thumbnail (Opsional)</label>
-                  <input type="file" accept="image/*" onChange={e => editArticleForm.setData('thumbnail', e.target.files[0])} className="w-full text-xs text-slate-500 cursor-pointer" />
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <input 
-                    type="checkbox" 
-                    id="edit_is_featured"
-                    checked={editArticleForm.data.is_featured}
-                    onChange={e => editArticleForm.setData('is_featured', e.target.checked)}
-                    className="w-4 h-4 text-[#0f2b5c] rounded border-slate-300 focus:ring-[#ffc107]"
-                  />
-                  <label htmlFor="edit_is_featured" className="text-xs font-bold text-slate-700 cursor-pointer">
-                    Jadikan Artikel Utama (Featured)
-                  </label>
-                </div>
-
-                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
-                  <button type="button" onClick={() => setEditingArticle(null)} className="px-6 py-3 bg-slate-200 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">Batal</button>
-                  <button type="submit" disabled={editArticleForm.processing} className="px-8 py-3 bg-[#0f2b5c] text-white font-extrabold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Simpan Perubahan</button>
                 </div>
               </form>
             </div>

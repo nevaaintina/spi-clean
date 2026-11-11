@@ -10,16 +10,17 @@ use Illuminate\Support\Facades\File;
 class MediaGalleryController extends Controller
 {
     /**
-     * Menyimpan media baru (foto/video) ke database dan folder penyimpanan.
+     * Menyimpan media baru (foto/video/instagram link) ke database dan folder penyimpanan.
      */
     public function store(Request $request)
     {
         $request->validate([
-            'title'        => 'required|string|max:255',
-            'category'     => 'required|string',
-            'media_type'   => 'required|string',
-            'file'         => 'required|file|mimes:jpg,jpeg,png,webp,mp4,mov,avi|max:51200', // Maksimal 50MB
-            'description'  => 'nullable|string',
+            'title'         => 'required|string|max:255',
+            'category'      => 'required|string',
+            'media_type'    => 'required|string',
+            'file'          => 'nullable|file|mimes:jpg,jpeg,png,webp,mp4,mov,avi|max:51200', // Dibuat nullable agar tidak error saat posting link Instagram
+            'instagram_url' => 'nullable|url',
+            'description'   => 'nullable|string',
         ]);
 
         $filePath = null;
@@ -34,27 +35,29 @@ class MediaGalleryController extends Controller
         }
 
         MediaGallery::create([
-            'title'        => $request->input('title'),
-            'category'     => $request->input('category'),
-            'media_type'   => $request->input('media_type'),
-            'file_path'    => $filePath,
-            'description'  => $request->input('description'),
+            'title'         => $request->input('title'),
+            'category'      => $request->input('category'),
+            'media_type'    => $request->input('media_type'),
+            'file_path'     => $filePath,
+            'instagram_url' => $request->input('instagram_url'),
+            'description'   => $request->input('description'),
         ]);
 
         return redirect()->back()->with('success', 'Media berhasil diunggah ke galeri!');
     }
 
     /**
-     * Memperbarui data media gallery dan mengganti file fisik jika ada file baru.
+     * Memperbarui data media gallery dan mengganti file fisik/link instagram jika ada perubahan.
      */
     public function update(Request $request, MediaGallery $media)
     {
         $request->validate([
-            'title'       => 'required|string|max:255',
-            'category'    => 'required|string',
-            'media_type'  => 'required|string',
-            'file'        => 'nullable|file|mimes:jpg,jpeg,png,webp,mp4,mov,avi|max:51200',
-            'description' => 'nullable|string',
+            'title'         => 'required|string|max:255',
+            'category'      => 'required|string',
+            'media_type'    => 'required|string',
+            'file'          => 'nullable|file|mimes:jpg,jpeg,png,webp,mp4,mov,avi|max:51200',
+            'instagram_url' => 'nullable|url',
+            'description'   => 'nullable|string',
         ]);
 
         $filePath = $media->file_path;
@@ -75,11 +78,12 @@ class MediaGalleryController extends Controller
         }
 
         $media->update([
-            'title'       => $request->input('title'),
-            'category'    => $request->input('category'),
-            'media_type'  => $request->input('media_type'),
-            'file_path'   => $filePath,
-            'description' => $request->input('description'),
+            'title'         => $request->input('title'),
+            'category'      => $request->input('category'),
+            'media_type'    => $request->input('media_type'),
+            'file_path'     => $filePath,
+            'instagram_url' => $request->input('instagram_url'),
+            'description'   => $request->input('description'),
         ]);
 
         return redirect()->back()->with('success', 'Media berhasil diperbarui!');

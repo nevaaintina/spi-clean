@@ -18,6 +18,7 @@ class MediaGallery extends Model
         'category',
         'media_type',
         'file_path',
+        'instagram_url',
         'description',
     ];
 }
